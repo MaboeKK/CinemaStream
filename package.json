@@ -5,6 +5,6 @@
         "start": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\" "
     },
     "devDependencies": {
-        "concurrently": "^8.2.0"
+        "concurrently": "^8.2.2"
     }
 }
