@@ -1,10 +1,11 @@
+// Importing pages for each route
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import EmailVerification from './pages/EmailVerification';
-import VerifyOtp from './pages/VerifyOtp';
-import LandingPage from './pages/LandingPage';
+import Login from './pages/LoginPage/Login';
+import Register from './pages/RegisterPage/Register';
+import EmailVerification from './pages/EmailVerificationPage/EmailVerification';
+import VerifyOtp from './pages/VerifyOtpPage/VerifyOtp';
+import LandingPage from './pages/LandingPage/LandingPage';
 
 function App() {
   return (
