@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
+const jwt = require('jsonwebtoken');
 
 router.post('/login', async (req, res) => {
     try {
@@ -28,12 +29,6 @@ router.post('/login', async (req, res) => {
             return res.json({ status: "FAILED", message: "Incorrect password" });
         }
 
-        const jwt = require('jsonwebtoken');
-
-        // inside your login route, after `const isMatch = ...`
-        if (!isMatch) {
-            return res.json({ status: "FAILED", message: "Incorrect password" });
-        }
 
         // Sign JWT (you need to have process.env.JWT_SECRET)
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
