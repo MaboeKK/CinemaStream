@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
+const authLimiter = require('../middleware/rateLimiter');
 
 router.post('/login', async (req, res) => {
     try {
