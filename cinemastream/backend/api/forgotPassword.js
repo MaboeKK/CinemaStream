@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { findUserByEmail, saveResetToken } = require("../models/User");
 const nodemailer = require("nodemailer");
+const authLimiter = require("../middleware/rateLimiter");
 
-router.post("/forgot-password", async (req, res) => {
+router.post("/forgot-password", authLimiter, async (req, res) => {
   const { email } = req.body;
 
   try {

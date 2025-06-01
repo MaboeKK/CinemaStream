@@ -3,8 +3,9 @@ const router = express.Router();
 const pool = require('../config/db');
 
 const jwt = require('jsonwebtoken');
+const authLimiter = require('../middleware/rateLimiter');
 
-router.post('/verify-otp', async (req, res) => {
+router.post('/verify-otp', authLimiter, async (req, res) => {
     const { email, otp } = req.body;
 
     try {

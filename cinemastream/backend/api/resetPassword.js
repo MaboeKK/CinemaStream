@@ -6,8 +6,9 @@ const {
   updateUserPassword,
   clearResetToken,
 } = require("../models/User");
+const authLimiter = require("../middleware/rateLimiter");
 
-router.post("/reset-password", async (req, res) => {
+router.post("/reset-password", authLimiter, async (req, res) => {
   const { email, resetToken, newPassword } = req.body;
 
   try {

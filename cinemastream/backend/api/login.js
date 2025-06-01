@@ -5,7 +5,7 @@ const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
 const authLimiter = require('../middleware/rateLimiter');
 
-router.post('/login', async (req, res) => {
+router.post('/login', authLimiter, async (req, res) => {
     try {
         let { email, password } = req.body;
         email = email.trim();
