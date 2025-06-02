@@ -1,3 +1,6 @@
+// Load environment variables
+require('dotenv').config(); // ✅ Needed to access process.env.JWT_SECRET
+
 // Connect to DB
 try {
   require('./config/db');
@@ -7,30 +10,29 @@ try {
 
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = 5000;
 
 // Middlewares
-app.use(cors()); //  Allow requests from React frontend
-app.use(express.json()); //  Accept JSON POST bodies
-const cookieParser = require('cookie-parser');
+app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
 
 // Routes
-// const userRoutes = require('./api/User'); // Or ./routes/User if that's the folder name
-// app.use('/api/auth', userRoutes); //  Route now matches frontend
-/* const forgotPasswordRoute = require("./api/forgotPassword");
-const resetPasswordRoute = require('./api/resetPassword');
-app.use("/api/auth", forgotPasswordRoute);
-app.use('/api/auth', resetPasswordRoute); */
-app.use(cookieParser());
 app.use('/api/auth', require('./api/forgotPassword'));
 app.use('/api/auth', require('./api/resetPassword'));
 app.use('/api/auth', require('./api/register'));
 app.use('/api/auth', require('./api/login'));
 app.use('/api/auth', require('./api/verifyOtp'));
+app.use('/api/auth', require('./api/checkAuth'));
+app.use('/api/protected', require('./api/protectedRoutes'));
+app.use('/api/auth', require('./api/refreshToken'));
+
+app.set('trust proxy', 1); // trust first proxy
 
 // Start server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on http://0.0.0.0:${port}`);
 });
