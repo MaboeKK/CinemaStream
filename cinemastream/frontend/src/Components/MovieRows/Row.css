@@ -1,0 +1,22 @@
+.row-container {
+    margin-bottom: 30px;
+  }
+  
+  .row-title {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .row-movies {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+  }
+  
+  .row-movies::-webkit-scrollbar {
+    display: none;
+  }
+  

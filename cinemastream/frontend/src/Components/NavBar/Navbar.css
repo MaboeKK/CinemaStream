@@ -1,0 +1,52 @@
+/* Main navbar container styles */
+.navbar {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 20px; 
+    background-color: #141414; 
+    color: white; 
+    position: fixed; 
+    width: 100%; 
+    top: 0; 
+    left: 0;
+    z-index: 10;
+    gap: 20px; 
+  }
+  
+  /* Logo styles */
+  .navbar-logo {
+    font-size: 1.5rem; 
+    font-weight: bold; 
+    cursor: pointer; 
+    white-space: nowrap; 
+  }
+  
+  /* Highlighted part of logo */
+  .navbar-logo .highlight {
+    color: #e50914; 
+  }
+  
+
+  /* Navigation links container */
+  .navbar-items {
+    display: flex; 
+    gap: 5px; 
+    padding-right: 60px;
+  }
+  
+  /* Individual navigation item */
+  .navbar-item {
+    cursor: pointer; 
+    padding: 5px 10px; 
+    font-size: 1rem; 
+    text-decoration: none; 
+    color: white; 
+    transition: color 0.3s; 
+    white-space: nowrap; 
+  }
+  
+  /* Hover state for nav items */
+  .navbar-item:hover {
+    color: #e50914; 
+  }

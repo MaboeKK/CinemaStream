@@ -23,4 +23,23 @@ export async function fetchPopularMovies() {
   return data.results;
 }
 
+//fetch dicover moview\\
 
+export async function fetchDiscoverMovie() {
+  const res = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}`);
+  const data = await res.json();
+  return data.results;
+  
+}
+
+export async function fetchGenres() {
+  const res = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=en-US`);
+  const data = await res.json();
+  return data.genres; // array of { id, name }
+}
+// Fetch genres for TV Series
+export async function fetchSeriesGenres() {
+  const res = await fetch(`${BASE_URL}/genre/tv/list?api_key=${API_KEY}&language=en-US`);
+  const data = await res.json();
+  return data.genres; // [{ id, name }]
+}

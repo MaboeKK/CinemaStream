@@ -1,0 +1,98 @@
+/* src/pages/Movies.css */
+
+.movies-page {
+    background-color: #141414;
+    min-height: 100vh;
+    padding-top: 100px;
+    color: white;
+  }
+  
+  .movies-content {
+    padding: 20px 40px;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #e5e5e5;
+  }
+  
+  .movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .movie-card {
+    background-color: #1f1f1f;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .movie-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .movie-poster {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .movie-info {
+    padding: 10px;
+    background-color: #141414; /* slightly darker bg for text contrast */
+  }
+  
+  .movie-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #fffdfd;
+  }
+  
+  .movie-overview {
+    font-size: 0.9rem;
+    color: #fffefe;
+    margin-bottom: 10px;
+    height: 50px;
+    overflow: hidden;
+  }
+  
+  .load-more {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .load-more button {
+    background-color: #e50914;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .load-more button:hover {
+    background-color: #f40612;
+  }
+  
+  .genre-filter {
+    margin-bottom: 20px;
+  }
+  
+  .genre-filter select {
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #1f1f1f;
+    color: white;
+    border: 1px solid #444;
+    outline: none;
+  }
+  
