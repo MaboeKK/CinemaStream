@@ -15,7 +15,7 @@ const Login = () => {
  const handleLogin = async (e) => {
   e.preventDefault();
   try {
-    const response = await axios.post("http://45.220.164.64:5000/api/auth/login",
+    const response = await axios.post("http://0.0.0.0:5000/api/auth/login",
       { email, password },
       { withCredentials: true } // <-- this is critical
     );
