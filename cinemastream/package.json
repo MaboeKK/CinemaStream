@@ -1,10 +1,10 @@
 {
-    "name": "cinema-stream",
-    "version": "1.0.0",
-    "scripts": {
-        "start": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\" "
-    },
-    "devDependencies": {
-        "concurrently": "^8.2.2"
-    }
+  "name": "cinema-stream",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
