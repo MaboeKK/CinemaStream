@@ -37,7 +37,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/signup", {
+      const response = await axios.post("http://0.0.0.0:5000/api/auth/signup", {
         first_name,
         last_name,
         email,
