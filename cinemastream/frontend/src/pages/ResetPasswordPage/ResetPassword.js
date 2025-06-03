@@ -26,7 +26,7 @@ const ResetPassword = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post("http://0.0.0.0:5000/api/auth/reset-password", {
+      const res = await axios.post("http://45.220.164.64:5000/api/auth/reset-password", {
         email,
         resetToken: reset_token,  // sending as resetToken to match backend param
         newPassword,
