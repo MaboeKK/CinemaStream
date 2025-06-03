@@ -1,88 +1,98 @@
 .series-page {
-    background-color: #141414;
-    min-height: 100vh;
-    padding-top: 100px;
-    color: white;
-  }
-  
-  .series-content {
-    padding: 0 20px;
-  }
-  
-  .genre-filter {
-    margin: 20px 0;
-  }
-  
-  .genre-filter select {
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: #1f1f1f;
-    color: white;
-    border: 1px solid #444;
-    outline: none;
-  }
-  
-  .series-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-  }
-  
-  .series-card {
-    background-color: #222;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-  
-  .series-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .series-poster {
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-  }
-  
-  .series-info {
-    padding: 10px;
-  }
-  
-  .series-title {
-    font-size: 1rem;
-    margin: 10px 0 5px;
-    color: white;
-  }
-  
-  .series-overview {
-    font-size: 0.9rem;
-    color: #ccc;
-    height: 50px;
-    overflow: hidden;
-  }
-  
-  .load-more {
-    text-align: center;
-    margin: 30px 0;
-  }
-  
-  .load-more button {
-    padding: 10px 20px;
-    background-color: #e50914;
-    color: white;
-    border: none;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .load-more button:hover {
-    background-color: #b00710;
-  }
-  .pagination {
+  background-color: #141414;
+  min-height: 100vh;
+  padding-top: 100px;
+  color: white;
+}
+
+.series-content {
+  padding: 0 20px;
+}
+
+.genre-filter {
+  margin: 20px 0;
+}
+
+.genre-filter select {
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #1f1f1f;
+  color: white;
+  border: 1px solid #444;
+  outline: none;
+}
+
+.series-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.series-card {
+  background-color: #222;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.series-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(255, 255, 255, 0.1);
+}
+
+.series-poster {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.series-info {
+  padding: 10px;
+  text-align: center;
+}
+
+.series-title {
+  font-size: 1rem;
+  margin: 10px 0 5px;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.series-card:hover .series-title {
+  color: #e50914;
+}
+
+.series-overview {
+  font-size: 0.9rem;
+  color: #ccc;
+  height: 50px;
+  overflow: hidden;
+}
+
+.load-more {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.load-more button {
+  padding: 10px 20px;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.load-more button:hover {
+  background-color: #b00710;
+}
+
+.pagination {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -107,4 +117,41 @@
 .page-number.active {
   background-color: #e50914;
   border-color: #e50914;
+}
+
+.search-bar {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.search-input {
+  width: 300px;
+  padding: 10px 15px;
+  border-radius: 5px 0 0 5px;
+  font-size: 1rem;
+  background-color: #1f1f1f;
+  color: white;
+  border: 1px solid #444;
+  outline: none;
+  border-right: none;
+}
+
+.search-input::placeholder {
+  color: #888;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background-color: #e50914;
+  color: white;
+  border: 1px solid #e50914;
+  border-radius: 0 5px 5px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-button:hover {
+  background-color: #b00710;
 }

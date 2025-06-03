@@ -43,3 +43,28 @@ export async function fetchSeriesGenres() {
   const data = await res.json();
   return data.genres; // [{ id, name }]
 }
+// Example fetchMovieDetails
+export async function fetchMovieDetails(movieId) {
+  const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=YOUR_API_KEY&append_to_response=credits`);
+  const data = await response.json();
+
+  return {
+    name: data.title,
+    overview: data.overview,
+    genres: data.genres,
+    actors: data.credits?.cast || [],
+  };
+}
+
+// Example fetchSeriesDetails
+export async function fetchSeriesDetails(seriesId) {
+  const response = await fetch(`https://api.themoviedb.org/3/tv/${seriesId}?api_key=YOUR_API_KEY&append_to_response=credits`);
+  const data = await response.json();
+
+  return {
+    name: data.name,
+    overview: data.overview,
+    genres: data.genres,
+    actors: data.credits?.cast || [],
+  };
+}

@@ -10,20 +10,17 @@ function Series() {
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState("");
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [trailerUrl, setTrailerUrl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-
-  const loadSeries = async (reset = false) => {
-    try {
-      const url = `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=${page}&with_genres=${selectedGenre}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      setSeriesList((prev) => (reset ? data.results : [...prev, ...data.results]));
-    } catch (err) {
-      console.error("Failed to load series", err);
-    }
-  };
+  const [modalContent, setModalContent] = useState({
+    name: "",
+    overview: "",
+    genres: [],
+    actors: [],
+  });
 
   useEffect(() => {
     fetchSeriesGenres().then(setGenres);
@@ -32,22 +29,58 @@ function Series() {
   useEffect(() => {
     setSeriesList([]);
     setPage(1);
-    loadSeries(true); // reset on genre change
+    loadSeries(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedGenre]);
+  }, [selectedGenre, searchTerm]);
 
   useEffect(() => {
-    loadSeries(true);
+    if (page > 1) loadSeries();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  const openTrailerModal = async (show) => {
-    const url = await fetchYoutubeTrailer(show.name);
-    if (url) {
+  const loadSeries = async (reset = false) => {
+    setLoading(true);
+    try {
+      let url = "";
+
+      if (searchTerm.trim()) {
+        url = `https://api.themoviedb.org/3/search/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=${page}&query=${encodeURIComponent(searchTerm)}`;
+      } else {
+        url = `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=${page}${
+          selectedGenre ? `&with_genres=${selectedGenre}` : ""
+        }`;
+      }
+
+      const res = await fetch(url);
+      const data = await res.json();
+      setSeriesList((prev) => (reset ? data.results : [...prev, ...data.results]));
+    } catch (err) {
+      console.error("Failed to load series", err);
+    }
+    setLoading(false);
+  };
+
+  const openTrailerModal = async (show, type = "tv") => {
+    try {
+      const detailsUrl = `https://api.themoviedb.org/3/${type}/${show.id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&append_to_response=credits`;
+      const res = await fetch(detailsUrl);
+      const details = await res.json();
+
+      const title = details.name || details.title || "";
+
+      const url = await fetchYoutubeTrailer(title);
+
       setTrailerUrl(url);
+      setModalContent({
+        name: title,
+        overview: details.overview,
+        genres: details.genres,
+        actors: details.credits?.cast?.slice(0, 5) || [],
+      });
       setModalOpen(true);
-    } else {
-      alert("Trailer not found!");
+    } catch (error) {
+      console.error("Failed to load details", error);
+      alert("Failed to load series details.");
     }
   };
 
@@ -55,18 +88,35 @@ function Series() {
     <div className="series-page">
       <Navbar />
       <div className="series-content">
-        <h2 className="page-title">All Series</h2>
+        <h2 className="page-title"> Series</h2>
+
+        <div className="search-bar" style={{ marginBottom: "20px" }}>
+          <input
+            type="text"
+            placeholder="Search series by name..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setPage(1);
+              setSeriesList([]);
+            }}
+            style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+          />
+        </div>
 
         <div className="genre-filter">
-          <label htmlFor="series-genre-select" style={{ marginRight: "10px", fontWeight: "bold" }}>
-            Filter by Genre:
+          <label
+            htmlFor="series-genre-select"
+            style={{ marginRight: "10px", fontWeight: "bold" }}
+          >
+            Genre:
           </label>
           <select
             id="series-genre-select"
             value={selectedGenre}
             onChange={(e) => setSelectedGenre(e.target.value)}
           >
-            <option value="">All Genres</option>
+            <option value="">Select Genre</option>
             {genres.map((genre) => (
               <option key={genre.id} value={genre.id}>
                 {genre.name}
@@ -80,7 +130,7 @@ function Series() {
             <div
               key={show.id}
               className="series-card"
-              onClick={() => openTrailerModal(show)}
+              onClick={() => openTrailerModal(show, "tv")}
               style={{ cursor: "pointer" }}
             >
               <img
@@ -90,36 +140,26 @@ function Series() {
               />
               <div className="series-info">
                 <h3 className="series-title">{show.name}</h3>
-                <p className="series-overview">{show.overview.slice(0, 80)}...</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Pagination Buttons */}
-        <div className="pagination">
-          {[...Array(10).keys()].map((n) => (
-            <button
-              key={n + 1}
-              className={`page-number ${page === n + 1 ? "active" : ""}`}
-              onClick={() => {
-                setPage(n + 1);
-                setSeriesList([]);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-            >
-              {n + 1}
-            </button>
-          ))}
+        <div className="load-more">
+          <button onClick={() => setPage((p) => p + 1)} disabled={loading}>
+            {loading ? "Loading..." : "Load More"}
+          </button>
         </div>
       </div>
 
       <TrailerModal
         isOpen={modalOpen}
         trailerUrl={trailerUrl}
+        modalContent={modalContent}
         onClose={() => {
           setModalOpen(false);
           setTrailerUrl(null);
+          setModalContent({ name: "", overview: "", genres: [], actors: [] });
         }}
       />
     </div>
@@ -127,5 +167,3 @@ function Series() {
 }
 
 export default Series;
-
-

@@ -1,72 +1,122 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/NavBar/Navbar";
 import TrailerModal from "../../Components/Modal/TrailerModal";
-import { fetchGenres } from "../../api/tmdb";
+import { fetchGenres } from "../../api/tmdb";  // Correct import here
 import { fetchYoutubeTrailer } from "../../api/youtube";
-import "./Movies.css";
+import "./Movies.css";  // Make sure this matches Series.css styles or import Series.css
 
 function Movies() {
-  const [movies, setMovies] = useState([]);
+  const [movieList, setMovieList] = useState([]);
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Trailer modal state
   const [trailerUrl, setTrailerUrl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-
-  const loadMovies = async (reset = false) => {
-    setLoading(true);
-    try {
-      const url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=${page}&with_genres=${selectedGenre}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      setMovies((prev) => (reset ? data.results : [...prev, ...data.results]));
-    } catch (err) {
-      console.error("Failed to load movies", err);
-    }
-    setLoading(false);
-  };
+  const [modalContent, setModalContent] = useState({
+    name: "",
+    overview: "",
+    genres: [],
+    actors: [],
+  });
 
   useEffect(() => {
     fetchGenres().then(setGenres);
   }, []);
 
   useEffect(() => {
-    setMovies([]);
+    setMovieList([]);
     setPage(1);
     loadMovies(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedGenre]);
+  }, [selectedGenre, searchTerm]);
 
   useEffect(() => {
     if (page > 1) loadMovies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  const openTrailerModal = async (movie) => {
-    const url = await fetchYoutubeTrailer(movie.title || movie.name);
-    if (url) {
+  const loadMovies = async (reset = false) => {
+    setLoading(true);
+    try {
+      let url = "";
+
+      if (searchTerm.trim()) {
+        url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=${page}&query=${encodeURIComponent(searchTerm)}`;
+      } else {
+        url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=${page}${
+          selectedGenre ? `&with_genres=${selectedGenre}` : ""
+        }`;
+      }
+
+      const res = await fetch(url);
+      const data = await res.json();
+      setMovieList((prev) => (reset ? data.results : [...prev, ...data.results]));
+    } catch (err) {
+      console.error("Failed to load movies", err);
+    }
+    setLoading(false);
+  };
+
+  const openTrailerModal = async (movie, type = "movie") => {
+    try {
+      const detailsUrl = `https://api.themoviedb.org/3/${type}/${movie.id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&append_to_response=credits`;
+      const res = await fetch(detailsUrl);
+      const details = await res.json();
+
+      const title = details.title || details.name || "";
+
+      const url = await fetchYoutubeTrailer(title);
+
       setTrailerUrl(url);
+      setModalContent({
+        name: title,
+        overview: details.overview,
+        genres: details.genres,
+        actors: details.credits?.cast?.slice(0, 5) || [],
+      });
       setModalOpen(true);
-    } else {
-      alert("Trailer not found!");
+    } catch (error) {
+      console.error("Failed to load movie details", error);
+      alert("Failed to load movie details.");
     }
   };
 
   return (
-    <div className="movies-page">
+    <div className="series-page"> {/* Reuse series-page styles */}
       <Navbar />
-      <div className="movies-content">
-        <h2 className="page-title">All Movies</h2>
+      <div className="series-content">
+        <h2 className="page-title">Movies</h2>
+
+        <div className="search-bar" style={{ marginBottom: "20px" }}>
+          <input
+            type="text"
+            placeholder="Search movies by name..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setPage(1);
+              setMovieList([]);
+            }}
+            style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+          />
+        </div>
 
         <div className="genre-filter">
+          <label
+            htmlFor="movie-genre-select"
+            style={{ marginRight: "10px", fontWeight: "bold" }}
+          >
+            Genre:
+          </label>
           <select
+            id="movie-genre-select"
             value={selectedGenre}
             onChange={(e) => setSelectedGenre(e.target.value)}
           >
-            <option value="">All Genres</option>
+            <option value="">Select Genre</option>
             {genres.map((genre) => (
               <option key={genre.id} value={genre.id}>
                 {genre.name}
@@ -75,21 +125,21 @@ function Movies() {
           </select>
         </div>
 
-        <div className="movies-grid">
-          {movies.map((movie) => (
+        <div className="series-grid">
+          {movieList.map((movie) => (
             <div
               key={movie.id}
-              className="movie-card"
-              onClick={() => openTrailerModal(movie)}
+              className="series-card"
+              onClick={() => openTrailerModal(movie, "movie")}
+              style={{ cursor: "pointer" }}
             >
               <img
-                className="movie-poster"
+                className="series-poster"
                 src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                 alt={movie.title}
               />
-              <div className="movie-info">
-                <h3 className="movie-title">{movie.title}</h3>
-                <p className="movie-overview">{movie.overview.slice(0, 1000)}...</p>
+              <div className="series-info">
+                <h3 className="series-title">{movie.title}</h3>
               </div>
             </div>
           ))}
@@ -105,9 +155,11 @@ function Movies() {
       <TrailerModal
         isOpen={modalOpen}
         trailerUrl={trailerUrl}
+        modalContent={modalContent}
         onClose={() => {
           setModalOpen(false);
           setTrailerUrl(null);
+          setModalContent({ name: "", overview: "", genres: [], actors: [] });
         }}
       />
     </div>
