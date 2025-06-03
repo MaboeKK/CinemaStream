@@ -41,7 +41,11 @@ export default function LandingPage() {
     <div className="landing-page">
       {/* Navigation */}
       <nav className="navbar">
-        <h1 className="logo">CinemaStream</h1>
+        {/* Logo on the left */}
+      <div className="navbar-logo">
+        <span className="highlight">Cinema</span>Stream
+      </div>
+
         <ul className="nav-links">
           <li><Link to="/login">Sign In</Link></li>
           <li><Link to="/register">Register</Link></li>
