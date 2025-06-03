@@ -5,8 +5,9 @@ import Login from './pages/LoginPage/Login';
 import Register from './pages/RegisterPage/Register';
 import VerifyOtp from './pages/VerifyOtpPage/VerifyOtp';
 import LandingPage from './pages/LandingPage/LandingPage';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword'; 
+import ForgotPassword from './pages/ForgotPasswordPage/ForgotPassword';
+import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
+
 
 
 function App() {
