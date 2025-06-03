@@ -16,7 +16,12 @@ const VerifyOtp = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/api/auth/verify-otp', { email, otp });
+      const response = await axios.post(
+  '/api/auth/verify-otp',
+  { email, otp },
+  { withCredentials: true }
+);
+
       const { status, message } = response.data;
 
       if (status === "SUCCESS") {
