@@ -12,37 +12,27 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordMatch, setPasswordMatch] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setPasswordMatch(e.target.value === confirmPassword);
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    setPasswordMatch(password === e.target.value);
-  };
+  const passwordsMatch = password === confirmPassword;
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!passwordMatch) {
-      alert('Passwords do not match');
+    if (!passwordsMatch) {
+      setErrorMessage('Passwords do not match');
       return;
     }
 
     try {
-      const response = await axios.post("http://45.220.164.64:5000/api/auth/signup", {
-        first_name,
-        last_name,
-        email,
-        password
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/signup`,
+        { first_name, last_name, email, password }
+      );
 
       const { status, message } = response.data;
 
@@ -50,10 +40,12 @@ const Register = () => {
         alert(message);
         navigate('/verify-otp', { state: { email } });
       } else {
-        alert(message || 'Registration failed');
+        setErrorMessage(message || 'Registration failed');
       }
     } catch (err) {
-      alert('Registration failed: ' + (err.response?.data?.message || err.message));
+      setErrorMessage(
+        err.response?.data?.message || 'Registration failed: ' + err.message
+      );
     }
   };
 
@@ -102,7 +94,7 @@ const Register = () => {
               placeholder="Password"
               required
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <FaLock className="icon" />
             <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
@@ -116,7 +108,7 @@ const Register = () => {
               placeholder="Confirm Password"
               required
               value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <FaLock className="icon" />
             <span className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
@@ -125,15 +117,31 @@ const Register = () => {
           </div>
 
           {confirmPassword && (
-            <p style={{ color: passwordMatch ? 'green' : 'red', marginBottom: '10px', fontSize: '0.9rem' }}>
-              {passwordMatch ? 'Passwords match' : 'Passwords do not match'}
+            <p
+              style={{
+                color: passwordsMatch ? 'green' : 'red',
+                marginBottom: '10px',
+                fontSize: '0.9rem',
+              }}
+            >
+              {passwordsMatch ? 'Passwords match' : 'Passwords do not match'}
             </p>
           )}
 
-          <button type="submit" disabled={!passwordMatch}>Register</button>
+          {errorMessage && (
+            <p style={{ color: 'red', fontSize: '0.9rem', marginBottom: '10px' }}>
+              {errorMessage}
+            </p>
+          )}
+
+          <button type="submit" disabled={!passwordsMatch}>
+            Register
+          </button>
 
           <div className="register-link">
-            <p>Already have an account? <Link to="/login">Login</Link></p>
+            <p>
+              Already have an account? <Link to="/login">Login</Link>
+            </p>
           </div>
         </form>
       </div>
