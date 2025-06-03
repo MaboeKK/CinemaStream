@@ -4,7 +4,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('/LoginPage/2063950.jpg') no-repeat center center fixed;
+  /* background: url('/LoginPage/2063950.jpg') no-repeat center center fixed; */
   background-size: cover;
   font-family: Arial, sans-serif;
 }
