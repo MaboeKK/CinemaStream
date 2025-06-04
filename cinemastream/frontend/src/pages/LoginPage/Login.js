@@ -6,31 +6,35 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  //const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false); // <-- New state
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('/api/auth/login', { email, password });
-      const { status, message, data } = response.data;
-  
-      if (status === "SUCCESS") {
-        alert(message || 'Login successful');
-        // Store email in localStorage if rememberMe is checked
-        if (rememberMe) localStorage.setItem("rememberedEmail", email);
-        // navigate('/dashboard'); // uncomment when dashboard is ready
-      } else if (message === "Email not verified") {
-        alert("Please verify your email before logging in.");
-      } else {
-        alert(message || 'Login failed');
-      }
-    } catch (err) {
-      alert('Login failed: ' + (err.response?.data?.message || err.message));
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post("/api/auth/login",
+      { email, password },
+      { withCredentials: true } // <-- this is critical
+    );
+    const { status, message, data } = response.data;
+
+    if (status === "SUCCESS") {
+      alert(message || 'Login successful');
+      if (rememberMe) localStorage.setItem("rememberedEmail", email);
+      // navigate('/dashboard');
+    } else if (message === "Email not verified") {
+      alert("Please verify your email before logging in.");
+    } else {
+      alert(message || 'Login failed');
     }
-  };
+  } catch (err) {
+    alert('Login failed: ' + (err.response?.data?.message || err.message));
+  }
+};
+
 
   return (
     <div className="wrapper">

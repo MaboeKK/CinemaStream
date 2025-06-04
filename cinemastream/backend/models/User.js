@@ -46,6 +46,23 @@ const getUserByEmailAndResetToken = async (email, resetToken) => {
   return result.rows[0];
 };
 
+//Marks user as verified in the db
+const markUserAsVerified = async (userId) => {
+  await pool.query(
+    'UPDATE users SET is_verified = true, verification_token = NULL, otp_expiry = NULL WHERE user_id = $1',
+    [userId]
+  );
+};
+
+//Get User Info By Id
+const getBasicUserInfoById = async (userId) => {
+  const result = await pool.query(
+    'SELECT first_name, last_name, email FROM users WHERE user_id = $1',
+    [userId]
+  );
+  return result.rows[0];
+};
+
 
 module.exports = {
   createUser,
@@ -54,5 +71,7 @@ module.exports = {
   clearResetToken,
   getUserByResetToken,
   saveResetToken,
-  getUserByEmailAndResetToken
+  getUserByEmailAndResetToken,
+  markUserAsVerified,
+  getBasicUserInfoById
 };
