@@ -6,7 +6,7 @@ try {
   require('./config/db');
 } catch (err) {
   console.error('❌ Failed to connect to DB:', err);
-  process.exit(1); // 🛑 Exit if DB connection fails
+  process.exit(1);
 }
 
 const express = require('express');
@@ -18,7 +18,7 @@ const port = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*', // 🔒 Use explicit origin in production
+  origin: process.env.CORS_ORIGIN || '*',
   credentials: true
 }));
 app.use(express.json());
