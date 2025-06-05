@@ -50,6 +50,7 @@ const Register = () => {
   };
 
   return (
+     <div className="auth-page">
     <div className="wrapper">
       <div className="form-box">
         <form onSubmit={handleRegister}>
@@ -145,6 +146,7 @@ const Register = () => {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };
