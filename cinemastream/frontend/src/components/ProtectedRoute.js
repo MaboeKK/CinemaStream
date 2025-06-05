@@ -1,54 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+//src/components/ProtectedRoute.js
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import useAuthCheck from '../hooks/useAuthCheck';
 import { toast } from 'react-toastify';
 
 const ProtectedRoute = ({ children }) => {
-  const location = useLocation();
-  const [authStatus, setAuthStatus] = useState('loading'); // 'loading', 'authenticated', 'unauthenticated', 'unverified'
+  const status = useAuthCheck();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await axios.get('/api/auth/check-auth', {
-          withCredentials: true,
-          headers: {
-            'x-csrf-token': getCookie('csrf_token'),
-          },
-        });
+  if (status === 'loading') return <p>Loading...</p>; // Or a spinner
 
-        if (res.data.user?.verified) {
-          setAuthStatus('authenticated');
-        } else {
-          setAuthStatus('unverified');
-          toast.warn('Please verify your email to continue.');
-        }
-      } catch (err) {
-        console.error(err);
-        toast.error('Unauthorized access. Please log in.');
-        setAuthStatus('unauthenticated');
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  const getCookie = (name) => {
-    const cookie = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith(name + '='));
-    return cookie?.split('=')[1];
-  };
-
-  if (authStatus === 'loading') return <p>Loading...</p>;
-
-  if (authStatus === 'unauthenticated')
-    return <Navigate to="/login" state={{ from: location }} replace />;
-
-  if (authStatus === 'unverified')
-    return <Navigate to="/verify-otp" state={{ from: location }} replace />;
+  if (status === 'unauthenticated') {
+    toast.warning("Please log in first.");
+    return <Navigate to="/login" replace />;
+  }
 
   return children;
 };
 
 export default ProtectedRoute;
+
