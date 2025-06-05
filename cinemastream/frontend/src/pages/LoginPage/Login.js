@@ -12,28 +12,30 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false); // <-- New state
   const navigate = useNavigate();
 
- const handleLogin = async (e) => {
+const handleLogin = async (e) => {
   e.preventDefault();
   try {
     const response = await axios.post(`/api/auth/login`,
-      { email, password },
-      { withCredentials: true } // <-- this is critical
+      { email, password, rememberMe },
+      { withCredentials: true }
     );
     const { status, message, data } = response.data;
 
     if (status === "SUCCESS") {
-      alert(message || 'Login successful');
+      toast.success(message || 'Login successful');
       if (rememberMe) localStorage.setItem("rememberedEmail", email);
-      navigate('/');
-    } else if (message === "Email not verified") {
-      alert("Please verify your email before logging in.");
+      navigate('/'); // Redirect to home
+    } else if (message === "Please verify your email to login") {
+      toast.warn("Please verify your email.");
+      navigate('/verify-otp');
     } else {
-      alert(message || 'Login failed');
+      toast.error(message || 'Login failed');
     }
   } catch (err) {
-    alert('Login failed: ' + (err.response?.data?.message || err.message));
+    toast.error(err.response?.data?.message || err.message);
   }
 };
+
 
 
   return (
