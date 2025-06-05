@@ -15,7 +15,7 @@ const Login = () => {
  const handleLogin = async (e) => {
   e.preventDefault();
   try {
-    const response = await axios.post("http://45.220.164.64:5000/api/auth/login",
+    const response = await axios.post(`/api/auth/login`,
       { email, password },
       { withCredentials: true } // <-- this is critical
     );
@@ -24,7 +24,7 @@ const Login = () => {
     if (status === "SUCCESS") {
       alert(message || 'Login successful');
       if (rememberMe) localStorage.setItem("rememberedEmail", email);
-      // navigate('/dashboard');
+      navigate('/');
     } else if (message === "Email not verified") {
       alert("Please verify your email before logging in.");
     } else {
