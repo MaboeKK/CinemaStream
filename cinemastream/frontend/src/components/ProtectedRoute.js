@@ -5,20 +5,20 @@ import useAuthCheck from '../hooks/useAuthCheck';
 import { toast } from 'react-toastify';
 
 const ProtectedRoute = ({ children }) => {
-  const status = useAuthCheck();
-  const hasToasted = useRef(false);
+  const [isAuth, setIsAuth] = useState(null);
+  const navigate = useNavigate();
 
-  if (status === 'loading') return <p>Loading...</p>;
+  useEffect(() => {
+    axios.get(`/api/auth/check-auth`, { withCredentials: true })
+      .then(() => setIsAuth(true))
+      .catch(() => {
+        toast.error("Please login first");
+        setIsAuth(false);
+        navigate('/login');
+      });
+  }, []);
 
-  if (status === 'unauthenticated') {
-    if (!hasToasted.current) {
-      toast.warning("Please login first");
-      hasToasted.current = true;
-    }
-    return <Navigate to="/login" replace />;
-  }
-
+  if (isAuth === null) return <div>Loading...</div>;
+  if (!isAuth) return null;
   return children;
 };
-
-export default ProtectedRoute;

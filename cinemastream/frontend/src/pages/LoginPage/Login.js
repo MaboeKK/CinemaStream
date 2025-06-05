@@ -26,7 +26,7 @@ const handleLogin = async (e) => {
   toast.success(message || 'Login successful');
   if (rememberMe) localStorage.setItem("rememberedEmail", email);
   setTimeout(() => {
-    navigate('/home');
+    navigate('/');
   }, 500); // wait 0.5s for cookies to sync
 }
  else if (message === "Please verify your email to login") {
