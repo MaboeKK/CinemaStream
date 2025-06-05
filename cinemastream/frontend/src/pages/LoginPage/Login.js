@@ -37,6 +37,7 @@ const Login = () => {
 
 
   return (
+     <div className="auth-page">
     <div className="wrapper">
       <div className="form-box">
         <form onSubmit={handleLogin}>
@@ -83,6 +84,7 @@ const Login = () => {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };

@@ -36,6 +36,7 @@ const VerifyOtp = () => {
   };
 
   return (
+    <div className="auth-page">
     <div className="wrapper">
       <div className="form-box">
         <form onSubmit={handleOtpVerification}>
@@ -66,6 +67,7 @@ const VerifyOtp = () => {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };
