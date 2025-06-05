@@ -23,10 +23,13 @@ const handleLogin = async (e) => {
     const { status, message, data } = response.data;
 
     if (status === "SUCCESS") {
-      toast.success(message || 'Login successful');
-      if (rememberMe) localStorage.setItem("rememberedEmail", email);
-      navigate('/'); // Redirect to home
-    } else if (message === "Please verify your email to login") {
+  toast.success(message || 'Login successful');
+  if (rememberMe) localStorage.setItem("rememberedEmail", email);
+  setTimeout(() => {
+    navigate('/');
+  }, 500); // wait 0.5s for cookies to sync
+}
+ else if (message === "Please verify your email to login") {
       toast.warn("Please verify your email.");
       navigate('/verify-otp');
     } else {
