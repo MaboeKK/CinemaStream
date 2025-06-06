@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/api/auth/check-auth`, { withCredentials: true })
+    axios.get('/api/auth/check-auth', { withCredentials: true })
       .then(() => setIsAuth(true))
       .catch(() => {
         toast.error("Please login first");

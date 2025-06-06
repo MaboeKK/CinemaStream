@@ -10,7 +10,7 @@ export default function useAuthCheck() {
 
     // Delay slightly to allow cookies to be set
     const timer = setTimeout(() => {
-      axios.get(`/api/auth/check-auth`, {
+      axios.get('/api/auth/check-auth', {
         withCredentials: true,
       })
       .then(() => isMounted && setStatus('authenticated'))
