@@ -10,9 +10,6 @@ function MovieCard({ movie, onClick }) {
           src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
           alt={movie.title || movie.name}
         />
-        <div className="movie-overview">
-          <p>{movie.overview}</p>
-        </div>
       </div>
       <h3 className="movie-title">{movie.title || movie.name}</h3>
     </div>

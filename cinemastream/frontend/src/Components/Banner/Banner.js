@@ -14,7 +14,7 @@ function Banner({ onPlayTrailer }) {
     loadMovies();
   }, []);
 
-  // Advance slide every 5 seconds (optional)
+  // Advance slide every 5 seconds 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) =>
