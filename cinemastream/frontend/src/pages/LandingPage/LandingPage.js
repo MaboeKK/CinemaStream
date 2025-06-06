@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 import { fetchPopularSeries, fetchPopularMovies } from "../../api/tmdb";
 import "./LandingPage.css";
 
 export default function LandingPage() {
   const [popularMovies, setPopularMovies] = useState([]);
   const [popularSeries, setPopularSeries] = useState([]);
+  const navigate = useNavigate();
 
   // Fetch popular movies
   useEffect(() => {
@@ -42,13 +45,17 @@ export default function LandingPage() {
       {/* Navigation */}
       <nav className="navbar">
         {/* Logo on the left */}
-      <div className="navbar-logo">
-        <span className="highlight">Cinema</span>Stream
-      </div>
+        <div className="navbar-logo">
+          <span className="highlight">Cinema</span>Stream
+        </div>
 
         <ul className="nav-links">
-          <li><Link to="/login">Sign In</Link></li>
-          <li><Link to="/register">Register</Link></li>
+          <li>
+            <Link to="/login">Sign In</Link>
+          </li>
+          <li>
+            <Link to="/register">Register</Link>
+          </li>
         </ul>
       </nav>
 
@@ -60,7 +67,9 @@ export default function LandingPage() {
           <p>Ready to enjoy? Click register and join us now.</p>
           <ul className="main-link">
             <li>
-              <a href="/register" className="active">GET STARTED</a>
+              <a href="/register" className="active">
+                GET STARTED
+              </a>
             </li>
           </ul>
         </div>
@@ -77,6 +86,12 @@ export default function LandingPage() {
               <div className="movie-info">
                 <h3>{movie.title}</h3>
                 <p>{movie.overview}</p>
+                <button
+                  className="watch-trailer-button"
+                  onClick={() => navigate("/register")}
+                >
+                  Watch Trailer
+                </button>
               </div>
             </div>
           ))}
@@ -94,6 +109,12 @@ export default function LandingPage() {
               <div className="movie-info">
                 <h3>{series.name || series.title}</h3>
                 <p>{series.overview}</p>
+                <button
+                  className="watch-trailer-button"
+                  onClick={() => navigate("/register")}
+                >
+                  Watch Trailer
+                </button>
               </div>
             </div>
           ))}
