@@ -13,7 +13,7 @@ import Series from './pages/SeriesPage/Series';
 import ForgotPassword from './pages/ForgotPasswordPage/ForgotPassword';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 
-import ProtectedRoute from './components/ProtectedRoute';
+// import ProtectedRoute from './components/ProtectedRoute';
 
 
 function App() {
