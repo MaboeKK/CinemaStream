@@ -14,18 +14,22 @@ import ForgotPassword from './pages/ForgotPasswordPage/ForgotPassword';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 
 import ProtectedRoute from './components/ProtectedRoute';
-<Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+
 
 function App() {
   return (
     <Router>
       {/* Toasts for errors, success messages, etc */}
-      <ToastContainer position="top-right" autoClose={3000} />
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
 
       <Routes>
-        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        {/* <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/Movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
-        <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} />
+        <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} /> */}
+
+        <Route path="/" element={<Home />} />
+        <Route path="/Movies" element={<Movies />} />
+        <Route path="/Series" element={<Series />} />
         
         <Route path="/LandingPage" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
