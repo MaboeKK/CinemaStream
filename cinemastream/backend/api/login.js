@@ -5,8 +5,9 @@ const pool = require('../config/db');
 const crypto = require('crypto'); // add at the top if not imported
 const authLimiter = require('../middleware/rateLimiter');
 const jwt = require('jsonwebtoken');
+const csrfProtection = require('../middleware/csrfProtection')
 
-router.post('/login', authLimiter, async (req, res) => {
+router.post('/login',csrfProtection, authLimiter, async (req, res) => {
   try {
     let { email, password } = req.body;
     email = email.trim();

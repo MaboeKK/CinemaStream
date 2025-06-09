@@ -1,24 +1,31 @@
 // src/components/ProtectedRoute.js
-import React, { useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import useAuthCheck from '../hooks/useAuthCheck';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const ProtectedRoute = ({ children }) => {
   const [isAuth, setIsAuth] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/api/auth/check-auth', { withCredentials: true })
-      .then(() => setIsAuth(true))
-      .catch(() => {
-        toast.error("Please login first");
+    const checkAuth = async () => {
+      try {
+        await axios.get('/api/auth/check-auth', {
+          withCredentials: true,
+        });
+        setIsAuth(true);
+      } catch (error) {
         setIsAuth(false);
-        navigate('/login');
-      });
+        toast.error("Please login first");
+      }
+    };
+
+    checkAuth();
   }, []);
 
   if (isAuth === null) return <div>Loading...</div>;
-  if (!isAuth) return null;
+  if (!isAuth) return <Navigate to="/login" replace />;
   return children;
 };
+
+export default ProtectedRoute;
