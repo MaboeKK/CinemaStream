@@ -12,14 +12,12 @@ function Navbar() {
         <span className="highlight">Cinema</span>Stream
       </div>
 
-      
-
       {/* Navigation links on the right */}
       <div className="navbar-items">
         <Link to="/" className="navbar-item">Home</Link>
         <Link to="/movies" className="navbar-item">Movies</Link>
         <Link to="/series" className="navbar-item">Series</Link>
-        <Link to="/mylist" className="navbar-item">LogOut</Link>
+       
       </div>
     </nav>
   );
