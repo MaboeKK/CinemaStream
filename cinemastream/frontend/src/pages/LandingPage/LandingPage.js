@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-
 import { fetchPopularSeries, fetchPopularMovies } from "../../api/tmdb";
+import Register from "../RegisterPage/Register";
+import Login from "../LoginPage/Login";
 import "./LandingPage.css";
 
 export default function LandingPage() {
+  // State to store fetched popular movies
   const [popularMovies, setPopularMovies] = useState([]);
+  // State to store fetched popular TV series
   const [popularSeries, setPopularSeries] = useState([]);
-  const navigate = useNavigate();
+  // State to toggle visibility of modals
+  const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
-  // Fetch popular movies
+  // Fetch popular movies from the TMDB API on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
         const movieData = await fetchPopularMovies();
         if (movieData.length > 0) {
-          setPopularMovies(movieData.slice(0, 5));
+          // Show only the top 4 movies
+          setPopularMovies(movieData.slice(0, 4));
         }
       } catch (error) {
         console.error("Error fetching popular movies:", error);
@@ -25,13 +30,14 @@ export default function LandingPage() {
     fetchData();
   }, []);
 
-  // Fetch popular series
+  // Fetch popular series from the TMDB API on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
         const seriesData = await fetchPopularSeries();
         if (seriesData.length > 0) {
-          setPopularSeries(seriesData.slice(0, 5));
+          // Show only the top 4 series
+          setPopularSeries(seriesData.slice(0, 4));
         }
       } catch (error) {
         console.error("Error fetching popular series:", error);
@@ -40,41 +46,69 @@ export default function LandingPage() {
     fetchData();
   }, []);
 
+  // Helper to close all modals at once
+  const closeAllModals = () => {
+    setShowRegister(false);
+    setShowLogin(false);
+    setShowForgotPassword(false);
+  };
+
+  // Open login modal
+  const openLoginModal = () => {
+    closeAllModals();
+    setShowLogin(true);
+  };
+
+  // Open register modal
+  const openRegisterModal = () => {
+    closeAllModals();
+    setShowRegister(true);
+  };
+
+  // Open forgot password modal
+  const openForgotPasswordModal = () => {
+    closeAllModals();
+    setShowForgotPassword(true);
+  };
+
   return (
     <div className="landing-page">
-      {/* Navigation */}
+      {/* Navigation Bar */}
       <nav className="navbar">
-        {/* Logo on the left */}
         <div className="navbar-logo">
           <span className="highlight">Cinema</span>Stream
         </div>
-
         <ul className="nav-links">
           <li>
-            <Link to="/login">Sign In</Link>
+            <button className="active" onClick={openLoginModal}>
+              Sign In
+            </button>
           </li>
           <li>
-            <Link to="/register">Register</Link>
+            <button className="active" onClick={openRegisterModal}>
+              Register
+            </button>
           </li>
         </ul>
       </nav>
 
-      {/* Getting-started Content */}
+      {/* Main Content Area */}
       <main className="main-content">
+        {/* Hero Section */}
         <div className="getting-started">
           <h2>Get access to the best movies and TV shows</h2>
           <p>Stream your favourite shows to your heart's content.</p>
           <p>Ready to enjoy? Click register and join us now.</p>
           <ul className="main-link">
             <li>
-              <a href="/register" className="active">
+              <button className="active" onClick={openRegisterModal}>
                 GET STARTED
-              </a>
+              </button>
             </li>
           </ul>
         </div>
 
-        {/* Popular Movies */}
+        {/* Popular Movies Section */}
         <h2>Popular Movies</h2>
         <div className="movie-grid">
           {popularMovies.map((movie) => (
@@ -88,7 +122,7 @@ export default function LandingPage() {
                 <p>{movie.overview}</p>
                 <button
                   className="watch-trailer-button"
-                  onClick={() => navigate("/register")}
+                  onClick={openRegisterModal}
                 >
                   Watch Trailer
                 </button>
@@ -97,7 +131,7 @@ export default function LandingPage() {
           ))}
         </div>
 
-        {/* Popular Series */}
+        {/* Popular Series Section */}
         <h2>Popular Series</h2>
         <div className="movie-grid">
           {popularSeries.map((series) => (
@@ -111,7 +145,7 @@ export default function LandingPage() {
                 <p>{series.overview}</p>
                 <button
                   className="watch-trailer-button"
-                  onClick={() => navigate("/register")}
+                  onClick={openRegisterModal}
                 >
                   Watch Trailer
                 </button>
@@ -120,6 +154,76 @@ export default function LandingPage() {
           ))}
         </div>
       </main>
+
+      {/* Register Modal */}
+      {showRegister && (
+        <div className="modal-backdrop">
+          <div className="modal-content">
+            <button onClick={closeAllModals} className="close-btn">
+              &times;
+            </button>
+            <Register
+              closeModal={closeAllModals}
+              openLoginModal={openLoginModal}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Login Modal */}
+      {showLogin && (
+        <div className="modal-backdrop">
+          <div className="modal-content">
+            <button onClick={closeAllModals} className="close-btn">
+              &times;
+            </button>
+            <Login
+              closeModal={closeAllModals}
+              openRegisterModal={openRegisterModal}
+              openForgotPasswordModal={openForgotPasswordModal}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Forgot Password Modal */}
+      {showForgotPassword && (
+        <div className="modal-backdrop">
+          <div className="modal-content">
+            <button onClick={closeAllModals} className="close-btn">
+              &times;
+            </button>
+            {/* Forgot Password Form (temporary inline version) */}
+            <div className="wrapper">
+              <div className="form-box">
+                <h1>Forgot Password</h1>
+                <p>
+                  Enter your email address and we'll send you a link to reset your
+                  password.
+                </p>
+                <form>
+                  <div className="input-box">
+                    <input type="email" placeholder="Email" required />
+                  </div>
+                  <button type="submit">Send Reset Link</button>
+                </form>
+                <div className="register-link">
+                  <p>
+                    Remember your password?{" "}
+                    <span
+                      className="link"
+                      style={{ color: "blue", cursor: "pointer" }}
+                      onClick={openLoginModal}
+                    >
+                      Sign In
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="footer">
