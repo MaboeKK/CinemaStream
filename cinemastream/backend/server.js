@@ -37,6 +37,10 @@ app.use('/api/auth', require('./api/checkAuth'));
 app.use('/api/auth', require('./api/refreshToken'));
 app.use('/api/protected', require('./api/protectedRoutes'));
 
+app.use('/api/auth', require('./api/csrfToken'));
+
+
+
 // Health check route (optional)
 app.get('/health', (_, res) => res.send('OK'));
 
