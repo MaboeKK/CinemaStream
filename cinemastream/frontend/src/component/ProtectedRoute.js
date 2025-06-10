@@ -1,7 +1,5 @@
-// src/components/ProtectedRoute.js
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const ProtectedRoute = ({ children }) => {
