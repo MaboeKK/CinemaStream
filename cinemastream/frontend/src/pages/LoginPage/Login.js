@@ -6,8 +6,16 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify'
 
+const getCsrfToken = async () => {
+  try {
+    const response = await axios.get('/api/auth/csrf-token', {withCredentials: true});
+    return response.data.csrfToken;
+  } catch (error) {
+    console.error('Error fetching CSRF Token:', error);
+  }
+};
+
 const Login = () => {
-  //const [email, setEmail] = useState('');
   const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false); // <-- New state
@@ -16,17 +24,20 @@ const Login = () => {
 const handleLogin = async (e) => {
   e.preventDefault();
   try {
-    const response = await axios.post(`/api/auth/login`,
+    const csrfToken = await getCsrfToken();
+    const response = await axios.post('/api/auth/login',
       { email, password, rememberMe },
-      { withCredentials: true }
+      {headers: { 'X-CSRF-Token': csrfToken },
+      withCredentials: true }
     );
+
     const { status, message, data } = response.data;
 
     if (status === "SUCCESS") {
   toast.success(message || 'Login successful');
   if (rememberMe) localStorage.setItem("rememberedEmail", email);
   setTimeout(() => {
-    navigate('/Home');
+    navigate('/LandingPage');
   }, 500); // wait 0.5s for cookies to sync
 }
  else if (message === "Please verify your email to login") {
@@ -39,8 +50,6 @@ const handleLogin = async (e) => {
     toast.error(err.response?.data?.message || err.message);
   }
 };
-
-
 
   return (
      <div className="auth-page">
