@@ -4,7 +4,7 @@ const { findUserByEmail, saveResetToken } = require("../models/User");
 const { sendHTMLEmail } = require("../services/emailService");
 const authLimiter = require('../middleware/rateLimiter');
 
-router.post("/forgot-password", authLimiter, async (req, res) => {
+router.post("/forgot-password",csrfProtection, authLimiter, async (req, res) => {
   const { email } = req.body;
 
   try {

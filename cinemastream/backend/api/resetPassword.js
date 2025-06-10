@@ -8,7 +8,7 @@ const {
 } = require("../models/User");
 const authLimiter = require("../middleware/rateLimiter");
 
-router.post("/reset-password", authLimiter, async (req, res) => {
+router.post("/reset-password",csrfProtection, authLimiter, async (req, res) => {
   const { email, resetToken, newPassword } = req.body;
 
   try {
