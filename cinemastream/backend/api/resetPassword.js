@@ -7,6 +7,7 @@ const {
   clearResetToken,
 } = require("../models/User");
 const authLimiter = require("../middleware/rateLimiter");
+const csrfProtection = require('../middleware/csrfProtection')
 
 router.post("/reset-password",csrfProtection, authLimiter, async (req, res) => {
   const { email, resetToken, newPassword } = req.body;
