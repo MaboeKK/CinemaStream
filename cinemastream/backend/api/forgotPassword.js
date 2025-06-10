@@ -3,6 +3,7 @@ const router = express.Router();
 const { findUserByEmail, saveResetToken } = require("../models/User");
 const { sendHTMLEmail } = require("../services/emailService");
 const authLimiter = require('../middleware/rateLimiter');
+const csrfProtection = require('../middleware/csrfProtection')
 
 router.post("/forgot-password",csrfProtection, authLimiter, async (req, res) => {
   const { email } = req.body;

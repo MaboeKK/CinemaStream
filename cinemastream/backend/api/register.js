@@ -8,6 +8,7 @@ const { createUser } = require('../models/User');
 const authLimiter = require('../middleware/rateLimiter');
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+const csrfProtection = require('../middleware/csrfProtection')
 
 router.post('/register',csrfProtection, authLimiter, async (req, res) => {
     try {
