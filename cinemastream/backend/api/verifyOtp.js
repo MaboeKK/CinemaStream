@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const authLimiter = require('../middleware/rateLimiter');
 const { findUserByEmail, markUserAsVerified } = require('../models/User');
 
-router.post('/verify-otp', authLimiter, async (req, res) => {
+router.post('/verify-otp',csrfProtection, authLimiter, async (req, res) => {
     const { email, otp } = req.body;
 
     try {
