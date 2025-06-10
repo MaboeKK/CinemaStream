@@ -1,15 +1,12 @@
-// Import necessary modules and components
 import React, { useState } from 'react';
-import './Auth.css'; // Styles for the form
-import { MdEmail } from 'react-icons/md'; // Email icon
-import { FaLock, FaUser } from 'react-icons/fa'; // Lock and User icons
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'; // Eye icons for toggling password visibility
-import axios from 'axios'; // For HTTP requests
-import { useNavigate } from 'react-router-dom'; // To programmatically navigate between routes
+import './Auth.css';
+import { MdEmail } from 'react-icons/md';
+import { FaLock, FaUser } from 'react-icons/fa';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
-// Register component with props to close modal or open login modal
-const Register = ({ closeModal, openLoginModal }) => {
-  // State variables for user input and UI behavior
+const Register = () => {
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -19,14 +16,12 @@ const Register = ({ closeModal, openLoginModal }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const navigate = useNavigate(); // React Router hook for navigation
+  const navigate = useNavigate();
 
-  // Check if password and confirm password match
   const passwordsMatch = password === confirmPassword;
 
-  // Handle form submission
   const handleRegister = async (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
 
     if (!passwordsMatch) {
       setErrorMessage('Passwords do not match');
@@ -34,25 +29,20 @@ const Register = ({ closeModal, openLoginModal }) => {
     }
 
     try {
-      // Send POST request to backend registration endpoint
-      const response = await axios.post(`/api/auth/register`, {
-        first_name,
-        last_name,
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `/api/auth/register`,
+        { first_name, last_name, email, password }
+      );
 
       const { status, message } = response.data;
 
       if (status === 'SUCCESS') {
-        // If registration successful, show alert and navigate to OTP verification
         alert(message);
         navigate('/verify-otp', { state: { email } });
       } else {
         setErrorMessage(message || 'Registration failed');
       }
     } catch (err) {
-      // Handle server or network errors
       setErrorMessage(
         err.response?.data?.message || 'Registration failed: ' + err.message
       );
@@ -66,7 +56,6 @@ const Register = ({ closeModal, openLoginModal }) => {
         <form onSubmit={handleRegister}>
           <h1>Register</h1>
 
-          {/* First Name Input */}
           <div className="input-box">
             <input
               type="text"
@@ -78,7 +67,6 @@ const Register = ({ closeModal, openLoginModal }) => {
             <FaUser className="icon" />
           </div>
 
-          {/* Last Name Input */}
           <div className="input-box">
             <input
               type="text"
@@ -90,7 +78,6 @@ const Register = ({ closeModal, openLoginModal }) => {
             <FaUser className="icon" />
           </div>
 
-          {/* Email Input */}
           <div className="input-box">
             <input
               type="email"
@@ -102,7 +89,6 @@ const Register = ({ closeModal, openLoginModal }) => {
             <MdEmail className="icon" />
           </div>
 
-          {/* Password Input with Toggle Visibility */}
           <div className="input-box">
             <input
               type={showPassword ? 'text' : 'password'}
@@ -112,15 +98,11 @@ const Register = ({ closeModal, openLoginModal }) => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <FaLock className="icon" />
-            <span
-              className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
-            >
+            <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
             </span>
           </div>
 
-          {/* Confirm Password Input with Toggle Visibility */}
           <div className="input-box">
             <input
               type={showConfirmPassword ? 'text' : 'password'}
@@ -130,15 +112,11 @@ const Register = ({ closeModal, openLoginModal }) => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <FaLock className="icon" />
-            <span
-              className="toggle-password"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
+            <span className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
               {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
             </span>
           </div>
 
-          {/* Password Match Validation Message */}
           {confirmPassword && (
             <p
               style={{
@@ -151,35 +129,19 @@ const Register = ({ closeModal, openLoginModal }) => {
             </p>
           )}
 
-          {/* Error Message Display */}
           {errorMessage && (
-            <p
-              style={{
-                color: 'red',
-                fontSize: '0.9rem',
-                marginBottom: '10px',
-              }}
-            >
+            <p style={{ color: 'red', fontSize: '0.9rem', marginBottom: '10px' }}>
               {errorMessage}
             </p>
           )}
 
-          {/* Submit Button - disabled if passwords don't match */}
           <button type="submit" disabled={!passwordsMatch}>
             Register
           </button>
 
-          {/* Link to Sign In Modal */}
           <div className="register-link">
             <p>
-              Already have an account?{' '}
-              <span
-                className="link"
-                style={{ color: 'blue', cursor: 'pointer' }}
-                onClick={openLoginModal}
-              >
-                Sign In
-              </span>
+              Already have an account? <Link to="/login">Login</Link>
             </p>
           </div>
         </form>
