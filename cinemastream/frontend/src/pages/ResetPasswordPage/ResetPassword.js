@@ -3,14 +3,14 @@ import axios from "axios";
 import "./Auth.css"; // Same CSS as ForgotPassword
 import { Link, useNavigate } from "react-router-dom";
 
-const getCsrfToken = async () => {
-  try {
-    const response = await axios.get('/api/auth/csrf-token', {withCredentials: true});
-    return response.data.csrfToken;
-  } catch (error) {
-    console.error('Error fetching CSRF Token:', error);
-  }
-};
+// const getCsrfToken = async () => {
+//   try {
+//     const response = await axios.get('/api/auth/csrf-token', {withCredentials: true});
+//     return response.data.csrfToken;
+//   } catch (error) {
+//     console.error('Error fetching CSRF Token:', error);
+//   }
+// };
 
 const ResetPassword = () => {
   const [reset_token, setResetToken] = useState("");
@@ -35,13 +35,14 @@ const ResetPassword = () => {
 
     try {
       setLoading(true);
-    const csrfToken = await getCsrfToken();
+    //const csrfToken = await getCsrfToken();
       const res = await axios.post('/api/auth/reset-password', {
         email,
         resetToken: reset_token,  // sending as resetToken to match backend param
         newPassword},
-      {headers: { 'X-CSRF-Token': csrfToken },
-      withCredentials: true });
+      // {headers: { 'X-CSRF-Token': csrfToken },
+      // withCredentials: true }
+      );
 
       setMessage(res.data.message);
       localStorage.removeItem("resetEmail");

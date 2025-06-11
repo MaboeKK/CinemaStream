@@ -6,14 +6,14 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
-const getCsrfToken = async () => {
-  try {
-    const response = await axios.get('/api/auth/csrf-token', {withCredentials: true});
-    return response.data.csrfToken;
-  } catch (error) {
-    console.error('Error fetching CSRF Token:', error);
-  }
-};
+// const getCsrfToken = async () => {
+//   try {
+//     const response = await axios.get('/api/auth/csrf-token', {withCredentials: true});
+//     return response.data.csrfToken;
+//   } catch (error) {
+//     console.error('Error fetching CSRF Token:', error);
+//   }
+// };
 
 const Register = () => {
   const [first_name, setFirstName] = useState('');
@@ -42,8 +42,8 @@ const Register = () => {
       const response = await axios.post(
         '/api/auth/register',
         { first_name, last_name, email, password },
-      {headers: { 'X-CSRF-Token': csrfToken },
-      withCredentials: true }
+      // {headers: { 'X-CSRF-Token': csrfToken },
+      // withCredentials: true }
       );
 
       const { status, message } = response.data;
