@@ -1,0 +1,30 @@
+.datatable{
+    height: 600px;
+    padding: 30px;
+    cursor: pointer;
+
+    .status {
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 100px;
+  text-transform: uppercase;
+  display: inline-block;
+  border: 20px;
+
+  &.active {
+    background-color: #e6f4ea;
+    color: #2e7d32; /* dark green */
+    border: 20px;
+   
+  }
+
+  &.passive {
+    background-color: #fdecea;
+    color: #c62828; /* dark red */
+    border: 20px;
+    
+  }
+}
+
+
+}
