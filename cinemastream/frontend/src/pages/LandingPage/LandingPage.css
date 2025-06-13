@@ -128,7 +128,7 @@ ul {
 
 
 /* -------------------- Movie Grid -------------------- */
-.movie-grid {
+.landing-movie-grid {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -137,7 +137,7 @@ ul {
 }
 
 /* -------------------- Movie Card -------------------- */
-.movie-card {
+.landing-movie-card {
   position: relative;
   background-color: #1c1c1c;
   border-radius: 10px;
@@ -148,18 +148,18 @@ ul {
   cursor: pointer;
 }
 
-.movie-card:hover {
+.landing-movie-card:hover {
   transform: translateY(-10px);
 }
 
-.movie-card img {
+.landing-movie-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
 /* -------------------- Movie Info Overlay -------------------- */
-.movie-info {
+.landing-movie-info {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -175,16 +175,16 @@ ul {
   justify-content: flex-end;
 }
 
-.movie-card:hover .movie-info {
+.landing-movie-card:hover .landing-movie-info {
   opacity: 1;
 }
 
-.movie-info h3 {
+.landing-movie-info h3 {
   text-align: center;
   font-size: 1.1rem;
 }
 
-.movie-info p {
+.landing-movie-info p {
   font-size: 0.9rem;
   color: #ccc;
   max-height: 180px;
@@ -194,7 +194,7 @@ ul {
 }
 
 /* Hide scrollbar for text */
-.movie-info p::-webkit-scrollbar {
+.landing-movie-info p::-webkit-scrollbar {
   display: none;
 }
 

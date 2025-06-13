@@ -16,7 +16,7 @@ export default function LandingPage() {
       try {
         const movieData = await fetchPopularMovies();
         if (movieData.length > 0) {
-          setPopularMovies(movieData.slice(0, 5));
+          setPopularMovies(movieData.slice(0, 4));
         }
       } catch (error) {
         console.error("Error fetching popular movies:", error);
@@ -31,7 +31,7 @@ export default function LandingPage() {
       try {
         const seriesData = await fetchPopularSeries();
         if (seriesData.length > 0) {
-          setPopularSeries(seriesData.slice(0, 5));
+          setPopularSeries(seriesData.slice(0, 4));
         }
       } catch (error) {
         console.error("Error fetching popular series:", error);
@@ -76,14 +76,14 @@ export default function LandingPage() {
 
         {/* Popular Movies */}
         <h2>Popular Movies</h2>
-        <div className="movie-grid">
+        <div className="landing-movie-grid">
           {popularMovies.map((movie) => (
-            <div className="movie-card" key={movie.id}>
+            <div className="landing-movie-card" key={movie.id}>
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
               />
-              <div className="movie-info">
+              <div className="landing-movie-info">
                 <h3>{movie.title}</h3>
                 <p>{movie.overview}</p>
                 <button
@@ -99,14 +99,14 @@ export default function LandingPage() {
 
         {/* Popular Series */}
         <h2>Popular Series</h2>
-        <div className="movie-grid">
+        <div className="landing-movie-grid">
           {popularSeries.map((series) => (
-            <div className="movie-card" key={series.id}>
+            <div className="landing-movie-card" key={series.id}>
               <img
                 src={`https://image.tmdb.org/t/p/w500${series.poster_path}`}
                 alt={series.name || series.title}
               />
-              <div className="movie-info">
+              <div className="landing-movie-info">
                 <h3>{series.name || series.title}</h3>
                 <p>{series.overview}</p>
                 <button
