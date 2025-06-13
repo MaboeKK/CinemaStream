@@ -3,30 +3,25 @@ import { MdEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
-// Login component handles user authentication and modal navigation
 const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
-  // State to store email input. Pre-filled with remembered email if available.
-  const [email, setEmail] = useState(
-    () => localStorage.getItem("rememberedEmail") || ""
-  );
-
-  // State to store password input
+  const [email, setEmail] = useState(() => localStorage.getItem("rememberedEmail") || "");
   const [password, setPassword] = useState("");
-
-  // State to track "Remember me" checkbox
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false); // ✅ loading state
+  const navigate = useNavigate();
 
-  // Handle form submission and login logic
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true); // ✅ Start loading
+
     try {
-      // Send login request to the backend
       const response = await axios.post(
         "/api/auth/login",
         { email, password },
-        { withCredentials: true } // Include cookies for session handling
+        { withCredentials: true }
       );
 
       const { status, message } = response.data;
@@ -34,37 +29,34 @@ const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
       if (status === "SUCCESS") {
         toast.success(message || "Login successful");
 
-        // Save email locally if "Remember me" is checked
         if (rememberMe) {
           localStorage.setItem("rememberedEmail", email);
         }
 
-        // Close the modal and redirect to home page
-        closeModal();
-        setTimeout(() => {
-          window.location.href = "/home";
-        }, 500);
+        closeModal(); // Close popup modal
 
+        setTimeout(() => {
+          navigate("/home"); // ✅ Use navigate instead of window.location.href
+        }, 500);
       } else if (message === "Please verify your email to login") {
         toast.warn("Please verify your email.");
-        window.location.href = "/verify-otp";
+        navigate("/verify-otp");
       } else {
         toast.error(message || "Login failed");
       }
     } catch (err) {
       toast.error(err.response?.data?.message || err.message);
+    } finally {
+      setLoading(false); // ✅ End loading
     }
   };
 
-  // Handle "Forgot Password" link click
   const handleForgotPassword = (e) => {
     e.preventDefault();
     if (openForgotPasswordModal) {
-      // Open modal if function provided
       openForgotPasswordModal();
     } else {
-      // Fallback: navigate to forgot-password page
-      window.location.href = "/forgot-password";
+      navigate("/forgot-password");
     }
   };
 
@@ -75,7 +67,13 @@ const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
           <form onSubmit={handleLogin}>
             <h1>Login</h1>
 
-            {/* Email input field */}
+            {/* ✅ Show loading indicator */}
+            {loading && (
+              <p style={{ textAlign: "center", color: "gray", marginBottom: "10px" }}>
+                Please wait...
+              </p>
+            )}
+
             <div className="input-box">
               <input
                 type="email"
@@ -87,7 +85,6 @@ const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
               <MdEmail className="icon" />
             </div>
 
-            {/* Password input field */}
             <div className="input-box">
               <input
                 type="password"
@@ -99,7 +96,6 @@ const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
               <FaLock className="icon" />
             </div>
 
-            {/* Remember me checkbox and forgot password link */}
             <div className="remember-forgot">
               <label>
                 <input
@@ -109,28 +105,28 @@ const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
                 />
                 Remember me
               </label>
-              <span 
+              <span
                 onClick={handleForgotPassword}
-                style={{ 
-                  color: "#e50914", 
+                style={{
+                  color: "#e50914",
                   cursor: "pointer",
-                  textDecoration: "underline" 
+                  textDecoration: "underline",
                 }}
               >
                 Forgot Password?
               </span>
             </div>
 
-            {/* Submit login button */}
-            <button type="submit">Login</button>
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
 
-            {/* Link to open register modal */}
             <div className="register-link">
               <p>
                 Don't have an account?{" "}
                 <span
                   className="link"
-                  style={{ color: 'blue', cursor: 'pointer' }}
+                  style={{ color: "blue", cursor: "pointer" }}
                   onClick={openRegisterModal}
                 >
                   Register

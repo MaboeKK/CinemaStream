@@ -1,4 +1,3 @@
-// Import necessary modules and components
 import React, { useState } from 'react';
 import './Auth.css'; // Styles for the form
 import { MdEmail } from 'react-icons/md'; // Email icon
@@ -18,6 +17,7 @@ const Register = ({ closeModal, openLoginModal }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false); 
 
   const navigate = useNavigate(); // React Router hook for navigation
 
@@ -27,11 +27,16 @@ const Register = ({ closeModal, openLoginModal }) => {
   // Handle form submission
   const handleRegister = async (e) => {
     e.preventDefault(); // Prevent page reload
+    setLoading(true); // 
 
     if (!passwordsMatch) {
       setErrorMessage('Passwords do not match');
+      setLoading(false); 
       return;
     }
+
+    // Clear any previous error messages
+    setErrorMessage('');
 
     try {
       // Send POST request to backend registration endpoint
@@ -56,6 +61,8 @@ const Register = ({ closeModal, openLoginModal }) => {
       setErrorMessage(
         err.response?.data?.message || 'Registration failed: ' + err.message
       );
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -65,6 +72,13 @@ const Register = ({ closeModal, openLoginModal }) => {
         <form onSubmit={handleRegister}>
           <h1>Register</h1>
 
+          {/*  Show loading indicator */}
+          {loading && (
+            <p style={{ textAlign: "center", color: "gray", marginBottom: "10px" }}>
+              Please wait...
+            </p>
+          )}
+
           {/* First Name Input */}
           <div className="input-box">
             <input
@@ -73,6 +87,7 @@ const Register = ({ closeModal, openLoginModal }) => {
               required
               value={first_name}
               onChange={(e) => setFirstName(e.target.value)}
+              disabled={loading} 
             />
             <FaUser className="icon" />
           </div>
@@ -85,6 +100,7 @@ const Register = ({ closeModal, openLoginModal }) => {
               required
               value={last_name}
               onChange={(e) => setLastName(e.target.value)}
+              disabled={loading} 
             />
             <FaUser className="icon" />
           </div>
@@ -97,6 +113,7 @@ const Register = ({ closeModal, openLoginModal }) => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading} 
             />
             <MdEmail className="icon" />
           </div>
@@ -109,11 +126,13 @@ const Register = ({ closeModal, openLoginModal }) => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading} 
             />
             <FaLock className="icon" />
             <span
               className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => !loading && setShowPassword(!showPassword)} 
+              style={{ pointerEvents: loading ? 'none' : 'auto', opacity: loading ? 0.5 : 1 }}
             >
               {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
             </span>
@@ -127,18 +146,20 @@ const Register = ({ closeModal, openLoginModal }) => {
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={loading} 
             />
             <FaLock className="icon" />
             <span
               className="toggle-password"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              onClick={() => !loading && setShowConfirmPassword(!showConfirmPassword)} // ✅ Disable toggle during loading
+              style={{ pointerEvents: loading ? 'none' : 'auto', opacity: loading ? 0.5 : 1 }}
             >
               {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
             </span>
           </div>
 
           {/* Password Match Validation Message */}
-          {confirmPassword && (
+          {confirmPassword && !loading && (
             <p
               style={{
                 color: passwordsMatch ? 'green' : 'red',
@@ -163,9 +184,9 @@ const Register = ({ closeModal, openLoginModal }) => {
             </p>
           )}
 
-          {/* Submit Button - disabled if passwords don't match */}
-          <button type="submit" disabled={!passwordsMatch}>
-            Register
+          {/* Submit Button - disabled if passwords don't match or loading */}
+          <button type="submit" disabled={!passwordsMatch || loading}>
+            {loading ? "Registering..." : "Register"}
           </button>
 
           {/* Link to Sign In Modal */}
@@ -174,8 +195,12 @@ const Register = ({ closeModal, openLoginModal }) => {
               Already have an account?{' '}
               <span
                 className="link"
-                style={{ color: 'blue', cursor: 'pointer' }}
-                onClick={openLoginModal}
+                style={{ 
+                  color: loading ? 'gray' : 'blue', 
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  pointerEvents: loading ? 'none' : 'auto'
+                }}
+                onClick={() => !loading && openLoginModal()}
               >
                 Sign In
               </span>
