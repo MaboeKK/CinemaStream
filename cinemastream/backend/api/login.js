@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
-const crypto = require('crypto'); // add at the top if not imported
+const crypto = require('crypto');
 const authLimiter = require('../middleware/rateLimiter');
 const jwt = require('jsonwebtoken');
+
 
 router.post('/login', authLimiter, async (req, res) => {
   try {
@@ -67,8 +68,6 @@ router.post('/login', authLimiter, async (req, res) => {
       maxAge: refreshExpiry
     });
 
-
-
     // Inside successful login block:
     const csrfToken = crypto.randomUUID(); // generate CSRF token
 
@@ -78,7 +77,6 @@ router.post('/login', authLimiter, async (req, res) => {
       secure: true,
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     });
-
 
     // Send response
     res.json({

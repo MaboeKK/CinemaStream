@@ -9,6 +9,7 @@ const authLimiter = require('../middleware/rateLimiter');
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
+
 router.post('/register', authLimiter, async (req, res) => {
     try {
         let { first_name, last_name, email, password } = req.body;
