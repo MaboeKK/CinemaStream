@@ -17,10 +17,13 @@ a {
   color: inherit;
 }
 
+
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  color: #e0e0e0;
+  text-decoration: none;
 }
 
 /* -------------------- Layout Containers -------------------- */
@@ -38,9 +41,6 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%);
   pointer-events: none;
   z-index: -1;
 }
@@ -65,7 +65,7 @@ ul {
 
 .navbar-logo {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -77,13 +77,16 @@ ul {
 .nav-links {
   display: flex;
   gap: 0.5rem;
+  color: white;
+  text-decoration: none;
 }
 
-.nav-links button {
+
+.nav-links a {
   background: transparent;
   border: none;
   color: #fff;
-  padding: 0.75rem 1.2rem;
+  padding: 0.75rem 0.9rem;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -91,7 +94,7 @@ ul {
   border-radius: 0; 
 }
 
-.nav-links button:hover {
+.nav-links a:hover {
   color: red; 
 }
 
@@ -108,6 +111,7 @@ ul {
 .getting-started {
   text-align: center;
   margin-bottom: 3rem;
+  margin-top: 3rem;
 }
 
 .getting-started h2 {
@@ -125,29 +129,29 @@ ul {
   margin-top: 2rem;
 }
 
-.main-link button {
+.main-link a {
   background-color: #e50914;
+  border-radius: 4px;
   color: #fff;
-  border: none;
-  padding: 0.9rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 0; /* removes the round border */
+  display: inline-block;
+  padding: 10px 20px;
+  transition: background-color .3s ease;
+  text-decoration: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
-.main-link button:hover {
-  background-color: red; 
+.main-link a:hover {
+  background-color: darkred; 
   transform: translateY(-2px);
 }
 
 
 /* -------------------- Section Headers -------------------- */
 .main-content h2 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   text-align: center;
   background: linear-gradient(135deg, #ffffff, #e0e0e0);
   -webkit-background-clip: text;
@@ -165,7 +169,7 @@ ul {
   transform: translateX(-50%);
   width: 100px;
   height: 3px;
-  background: linear-gradient(135deg, #e50914, #ff4757);
+  background: red;
   border-radius: 2px;
 }
 
