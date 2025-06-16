@@ -1,30 +1,115 @@
-.datatable{
-    height: 600px;
-    padding: 30px;
-    cursor: pointer;
+// .datatable{
+//     height: 600px;
+//     padding: 30px;
+//     cursor: pointer;
 
-    .status {
-  padding: 4px 10px;
-  font-size: 10px;
-  font-weight: 100px;
-  text-transform: uppercase;
-  display: inline-block;
-  border: 20px;
+//     .status {
+//   padding: 4px 10px;
+//   font-size: 10px;
+//   font-weight: 100px;
+//   text-transform: uppercase;
+//   display: inline-block;
+//   border: 20px;
 
-  &.active {
-    background-color: #e6f4ea;
-    color: #2e7d32; /* dark green */
-    border: 20px;
+//   &.active {
+//     background-color: #e6f4ea;
+//     color: #2e7d32; /* dark green */
+//     border: 20px;
    
-  }
+//   }
 
-  &.passive {
-    background-color: #fdecea;
-    color: #c62828; /* dark red */
-    border: 20px;
+//   &.passive {
+//     background-color: #fdecea;
+//     color: #c62828; /* dark red */
+//     border: 20px;
     
+//   }
+// }
+
+
+// }
+.datatable {
+  height: 600px;
+  padding: 30px;
+  cursor: pointer;
+
+  .status {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+    border-radius: 999px;
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    min-width: 80px;   // Optional: fix min-width for uniformity
+    text-align: center;
+
+    &.active {
+      background-color: #d1f2e3;
+      color: #1e7f4c;
+      border-color: #a5d6c5;
+    }
+
+    &.passive {
+      background-color: #ffe3e3;
+      color: #c62828;
+      border-color: #f5baba;
+    }
+
+    &.pending {
+      background-color: #fff5d1;
+      color: #c38f00;
+      border-color: #f0d88b;
+    }
   }
-}
 
+  .action {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    height: 100%; 
+    padding-top: 2px;
 
+    .badge-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: capitalize;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 80px;  // Match status min-width
+      text-align: center;
+
+      &.view {
+        background-color: #fff8e1;
+        color: #c79200;
+        border-color: #ffe082;
+
+        &:hover {
+          background-color: #ffecb3;
+        }
+      }
+
+      &.delete {
+        background-color: #ffe3e3;
+        color: #c62828;
+        border-color: #ef9a9a;
+
+        &:hover {
+          background-color: #ffcdd2;
+        }
+      }
+    }
+  }
 }

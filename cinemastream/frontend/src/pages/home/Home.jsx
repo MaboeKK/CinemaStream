@@ -1,7 +1,7 @@
 
 import "./home.scss";
 import Sidebar from "../../Components/sidebar/Sidebar";
-import Navbar from "../../Components/navbar/Navbar";
+import Navbar from "../../Components/Navbar/Navbar";
 import Widget from "../../Components/widget/Widget";
 import Featured from "../../Components/Featured/Featured";
 import Chart from "../../Components/chart/Chart";
@@ -9,13 +9,13 @@ import Heatmap from "../../Components/Heatmap/Heatmap";
 
 const Home = () => {
     return (
-        <div className="home">
+        <div className="dashboard-home">
             <Sidebar />
-            <div className="homeContainer">
+            <div className="dashboard-homeContainer">
                 <Navbar />
                 <div className="widgets">
                     <Widget type="users" />
-                    <Widget type= "earnings"/> 
+                    <Widget type= "genres"/> 
                 </div>
                 <div className="charts">
                 <Featured/>

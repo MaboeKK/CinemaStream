@@ -1,47 +1,115 @@
-.widget{
+
+// .widget {
+//   display: flex;
+//   justify-content: space-between;
+//   flex: 2;
+//   padding: 1px;
+//   -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+//   box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+//   border-radius: 10px;
+//   height: 100px;
+
+//   .left,
+//   .right {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-between;
+
+//     .title {
+//       font-weight: bold;
+//       font-size: 14px;
+//     }
+
+//     .counter {
+//       font-size: 28px;
+//       font-weight: 300; // Fixed from 300px to 300
+//     }
+
+//     .genre-counter {
+//       font-size: 13px;
+//       font-weight: 400;
+//       color: #444;
+//       max-width: 200px;
+//       line-height: 1.3;
+//       word-break: break-word;
+//     }
+
+//     .link {
+//       width: max-content;
+//       font-size: 12px;
+//       border-bottom: 1px solid gray;
+//     }
+
+//     .percentage {
+//       display: flex;
+//       align-items: center;
+//       font-size: 14px;
+//     }
+
+//     .icon {
+//       font-size: 18px;
+//       padding: 5px;
+//       border-radius: 5px;
+//       align-self: flex-end;
+//     }
+//   }
+// }
+.widget {
+  display: flex;
+  justify-content: space-between;
+  flex: 2;
+  padding: 1px;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  border-radius: 10px;
+  height: 100px;
+
+  .left,
+  .right {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    flex: 2;
-    padding: 1px;
-    -webkit-box-shadow: 2px 4px 10px 1px rgba(0,0,0,0.47);
-    box-shadow: 2px 4px 10px 1px rgba(201,201,201,0.47);
-    border-radius: 10px;
-    height: 100px;
 
-    .left, .right{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-
-
-        .title{
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .counter{
-            font-size: 28px;
-            font-weight: 300px;
-            
-        }
-        .link{
-            width: max-content;
-            font-size: 12px;
-            border-bottom: 1px solid gray;
-        }
-        .percentage{
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-        }
-        .icon{
-            font-size: 18px;
-            padding: 5px;
-            border-radius: 5px;
-            align-self: flex-end;
-        }
+    .title {
+      font-weight: bold;
+      font-size: 20px;  
     }
+
+    .counter {
+      font-size: 36px;  
+      font-weight: 300; 
+    }
+
+    .genre-counter {
+      font-size: 13px;
+      font-weight: 400;
+      color: #444;
+      max-width: 200px;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    .link {
+      width: max-content;
+      font-size: 16px;
+      border-bottom: 1px solid gray;
+    }
+
+    .percentage {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .icon {
+      font-size: 18px;
+      padding: 5px;
+      border-radius: 5px;
+      align-self: flex-end;
+    }
+  }
 }
+
 
 
 

@@ -40,8 +40,9 @@ function App() {
             <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route path="/profile" element={<New />} />
           <Route path="/list" element={<List />} />
-          <Route path="/list/single" element={<Single />} />
+          <Route path="/single" element={<Single />} />
           <Route path="/product" element={<List />} />
+           <Route path="/users" element={<List />} />
           <Route path="/product/single" element={<Single />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

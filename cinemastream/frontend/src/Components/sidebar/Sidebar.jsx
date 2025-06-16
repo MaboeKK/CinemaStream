@@ -80,8 +80,8 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 const Sidebar = () => {
   return (
     <div className='sidebar'>
-      <div className="top">
-        <span className="logo">Admin Dashboard</span>
+      <div className="dashboard-top">
+        <span className="admin-logo">Admin Dashboard</span>
       </div>
       <hr />
       <div className="center">

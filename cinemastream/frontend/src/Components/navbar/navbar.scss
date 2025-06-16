@@ -1,55 +1,175 @@
 
-.navbar {
-    height: 50px;
-    border-bottom: 0.5px solid rgb(231, 233, 233); // corrected RGB
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: black;
+// .dashboard-navbar {
+//     height: 50px;
+//     border-bottom: 0.5px solid rgb(231, 233, 233); // corrected RGB
+//     display: flex;
+//     align-items: center;
+//     font-size: 14px;
+//     color: black;
     
   
-    .wrapper {
-      width: 100%;
-      padding: 0 20px; // horizontal padding only
+//     .dashboard-wrapper {
+//       width: 100%;
+//       padding: 0 20px; // horizontal padding only
+//       display: flex;
+//       align-items: center;
+//       justify-content: space-between;
+      
+//       .dashboard-header{
+//         display: flex;
+//         align-items: center;
+//         font-style: oblique;
+//         font-size: 25px;
+//         padding: 3px;
+
+//         input{
+//             border: none;
+//             outline: none;
+//             background-color: transparent;
+
+//             &::placeholder{
+//                 font-size: 12px;
+//             }
+//         }
+//       }
+  
+//       .dashboard-items {
+//         display: flex;
+//         // gap: 10px;// add spacing between items if needed
+//         align-items: center; 
+
+//         .dashboard-item{
+//             display: flex;
+//             align-items: center;
+//             margin-right: 20px;
+//         }
+//        .icon{
+//         font-size: 20px;
+//        }
+//        .icons{
+//         font-size: 40px;
+//        }
+//       }
+//     }
+//   }
+// .dashboard-navbar {
+//   height: 50px;
+//   border-bottom: 0.5px solid rgb(231, 233, 233);
+//   display: flex;
+//   align-items: center;
+//   font-size: 14px;
+//   color: black;
+
+//   .dashboard-wrapper {
+//     width: 100%;
+//     padding: 0 20px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between; // separates header from items
+//   }
+
+//   .dashboard-header {
+//     display: flex;
+//     align-items: center;
+//     font-style: oblique;
+//     font-size: 25px;
+//     padding: 3px;
+//     // Don't allow it to grow
+//     flex-shrink: 0;
+
+//     input {
+//       border: none;
+//       outline: none;
+//       background-color: transparent;
+
+//       &::placeholder {
+//         font-size: 12px;
+//       }
+//     }
+//   }
+
+//   .dashboard-items {
+//     display: flex;
+//     align-items: center;
+//     justify-content: flex-end;
+//     margin-left: auto; // 🟢 push this container to the far right
+//     gap: 15px;
+
+//     .dashboard-item {
+//       display: flex;
+//       align-items: center;
+//     }
+
+//     .icon {
+//       font-size: 20px;
+//     }
+
+//     .icons {
+//       font-size: 40px;
+//     }
+//   }
+// }
+.dashboard-navbar {
+  height: 50px;
+  border-bottom: 0.5px solid rgb(231, 233, 233);
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: black;
+
+  .dashboard-wrapper {
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dashboard-header {
+    display: flex;
+    align-items: center;
+    font-style: oblique;
+    font-size: 25px;
+    padding: 3px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .dashboard-items {
+    display: flex;
+    align-items: center;
+    margin-left: auto; // pushes this group to the right
+    gap: 20px;
+
+    .dashboard-item {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      
-      .header{
-        display: flex;
-        align-items: center;
-        font-style: oblique;
-        font-size: 25px;
-        padding: 3px;
+      gap: 8px;
 
-        input{
-            border: none;
-            outline: none;
-            background-color: transparent;
-
-            &::placeholder{
-                font-size: 12px;
-            }
-        }
-      }
-  
-      .items {
-        display: flex;
-        // gap: 10px;// add spacing between items if needed
-        align-items: center; 
-
-        .item{
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
-       .icon{
+      .icon {
         font-size: 20px;
-       }
-       .icons{
-        font-size: 40px;
-       }
+        cursor: pointer;
+        color: inherit;
+      }
+
+      .mode-label {
+        font-size: 12px;
+        color: #444;
+        user-select: none;
+      }
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+
+      .icons {
+        font-size: 30px;
+        cursor: pointer;
+        color: inherit;
       }
     }
   }
-  
+}

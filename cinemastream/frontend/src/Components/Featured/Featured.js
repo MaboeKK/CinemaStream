@@ -1,5 +1,5 @@
 import "./featured.scss"
-import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const data = [
   {
@@ -67,8 +67,8 @@ const Featured = () => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="pv" name="Movie" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
-          <Bar dataKey="uv" name="Series" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
+         <Bar dataKey="pv" name="Movie" fill="#8884d8" />
+         <Bar dataKey="uv" name="Series" fill="#82ca9d" />
         </BarChart>
       </ResponsiveContainer>
       </div>
