@@ -151,7 +151,7 @@ const Register = ({ closeModal, openLoginModal }) => {
             <FaLock className="icon" />
             <span
               className="toggle-password"
-              onClick={() => !loading && setShowConfirmPassword(!showConfirmPassword)} // ✅ Disable toggle during loading
+              onClick={() => !loading && setShowConfirmPassword(!showConfirmPassword)} //  Disable toggle during loading
               style={{ pointerEvents: loading ? 'none' : 'auto', opacity: loading ? 0.5 : 1 }}
             >
               {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}

@@ -10,12 +10,12 @@ const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
   const [email, setEmail] = useState(() => localStorage.getItem("rememberedEmail") || "");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [loading, setLoading] = useState(false); // ✅ loading state
+  const [loading, setLoading] = useState(false); // 
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true); // ✅ Start loading
+    setLoading(true); // 
 
     try {
       const response = await axios.post(
@@ -36,7 +36,7 @@ const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
         closeModal(); // Close popup modal
 
         setTimeout(() => {
-          navigate("/home"); // ✅ Use navigate instead of window.location.href
+          navigate("/home"); // 
         }, 500);
       } else if (message === "Please verify your email to login") {
         toast.warn("Please verify your email.");
@@ -47,7 +47,7 @@ const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
     } catch (err) {
       toast.error(err.response?.data?.message || err.message);
     } finally {
-      setLoading(false); // ✅ End loading
+      setLoading(false); // 
     }
   };
 
@@ -67,7 +67,7 @@ const Login = ({ closeModal, openRegisterModal, openForgotPasswordModal }) => {
           <form onSubmit={handleLogin}>
             <h1>Login</h1>
 
-            {/* ✅ Show loading indicator */}
+            {/*  Show loading indicator */}
             {loading && (
               <p style={{ textAlign: "center", color: "gray", marginBottom: "10px" }}>
                 Please wait...
