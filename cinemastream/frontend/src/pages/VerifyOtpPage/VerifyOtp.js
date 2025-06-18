@@ -4,15 +4,7 @@ import { MdEmail } from 'react-icons/md';
 import { FaLock } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-
-// const getCsrfToken = async () => {
-//   try {
-//     const response = await axios.get('/api/auth/csrf-token', {withCredentials: true});
-//     return response.data.csrfToken;
-//   } catch (error) {
-//     console.error('Error fetching CSRF Token:', error);
-//   }
-// };
+import getCsrfToken from '../../hooks/useCsrfToken';
 
 const VerifyOtp = () => {
   const location = useLocation();
@@ -25,13 +17,13 @@ const VerifyOtp = () => {
     e.preventDefault();
 
     try {
-     //const csrfToken = await getCsrfToken();
+     const csrfToken = await getCsrfToken();
       const response = await axios.post(
   '/api/auth/verify-otp',
   { email, otp }
-  // ,
-  //     {headers: { 'X-CSRF-Token': csrfToken },
-  //     withCredentials: true }
+   ,
+       {headers: { 'X-CSRF-Token': csrfToken },
+      withCredentials: true }
 );
 
       const { status, message } = response.data;

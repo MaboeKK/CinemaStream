@@ -5,9 +5,9 @@ const pool = require('../config/db');
 const crypto = require('crypto');
 const authLimiter = require('../middleware/rateLimiter');
 const jwt = require('jsonwebtoken');
+const { csrfProtection, regenerateCsrfToken } = require('../middleware/csrfProtection');
 
-
-router.post('/login', authLimiter, async (req, res) => {
+router.post('/login', authLimiter, csrfProtection, async (req, res) => {
   try {
     let { email, password } = req.body;
     email = email.trim();
@@ -78,6 +78,9 @@ router.post('/login', authLimiter, async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     });
 
+    //new
+ regenerateCsrfToken(req, res);
+
     // Send response
     res.json({
       status: "SUCCESS",
@@ -88,7 +91,7 @@ router.post('/login', authLimiter, async (req, res) => {
         email: user.email
       }
     });
-
+ 
   } catch (error) {
     console.error('Login error:', error);
     res.json({ status: "FAILED", message: "An error occurred during login" });
