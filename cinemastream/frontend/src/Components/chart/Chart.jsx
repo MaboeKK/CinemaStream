@@ -48,7 +48,7 @@ const data = [
 const Chart = () => {
   return (
     <div className="chart">
-      <h3 style={{ marginBottom: "10px" }}>Weekly View Trends</h3>
+      <h3 style={{ marginBottom: "10px" }}>Monthly User Growth</h3>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={data}

@@ -53,7 +53,7 @@ const Widget = ({ type }) => {
         title: "TOP GENRES",
         value: topGenres.join(", "),
         link: "Explore genres",
-        linkTo: "/single",
+        linkTo: "/stats",
         icon: (
           <MovieOutlinedIcon
             className="icon"

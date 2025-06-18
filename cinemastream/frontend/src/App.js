@@ -8,7 +8,7 @@ import VerifyOtp from './pages/VerifyOtpPage/VerifyOtp';
 import LandingPage from './pages/LandingPage/LandingPage';
 import Home from './pages/home/Home';
 import List from './pages/list/list';
-import Single from './pages/single/single';
+import Statistics from './pages/stats/stats';
 import New from './pages/new/new';
 import './style/dark.scss';
 import { DarkModeContext } from './context/darkModeContext';
@@ -40,7 +40,7 @@ function App() {
             <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route path="/profile" element={<New />} />
           <Route path="/list" element={<List />} />
-          <Route path="/single" element={<Single />} />
+          <Route path="/stats" element={<Statistics />} />
           <Route path="/product" element={<List />} />
            <Route path="/users" element={<List />} />
           <Route path="/product/single" element={<Single />} />

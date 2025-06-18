@@ -1,110 +1,4 @@
 
-// .datatable {
-//   height: 600px;
-//   padding: 30px;
-//   background-color: #1f1f1f;
-//   border-radius: 12px;
-//   font-family: inherit;
-
-//   .MuiDataGrid-root {
-//     background-color: #1f1f1f;
-//     color: #fff;
-//     border: none;
-//   }
-
-//   .MuiDataGrid-columnHeaders {
-//   background-color: #e50914 !important; // Netflix red
-//   color: #000 !important;               // Black text
-//   font-weight: bold;
-//   border-bottom: 1px solid #333;
-// }
-
-
-//   .MuiDataGrid-cell {
-//     color: #ddd;
-//     border-bottom: 1px solid #222;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .MuiDataGrid-footerContainer {
-//     background-color: #121212;
-//     color: #ccc;
-//     border-top: 1px solid #333;
-//   }
-
-//   .MuiCheckbox-root svg {
-//     fill: #e50914;
-//   }
-
-//   .MuiDataGrid-row:hover {
-//     background-color: #2a2a2a;
-//   }
-
-//   .status,
-//   .badge-btn {
-//     padding: 4px 10px;
-//     font-size: 11px;
-//     font-weight: 500;
-//     text-transform: capitalize;
-//     border-radius: 999px;
-//     display: inline-flex;
-//     align-items: center;
-//     justify-content: center;
-//     line-height: 1;
-//     white-space: nowrap;
-//     min-width: 70px;
-//     height: 26px;
-//     text-align: center;
-//     border: 1px solid transparent;
-//   }
-
-//   .status {
-//     &.active {
-//       background-color: #1e7f4c33;
-//       color: #1e7f4c;
-//       border-color: #1e7f4c;
-//     }
-
-//     &.passive {
-//       background-color: #c6282822;
-//       color: #c62828;
-//       border-color: #c62828;
-//     }
-
-//     &.pending {
-//       background-color: #c38f0022;
-//       color: #c38f00;
-//       border-color: #c38f00;
-//     }
-//   }
-
-//   .action {
-//     display: flex;
-//     align-items: center;
-//     gap: 6px;
-
-//     .view {
-//       background-color: #e5091422;
-//       color: #e50914;
-//       border: 1px solid #e50914;
-
-//       &:hover {
-//         background-color: #e5091444;
-//       }
-//     }
-
-//     .delete {
-//       background-color: #c6282822;
-//       color: #c62828;
-//       border: 1px solid #c62828;
-
-//       &:hover {
-//         background-color: #c6282844;
-//       }
-//     }
-//   }
-// }
 .datatable {
   height: 600px;
   padding: 30px;
@@ -138,7 +32,7 @@
   }
 
   .MuiDataGrid-footerContainer {
-    background-color: #121212;
+    background-color: #af0d15;
     color: #ccc;
     border-top: 1px solid #333;
   }

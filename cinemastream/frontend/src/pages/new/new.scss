@@ -40,6 +40,13 @@
     display: flex;
     width: 100%;
     .newContainer{
-        flex: 6;
+        margin-left: 220px;  // Sidebar width
+    padding: 20px;
+    padding-top: 60px;   // Navbar height
+    flex: 1;
+    background-color: #121212;
+    min-height: 100vh;
+    color: rgb(19, 18, 18);
+    overflow-x: auto;
     }
 }

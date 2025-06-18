@@ -33,7 +33,7 @@
 // export default Home;
 import "./home.scss";
 import Sidebar from "../../Components/sidebar/Sidebar";
-import Navbar from "../../Components/Navbar/Navbar";
+import Navbar from "../../Components/navbar/Navbar";
 import Widget from "../../Components/widget/Widget";
 import Featured from "../../Components/Featured/Featured";
 import Chart from "../../Components/chart/Chart";
