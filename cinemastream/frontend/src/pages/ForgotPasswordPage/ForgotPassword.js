@@ -2,15 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Auth.css"; // Your CSS file
 import { Link, useNavigate } from "react-router-dom";
-
-// const getCsrfToken = async () => {
-//   try {
-//     const response = await axios.get('/api/auth/csrf-token', {withCredentials: true});
-//     return response.data.csrfToken;
-//   } catch (error) {
-//     console.error('Error fetching CSRF Token:', error);
-//   }
-// };
+import getCsrfToken from '../../hooks/useCsrfToken';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -24,12 +16,12 @@ const ForgotPassword = () => {
     setError("");
 
     try {
-      //const csrfToken = await getCsrfToken();
+      const csrfToken = await getCsrfToken();
       const res = await axios.post('/api/auth/forgot-password', {
         email,
       },
-      // {headers: { 'X-CSRF-Token': csrfToken },
-      // withCredentials: true }
+       {headers: { 'X-CSRF-Token': csrfToken },
+       withCredentials: true }
     );
       setMessage(res.data.message);
 

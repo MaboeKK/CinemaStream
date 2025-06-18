@@ -5,15 +5,7 @@ import { MdEmail } from 'react-icons/md';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify'
-
-// const getCsrfToken = async () => {
-//   try {
-//     const response = await axios.get('/api/auth/csrf-token', {withCredentials: true});
-//     return response.data.csrfToken;
-//   } catch (error) {
-//     console.error('Error fetching CSRF Token:', error);
-//   }
-// };
+import getCsrfToken from '../../hooks/useCsrfToken';;
 
 const Login = () => {
   const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '');
@@ -24,11 +16,11 @@ const Login = () => {
 const handleLogin = async (e) => {
   e.preventDefault();
   try {
-   // const csrfToken = await getCsrfToken();
+    const csrfToken = await getCsrfToken();
     const response = await axios.post('/api/auth/login',
       { email, password, rememberMe },
-      // {headers: { 'X-CSRF-Token': csrfToken },
-      // withCredentials: true }
+       {headers: { 'X-CSRF-Token': csrfToken },
+       withCredentials: true }
     );
 
     const { status, message, data } = response.data;
