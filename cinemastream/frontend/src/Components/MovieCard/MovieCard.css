@@ -22,22 +22,6 @@
     border-radius: 10px 10px 0 0;
   }
   
-  .movie-details {
-    padding: 10px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-  
-  .movie-title {
-    font-size: 1rem;
-    margin: 0 0 5px 0;
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.8;
-  }
-  
   .movie-card {
     position: relative; /* for overlay positioning */
     width: 200px;
@@ -65,30 +49,6 @@
     display: block;
   }
   
-  /* Overview overlay - hidden by default */
-  .movie-overview {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(20, 20, 20, 0.85); /* semi-transparent dark */
-    color: #ccc;
-    padding: 15px;
-    box-sizing: border-box;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    overflow-y: auto;
-    border-radius: 10px 10px 0 0;
-    font-size: 0.85rem;
-    line-height: 1.3;
-    z-index: 10;
-  }
-  
-  /* Show overview on hover */
-  .movie-card:hover .movie-overview {
-    opacity: 1;
-  }
   
   /* Movie title below the card */
   .movie-title {

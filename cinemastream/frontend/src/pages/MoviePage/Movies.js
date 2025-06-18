@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/NavBar/Navbar";
 import TrailerModal from "../../Components/Modal/TrailerModal";
-import { fetchGenres } from "../../api/tmdb";  // Correct import here
+import { fetchGenres } from "../../api/tmdb";  
 import { fetchYoutubeTrailer } from "../../api/youtube";
-import "./Movies.css";  // Make sure this matches Series.css styles or import Series.css
+import "./Movies.css"; 
 
 function Movies() {
   const [movieList, setMovieList] = useState([]);
@@ -85,7 +85,7 @@ function Movies() {
   };
 
   return (
-    <div className="series-page"> {/* Reuse series-page styles */}
+    <div className="series-page"> 
       <Navbar />
       <div className="series-content">
         <h2 className="page-title">Movies</h2>

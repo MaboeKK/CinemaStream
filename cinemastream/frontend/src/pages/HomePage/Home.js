@@ -3,14 +3,20 @@ import './Home.css';
 import Navbar from '../../Components/NavBar/Navbar';
 import Banner from '../../Components/Banner/Banner';
 import Row from '../../Components/MovieRows/Row';
-import TrailerModal from '../../Components/Modal/TrailerModal';
-import { fetchTrending, fetchPopularMovies, fetchPopularSeries, fetchMovieDetails, fetchSeriesDetails } from '../../api/tmdb';
+import TrailerModal from "../../Components/Modal/TrailerModal";
+import {  fetchPopularMovies, fetchPopularSeries, fetchMovieDetails, fetchSeriesDetails } from '../../api/tmdb';
 import { fetchYoutubeTrailer } from '../../api/youtube';
 
 function Home() {
   const [trailerUrl, setTrailerUrl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({});  // <-- added state for details
+  const [modalContent, setModalContent] = useState({
+    name: "",
+    overview: "",
+    genres: [],
+    actors: [],
+  });
+  
 
   const openTrailerModal = async (movie) => {
     try {
@@ -48,9 +54,9 @@ function Home() {
       <Navbar />
       <Banner onPlayTrailer={openTrailerModal} />
 
-      <Row title="Trending Movies" fetchFunction={fetchTrending} onMovieClick={openTrailerModal} />
-     
-      <Row title="Popular Series" fetchFunction={fetchPopularSeries} onMovieClick={openTrailerModal} />
+      <Row title="Trending Movies" fetchFunction={fetchPopularMovies} onMovieClick={openTrailerModal} />
+      <Row title="Trending Series" fetchFunction={fetchPopularSeries} onMovieClick={openTrailerModal} />
+      
 
       <TrailerModal 
         isOpen={modalOpen} 

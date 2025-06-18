@@ -1,8 +1,8 @@
-// src/api/tmdb.js
+
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-// To fetch trending mocies/series
+// To fetch trending movies/series
 export async function fetchTrending() {
   const res = await fetch(`${BASE_URL}/trending/all/day?api_key=${API_KEY}`);
   const data = await res.json();
@@ -23,7 +23,7 @@ export async function fetchPopularMovies() {
   return data.results;
 }
 
-//fetch dicover moview\\
+//fetch discover movie\\
 
 export async function fetchDiscoverMovie() {
   const res = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}`);
@@ -43,28 +43,29 @@ export async function fetchSeriesGenres() {
   const data = await res.json();
   return data.genres; // [{ id, name }]
 }
-// Example fetchMovieDetails
+
+// fetchMovieDetails
 export async function fetchMovieDetails(movieId) {
-  const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=YOUR_API_KEY&append_to_response=credits`);
+  const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&append_to_response=credits`);
   const data = await response.json();
 
   return {
     name: data.title,
     overview: data.overview,
     genres: data.genres,
-    actors: data.credits?.cast || [],
+    actors: (data.credits?.cast || []).slice(0,5),
   };
 }
 
-// Example fetchSeriesDetails
+// fetchSeriesDetails
 export async function fetchSeriesDetails(seriesId) {
-  const response = await fetch(`https://api.themoviedb.org/3/tv/${seriesId}?api_key=YOUR_API_KEY&append_to_response=credits`);
+  const response = await fetch(`${BASE_URL}/tv/${seriesId}?api_key=${API_KEY}&append_to_response=credits`);
   const data = await response.json();
 
   return {
     name: data.name,
     overview: data.overview,
     genres: data.genres,
-    actors: data.credits?.cast || [],
+    actors: (data.credits?.cast || []).slice(0,5),
   };
 }
