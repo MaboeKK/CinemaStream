@@ -85,12 +85,17 @@ function Series() {
   };
 
   return (
+  
     <div className="series-page">
       <Navbar />
+      
       <div className="series-content">
-        <h2 className="page-title"> Series</h2>
-
-        <div className="search-bar" style={{ marginBottom: "20px" }}>
+      <div className="filter-bar">
+        <h2 className="page-title"> Series
+       
+        </h2>
+        
+        <div className="search-bar">
           <input
             type="text"
             placeholder="Search series by name..."
@@ -124,7 +129,7 @@ function Series() {
             ))}
           </select>
         </div>
-
+</div>
         <div className="series-grid">
           {seriesList.map((show) => (
             <div
