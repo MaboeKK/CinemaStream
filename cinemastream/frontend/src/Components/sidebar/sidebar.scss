@@ -1,76 +1,77 @@
-.sidebar{
-    
+
+.dashboard-sidebar {
+  width: 220px;
+  height: 100vh;
+  background-color: #141414;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #222;
+
+  .dashboard-sidebar-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px; /* Align with navbar height */
+    padding: 0 20px;
+    background-color: #141414;
+
+    .dashboard-sidebar-logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #e50914;
+      white-space: nowrap;
+    }
+  }
+
+  hr {
+    border: 0.5px solid #333;
+    margin: 0 20px;
+  }
+
+  .dashboard-sidebar-center {
     flex: 1;
-    border-right: 0.5px solid rgb(230,227,227);
-    min-height: 100vh;
-    background-color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
 
-    .dashboard-top{
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    ul {
+      list-style: none;
+      padding: 0;
 
-        .admin-logo{
-            font-size: 20px;
-            font-weight: bold;
-            color: black;
-        }
-    }
-    hr{
-        height: 0;
-        border: 0.5px solid rgb(230,227,227);
-    }
-    .center{
-        padding-left: 10px;
+      .link {
+        text-decoration: none;
+        color: inherit;
 
-        ul{
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
+        li {
+          display: flex;
+          align-items: center;
+          padding: 15px 20px;
+          transition: background-color 0.2s;
 
-        li{
-            display: flex;
-            align-items: center;
-            padding: 5px;
+          .icon {
+            font-size: 1.2rem;
+            margin-right: 15px;
+          }
+
+          span {
+            font-size: 0.95rem;
+            font-weight: 500;
+          }
+
+          &:hover {
+            background-color: #222;
             cursor: pointer;
-
-            &:hover{
-                background-color: #ece8ff;
-            }
+            color: #e50914;
 
             .icon {
-                color: black;
+              color: #e50914;
             }
-
-            span{
-                font-size: 14px;
-                font-weight: 600;
-                color: black;
-                margin: 10px;
-            }
+          }
         }
+      }
     }
-}
-.bottom{
-    display: flex;
-    align-items: center;
-    margin: 10px;
-
-    .colorOption{
-        width: 20px;
-        height: 20px;
-        border-radius: 5px;
-        border: 1px solid red;
-        cursor: pointer;
-        margin: 2px;
-
-        &:nth-child(1){
-            background-color: white;
-        }
-        &:nth-child(2){
-            background-color: black;
-        }
-    }
+  }
 }

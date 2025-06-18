@@ -1,114 +1,217 @@
-// .datatable{
-//     height: 600px;
-//     padding: 30px;
-//     cursor: pointer;
 
-//     .status {
-//   padding: 4px 10px;
-//   font-size: 10px;
-//   font-weight: 100px;
-//   text-transform: uppercase;
-//   display: inline-block;
-//   border: 20px;
+// .datatable {
+//   height: 600px;
+//   padding: 30px;
+//   background-color: #1f1f1f;
+//   border-radius: 12px;
+//   font-family: inherit;
 
-//   &.active {
-//     background-color: #e6f4ea;
-//     color: #2e7d32; /* dark green */
-//     border: 20px;
-   
+//   .MuiDataGrid-root {
+//     background-color: #1f1f1f;
+//     color: #fff;
+//     border: none;
 //   }
 
-//   &.passive {
-//     background-color: #fdecea;
-//     color: #c62828; /* dark red */
-//     border: 20px;
-    
-//   }
+//   .MuiDataGrid-columnHeaders {
+//   background-color: #e50914 !important; // Netflix red
+//   color: #000 !important;               // Black text
+//   font-weight: bold;
+//   border-bottom: 1px solid #333;
 // }
 
 
+//   .MuiDataGrid-cell {
+//     color: #ddd;
+//     border-bottom: 1px solid #222;
+//     display: flex;
+//     align-items: center;
+//   }
+
+//   .MuiDataGrid-footerContainer {
+//     background-color: #121212;
+//     color: #ccc;
+//     border-top: 1px solid #333;
+//   }
+
+//   .MuiCheckbox-root svg {
+//     fill: #e50914;
+//   }
+
+//   .MuiDataGrid-row:hover {
+//     background-color: #2a2a2a;
+//   }
+
+//   .status,
+//   .badge-btn {
+//     padding: 4px 10px;
+//     font-size: 11px;
+//     font-weight: 500;
+//     text-transform: capitalize;
+//     border-radius: 999px;
+//     display: inline-flex;
+//     align-items: center;
+//     justify-content: center;
+//     line-height: 1;
+//     white-space: nowrap;
+//     min-width: 70px;
+//     height: 26px;
+//     text-align: center;
+//     border: 1px solid transparent;
+//   }
+
+//   .status {
+//     &.active {
+//       background-color: #1e7f4c33;
+//       color: #1e7f4c;
+//       border-color: #1e7f4c;
+//     }
+
+//     &.passive {
+//       background-color: #c6282822;
+//       color: #c62828;
+//       border-color: #c62828;
+//     }
+
+//     &.pending {
+//       background-color: #c38f0022;
+//       color: #c38f00;
+//       border-color: #c38f00;
+//     }
+//   }
+
+//   .action {
+//     display: flex;
+//     align-items: center;
+//     gap: 6px;
+
+//     .view {
+//       background-color: #e5091422;
+//       color: #e50914;
+//       border: 1px solid #e50914;
+
+//       &:hover {
+//         background-color: #e5091444;
+//       }
+//     }
+
+//     .delete {
+//       background-color: #c6282822;
+//       color: #c62828;
+//       border: 1px solid #c62828;
+
+//       &:hover {
+//         background-color: #c6282844;
+//       }
+//     }
+//   }
 // }
 .datatable {
   height: 600px;
   padding: 30px;
-  cursor: pointer;
+  background-color: #1f1f1f;
+  border-radius: 12px;
+  font-family: inherit;
 
-  .status {
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 600;
+  .MuiDataGrid-root {
+    background-color: #1f1f1f;
+    color: #fff;
+    border: none;
+  }
+
+  /* Target the column header container */
+  .MuiDataGrid-columnHeaders {
+    background-color: #e50914 !important; /* Netflix red */
+  }
+
+  /* Target each header cell title */
+  .MuiDataGrid-columnHeaderTitle {
+    color: #000 !important; /* Black text */
+    font-weight: bold;
+  }
+
+  /* Other styles remain unchanged */
+  .MuiDataGrid-cell {
+    color: #ddd;
+    border-bottom: 1px solid #222;
+    display: flex;
+    align-items: center;
+  }
+
+  .MuiDataGrid-footerContainer {
+    background-color: #121212;
+    color: #ccc;
+    border-top: 1px solid #333;
+  }
+
+  .MuiCheckbox-root svg {
+    fill: #e50914;
+  }
+
+  .MuiDataGrid-row:hover {
+    background-color: gray;
+  }
+
+  /* Your status, action styles... */
+  .status,
+  .badge-btn {
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 500;
     text-transform: capitalize;
     border-radius: 999px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     line-height: 1;
     white-space: nowrap;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-    min-width: 80px;   // Optional: fix min-width for uniformity
+    min-width: 70px;
+    height: 26px;
     text-align: center;
+    border: 1px solid transparent;
+  }
 
+  .status {
     &.active {
-      background-color: #d1f2e3;
+      background-color: #1e7f4c33;
       color: #1e7f4c;
-      border-color: #a5d6c5;
+      border-color: #1e7f4c;
     }
 
     &.passive {
-      background-color: #ffe3e3;
+      background-color: #c6282822;
       color: #c62828;
-      border-color: #f5baba;
+      border-color: #c62828;
     }
 
     &.pending {
-      background-color: #fff5d1;
+      background-color: #c38f0022;
       color: #c38f00;
-      border-color: #f0d88b;
+      border-color: #c38f00;
     }
   }
 
   .action {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    height: 100%; 
-    padding-top: 2px;
+    gap: 6px;
 
-    .badge-btn {
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: capitalize;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      line-height: 1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 80px;  // Match status min-width
-      text-align: center;
+    .view {
+      background-color: #e5091422;
+      color: #e50914;
+      border: 1px solid #e50914;
 
-      &.view {
-        background-color: #fff8e1;
-        color: #c79200;
-        border-color: #ffe082;
-
-        &:hover {
-          background-color: #ffecb3;
-        }
+      &:hover {
+        background-color: #e5091444;
       }
+    }
 
-      &.delete {
-        background-color: #ffe3e3;
-        color: #c62828;
-        border-color: #ef9a9a;
+    .delete {
+      background-color: #c6282822;
+      color: #c62828;
+      border: 1px solid #c62828;
 
-        &:hover {
-          background-color: #ffcdd2;
-        }
+      &:hover {
+        background-color: #c6282844;
       }
     }
   }
