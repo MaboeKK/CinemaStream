@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-//const csrfProtection = require('../middleware/csrfProtection');
 const { getBasicUserInfoById } = require('../models/User');
 
 router.get('/check-auth', verifyToken, async (req, res) => {

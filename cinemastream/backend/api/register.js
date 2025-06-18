@@ -3,14 +3,14 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
 const { sendHTMLEmail } = require("../services/emailService");
-
 const { createUser } = require('../models/User');
 const authLimiter = require('../middleware/rateLimiter');
+const { csrfProtection, regenerateCsrfToken } = require('../middleware/csrfProtection');
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
 
-router.post('/register', authLimiter, async (req, res) => {
+router.post('/register', authLimiter, csrfProtection, async (req, res) => {
     try {
         let { first_name, last_name, email, password } = req.body;
         first_name = first_name.trim();
@@ -55,7 +55,12 @@ router.post('/register', authLimiter, async (req, res) => {
                 <p>Regards,<br/>Cinema-Stream</p>
             </div>`);
 
+            //new
+    regenerateCsrfToken(req, res);
+
         res.json({ status: "SUCCESS", message: "Signup successful. OTP sent." });
+    
+   
     } catch (err) {
         console.error('Signup error:', err);
         res.json({ status: "FAILED", message: "Signup failed due to server error" });

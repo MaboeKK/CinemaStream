@@ -4,7 +4,10 @@ const { findUserByEmail, saveResetToken } = require("../models/User");
 const { sendHTMLEmail } = require("../services/emailService");
 const authLimiter = require('../middleware/rateLimiter');
 
-router.post("/forgot-password", authLimiter, async (req, res) => {
+//new
+const { csrfProtection, regenerateCsrfToken } = require('../middleware/csrfProtection');
+
+router.post("/forgot-password", authLimiter, csrfProtection, async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -24,6 +27,9 @@ router.post("/forgot-password", authLimiter, async (req, res) => {
         <p>OTP is valid for 3 minutes</p>
         <p>Regards,<br/>Cinema-Stream</p>
       </div>`);
+
+      //new
+    regenerateCsrfToken(req, res);
 
     res.json({ message: "Reset OTP sent to your email." });
   } catch (err) {

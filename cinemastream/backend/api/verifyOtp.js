@@ -3,8 +3,9 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const authLimiter = require('../middleware/rateLimiter');
 const { findUserByEmail, markUserAsVerified } = require('../models/User');
+const { csrfProtection, regenerateCsrfToken } = require('../middleware/csrfProtection');
 
-router.post('/verify-otp', authLimiter, async (req, res) => {
+router.post('/verify-otp', authLimiter, csrfProtection, async (req, res) => {
     const { email, otp } = req.body;
 
     try {
@@ -32,6 +33,9 @@ router.post('/verify-otp', authLimiter, async (req, res) => {
             sameSite: 'Strict',
             maxAge: 24 * 60 * 60 * 1000
         });
+
+        //new
+    regenerateCsrfToken(req, res);
 
         return res.json({
             status: "SUCCESS",

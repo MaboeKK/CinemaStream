@@ -1,14 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const {
-  getUserByEmailAndResetToken,
-  updateUserPassword,
-  clearResetToken,
-} = require("../models/User");
+const { getUserByEmailAndResetToken, updateUserPassword, clearResetToken, } = require("../models/User");
 const authLimiter = require("../middleware/rateLimiter");
 
-router.post("/reset-password", authLimiter, async (req, res) => {
+const { csrfProtection, regenerateCsrfToken } = require('../middleware/csrfProtection');
+
+router.post("/reset-password", authLimiter, csrfProtection, async (req, res) => {
   const { email, resetToken, newPassword } = req.body;
 
   try {
@@ -23,6 +21,8 @@ router.post("/reset-password", authLimiter, async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await updateUserPassword(email, hashedPassword);
     await clearResetToken(email);
+//new
+    regenerateCsrfToken(req, res);
 
     res.json({ message: "Password reset successful." });
   } catch (err) {
