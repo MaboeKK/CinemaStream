@@ -88,6 +88,7 @@ function Movies() {
     <div className="series-page"> 
       <Navbar />
       <div className="series-content">
+      <div className="filter-bar">
         <h2 className="page-title">Movies</h2>
 
         <div className="search-bar" style={{ marginBottom: "20px" }}>
@@ -123,6 +124,7 @@ function Movies() {
               </option>
             ))}
           </select>
+          </div>
         </div>
 
         <div className="series-grid">
