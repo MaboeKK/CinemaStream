@@ -18,7 +18,7 @@ const port = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
+  origin: process.env.CORS_ORIGIN,
   credentials: true
 }));
 app.use(express.json());
@@ -38,8 +38,6 @@ app.use('/api/auth', require('./api/refreshToken'));
 app.use('/api/protected', require('./api/protectedRoutes'));
 
 app.use('/api/auth', require('./api/csrfToken'));
-
-
 
 // Health check route (optional)
 app.get('/health', (_, res) => res.send('OK'));
