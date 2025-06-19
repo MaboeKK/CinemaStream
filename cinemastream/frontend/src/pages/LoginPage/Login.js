@@ -19,11 +19,10 @@ const handleLogin = async (e) => {
     const csrfToken = await getCsrfToken();
     const response = await axios.post('/api/auth/login',
       { email, password, rememberMe },
-       {headers: { 'X-CSRF-Token': csrfToken },
-       withCredentials: true }
+       {headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
     );
 
-    const { status, message, data } = response.data;
+    const { status, message, data, csrfToken: newCsrfToken } = response.data;
 
     if (status === "SUCCESS") {
   toast.success(message || 'Login successful');
