@@ -5,7 +5,7 @@ const pool = require('../config/db');
 const crypto = require('crypto');
 const authLimiter = require('../middleware/rateLimiter');
 const jwt = require('jsonwebtoken');
-const { csrfProtection, regenerateCsrfToken } = require('../middleware/csrfProtection');
+const { csrfProtection, regenerateCsrfToken, generateCsrfToken } = require('../middleware/csrfProtection');
 
 router.post('/login', authLimiter, async (req, res) => {
   try {
@@ -67,9 +67,8 @@ router.post('/login', authLimiter, async (req, res) => {
       sameSite: 'Strict',
       maxAge: refreshExpiry
     });
-
-    //new
- regenerateCsrfToken(req, res);
+    
+    generateCsrfToken(req,res);
 
     // Send response
     res.json({
@@ -79,7 +78,8 @@ router.post('/login', authLimiter, async (req, res) => {
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email
-      }
+      },
+      csrfToken: newToken.split('|')[0]
     });
  
   } catch (error) {
