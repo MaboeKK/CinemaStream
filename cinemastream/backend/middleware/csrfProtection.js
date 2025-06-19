@@ -47,7 +47,7 @@ const generateCsrfToken = (req, res, next) => {
   const fullToken = `${token}|${timestamp}`;
 
   res.cookie('csrf_token', fullToken, {
-    httpOnly: true, // 🔐 Makes it inaccessible via JS
+    httpOnly: false, // 🔐 Makes it inaccessible via JS
     sameSite: 'Strict', // Prevents cross-site submission
     secure: process.env.NODE_ENV === 'production', // Only secure in production
     maxAge: 24 * 60 * 60 * 1000, // 1 day
@@ -61,7 +61,7 @@ const generateCsrfToken = (req, res, next) => {
 const regenerateCsrfToken = (req, res) => {
   const newToken = generateCsrfTokenForRegeneration();
   res.cookie('csrf_token', newToken, {
-    httpOnly: true,
+    httpOnly: false,
     sameSite: 'Strict',
     secure: process.env.NODE_ENV === 'production',
     maxAge: 24 * 60 * 60 * 1000,
