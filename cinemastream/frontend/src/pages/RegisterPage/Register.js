@@ -16,6 +16,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false); 
 
   const navigate = useNavigate();
 
@@ -26,6 +27,7 @@ const Register = () => {
 
     if (!passwordsMatch) {
       setErrorMessage('Passwords do not match');
+      setLoading(false); 
       return;
     }
 
@@ -50,6 +52,8 @@ const Register = () => {
       setErrorMessage(
         err.response?.data?.message || 'Registration failed: ' + err.message
       );
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -67,6 +71,7 @@ const Register = () => {
               required
               value={first_name}
               onChange={(e) => setFirstName(e.target.value)}
+              disabled={loading} 
             />
             <FaUser className="icon" />
           </div>
@@ -78,6 +83,7 @@ const Register = () => {
               required
               value={last_name}
               onChange={(e) => setLastName(e.target.value)}
+              disabled={loading} 
             />
             <FaUser className="icon" />
           </div>
@@ -89,6 +95,7 @@ const Register = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading} 
             />
             <MdEmail className="icon" />
           </div>
@@ -100,6 +107,7 @@ const Register = () => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading} 
             />
             <FaLock className="icon" />
             <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
@@ -114,6 +122,7 @@ const Register = () => {
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={loading} 
             />
             <FaLock className="icon" />
             <span className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>

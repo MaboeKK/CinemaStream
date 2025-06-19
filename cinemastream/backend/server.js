@@ -1,10 +1,12 @@
 // Load environment variables
 require('dotenv').config(); // Access process.env variables
+require('dotenv').config(); // Access process.env variables
 
 // Connect to DB
 try {
   require('./config/db');
 } catch (err) {
+  console.error('Failed to connect to DB:', err);
   console.error('Failed to connect to DB:', err);
   process.exit(1);
 }
@@ -44,5 +46,6 @@ app.get('/health', (_, res) => res.send('OK'));
 
 // Start server
 app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on http://0.0.0.0:${port}`);
   console.log(`Server running on http://0.0.0.0:${port}`);
 });
