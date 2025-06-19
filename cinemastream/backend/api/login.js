@@ -7,7 +7,7 @@ const authLimiter = require('../middleware/rateLimiter');
 const jwt = require('jsonwebtoken');
 const { csrfProtection, regenerateCsrfToken } = require('../middleware/csrfProtection');
 
-router.post('/login', authLimiter, csrfProtection, async (req, res) => {
+router.post('/login', authLimiter, async (req, res) => {
   try {
     let { email, password } = req.body;
     email = email.trim();
