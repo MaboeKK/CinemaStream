@@ -50,7 +50,7 @@ router.post('/login', authLimiter, csrfProtection, async (req, res) => {
     // Set access token in httpOnly cookie
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
       maxAge: 15 * 60 * 1000 // 15 minutes
     });
@@ -74,7 +74,7 @@ router.post('/login', authLimiter, csrfProtection, async (req, res) => {
     // Set CSRF token in readable cookie (not httpOnly)
     res.cookie('csrf_token', csrfToken, {
       sameSite: 'Strict',
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     });
 
