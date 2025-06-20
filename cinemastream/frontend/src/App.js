@@ -33,8 +33,8 @@ function App() {
         <Route path="/Movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
         <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} />
         
-        {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<Home />} />
+          {/* <Route path="/landingpage" element={<LandingPage />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
             <Route path="/verify-otp" element={<VerifyOtp />} />
@@ -43,7 +43,7 @@ function App() {
           <Route path="/stats" element={<Statistics />} />
           <Route path="/product" element={<List />} />
            <Route path="/users" element={<List />} />
-          <Route path="/product/single" element={<Single />} />
+          {/* <Route path="/product/single" element={<Single />} /> */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<Navigate to="/" replace />} />

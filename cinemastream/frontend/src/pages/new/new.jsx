@@ -1,7 +1,7 @@
 
 import "./new.scss"
 import Sidebar from "../../Components/sidebar/Sidebar";
-import Navbar from "../../Components/navbar/Navbar";
+import Navbar from "../../Components/dashNavbar/Navbar";
 import Profile from "../../Components/Profile/Profile";
 
 
