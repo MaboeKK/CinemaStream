@@ -47,13 +47,31 @@ router.post('/register', authLimiter, csrfProtection, async (req, res) => {
 
         //Send Email To User
         await sendHTMLEmail(email, 'Your OTP for Email Verification', `
-            <div style="font-family: Helvetica,Arial,sans-serif;line-height:2">
-                <p>Hi ${first_name},</p>
-                <p>Thank you for choosing Cinema-Stream. Use the following OTP to complete your Sign Up procedures.</p>
-                <h2 style="background:rgb(106, 0, 0);width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
-                <p>OTP is valid for 3 minutes</p>
-                <p>Regards,<br/>Cinema-Stream</p>
-            </div>`);
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #ffffff; color: #333; line-height: 1.6;">
+              
+              <!-- Styled Logo -->
+              <div style="font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+                <span style="color: #e50914;">Cinema</span>Stream
+              </div>
+              <p style="font-size: 16px;">Hi ${first_name},</p>
+              <p style="font-size: 16px;">
+                Thank you for choosing <strong>CinemaStream</strong>! Please use the following OTP to complete your sign-up:
+              </p>   
+              <p style="text-align: center; margin: 30px 0;">
+                <span style="display: inline-block; background-color: #6a0000; color: #ffffff; font-size: 24px; padding: 10px 20px; border-radius: 6px; font-weight: bold;">
+                  ${otp}
+                </span>
+              </p>         
+              <p style="font-size: 14px; color: #666;">
+                This OTP is valid for <strong>3 minutes</strong>. Please do not share it with anyone.
+              </p>       
+              <p style="font-size: 16px;">
+                Regards,<br/>
+                <strong>The CinemaStream Team</strong>
+              </p>
+            </div>
+          `);
+          
 
             //new
     regenerateCsrfToken(req, res);

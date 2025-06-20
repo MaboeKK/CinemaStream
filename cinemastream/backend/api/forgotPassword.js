@@ -21,12 +21,32 @@ router.post("/forgot-password", authLimiter, csrfProtection, async (req, res) =>
 
     //Send Email To User
     await sendHTMLEmail(email, 'Your Password Reset OTP', `
-      <div style="font-family: Helvetica,Arial,sans-serif;line-height:2">
-        <p>Your password reset OTP is: </p>
-        <h2 style="background:rgb(106, 0, 0);width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${resetToken}</h2>
-        <p>OTP is valid for 3 minutes</p>
-        <p>Regards,<br/>Cinema-Stream</p>
-      </div>`);
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #ffffff; color: #333; line-height: 1.6;">   
+        <!-- Styled Logo -->
+        <div style="font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+          <span style="color: #e50914;">Cinema</span>Stream
+        </div>
+        <p style="font-size: 16px;">
+          You recently requested to reset your password for your <strong>CinemaStream</strong> account.
+        </p>
+        <p style="font-size: 16px;">
+          Please use the following One-Time Password (OTP) to proceed:
+        </p>
+        <p style="text-align: center; margin: 30px 0;">
+          <span style="display: inline-block; background-color: #6a0000; color: #ffffff; font-size: 24px; padding: 10px 20px; border-radius: 6px; font-weight: bold;">
+            ${resetToken}
+          </span>
+        </p>
+        <p style="font-size: 14px; color: #666;">
+          This OTP is valid for <strong>3 minutes</strong>. If you did not request a password reset, please ignore this message.
+        </p>
+        <p style="font-size: 16px;">
+          Regards,<br/>
+          <strong>The CinemaStream Team</strong>
+        </p>
+      </div>
+    `);
+    
 
       //new
     regenerateCsrfToken(req, res);
