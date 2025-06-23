@@ -18,7 +18,7 @@ import Series from './pages/SeriesPage/Series';
 import ForgotPassword from './pages/ForgotPasswordPage/ForgotPassword';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 
-import ProtectedRoute from './component/ProtectedRoute';
+//import ProtectedRoute from './component/ProtectedRoute';
 
 
 function App() {
@@ -29,9 +29,10 @@ function App() {
       <Router>
      
       <Routes>
-           <Route path="/HomePage" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+          {/*  <Route path="/HomePage" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route path="/Movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
-        <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} />
+        <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} /> */}
+        <Route path="/HomePage" element={<HomePage />} />
         
         <Route path="/" element={<Home />} />
           {/* <Route path="/landingpage" element={<LandingPage />} /> */}

@@ -39,6 +39,10 @@ app.use('/api/protected', require('./api/protectedRoutes'));
 
 app.use('/api/auth', require('./api/csrfToken'));
 
+app.use('/api/track', require('./routes/track'));
+app.use('/api/stats', require('./routes/stats'));
+app.use('/api/catalog', require('./routes/catalog'));
+
 // Health check route (optional)
 app.get('/health', (_, res) => res.send('OK'));
 

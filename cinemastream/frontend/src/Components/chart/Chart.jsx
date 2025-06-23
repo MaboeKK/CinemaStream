@@ -1,69 +1,149 @@
-import "./chart.scss"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import "./chart.scss";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
+// Monthly registrations data
 const data = [
-  {
-    name: 'Monday',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Tuesday',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Wednsday',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Thursday',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Friday',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Saturday',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Sunday',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
+  { month: "Jan", users: 120 },
+  { month: "Feb", users: 200 },
+  { month: "Mar", users: 300 },
+  { month: "Apr", users: 250 },
+  { month: "May", users: 400 },
+  { month: "Jun", users: 350 },
+  { month: "Jul", users: 450 },
+  { month: "Aug", users: 500 },
+  { month: "Sep", users: 550 },
+  { month: "Oct", users: 600 },
+  { month: "Nov", users: 650 },
+  { month: "Dec", users: 700 },
 ];
+
 const Chart = () => {
   return (
     <div className="chart">
-      <h3 style={{ marginBottom: "10px" }}>Monthly User Growth</h3>
-      <ResponsiveContainer width="100%" height="100%">
+      <h3 className="chart-title">Monthly User Growth</h3>
+      <ResponsiveContainer width="100%" height={300}>
         <LineChart
           data={data}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="pv" name="Movies" stroke="#e50914" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="uv" name="Series" stroke="#8884d8" />
+          <CartesianGrid stroke="#333" strokeDasharray="3 3" />
+          <XAxis
+            dataKey="month"
+            stroke="#ccc"
+            label={{
+              value: "Month",
+              position: "insideBottom",
+              dy: 10,
+              fill: "#ccc",
+            }}
+          />
+          <YAxis
+            stroke="#ccc"
+            label={{
+              value: "Registered Users",
+              angle: -90,
+              position: "insideLeft",
+              dx: -10,
+              fill: "#ccc",
+            }}
+          />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#222",
+              border: "none",
+              color: "#fff",
+            }}
+            labelStyle={{ color: "#fff" }}
+          />
+          <Legend wrapperStyle={{ color: "#fff" }} />
+          <Line
+            type="monotone"
+            dataKey="users"
+            stroke="#e50914"
+            activeDot={{ r: 8 }}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>
   );
 };
-export default Chart
+
+export default Chart;
+
+/* import "./chart.scss";
+import { useState, useEffect } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+const Chart = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/stats")
+      .then((res) => res.json())
+      .then((stats) => {
+        // map stats.dailyUsers → [{ month: formattedDate, users: count }]
+        const monthly = stats.dailyUsers.map((d) => ({
+          month: new Date(d.date).toLocaleDateString(undefined, { month: "short", day: "numeric" }),
+          users: Number(d.count),
+        }));
+        setData(monthly);
+      })
+      .catch(console.error);
+  }, []);
+
+  return (
+    <div className="chart">
+      <h3 className="chart-title">Monthly User Growth</h3>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart
+          data={data}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+        >
+          <CartesianGrid stroke="#333" strokeDasharray="3 3" />
+          <XAxis
+            dataKey="month"
+            stroke="#ccc"
+            label={{ value: "Date", position: "insideBottom", dy: 10, fill: "#ccc" }}
+          />
+          <YAxis
+            stroke="#ccc"
+            label={{ value: "Registered Users", angle: -90, position: "insideLeft", dx: -10, fill: "#ccc" }}
+          />
+          <Tooltip
+            contentStyle={{ backgroundColor: "#222", border: "none", color: "#fff" }}
+            labelStyle={{ color: "#fff" }}
+          />
+          <Legend wrapperStyle={{ color: "#fff" }} />
+          <Line
+            type="monotone"
+            dataKey="users"
+            name="Registered Users"
+            stroke="#e50914"
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default Chart;
+ */

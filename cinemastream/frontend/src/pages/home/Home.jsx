@@ -7,7 +7,7 @@ import Featured from "../../Components/Featured/Featured";
 import Chart from "../../Components/chart/Chart";
 import Heatmap from "../../Components/Heatmap/Heatmap";
 
-const Home = () => {
+const Home = () => { 
     return (
         <div className="dashboard-home">
             <Sidebar />
@@ -23,11 +23,6 @@ const Home = () => {
                 <div className="chart-wrapper">
                     <Chart />
                 </div>
-                
-                
-
-
-
                 <div className="heatmap">
                     <Heatmap />
                 </div>
