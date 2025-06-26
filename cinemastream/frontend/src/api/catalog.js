@@ -15,9 +15,9 @@ export const fetchMovieDetails = async (id) => {
   if (!res.ok) throw new Error("Failed to fetch movie details");
   return await res.json();
 };
-
 export const fetchSeriesDetails = async (id) => {
   const res = await fetch(`/api/catalog/series/${id}`);
-  if (!res.ok) throw new Error("Failed to fetch series details");
+  if (!res.ok) throw new Error("Failed to fetch movie details");
   return await res.json();
 };
+

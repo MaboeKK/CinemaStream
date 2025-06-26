@@ -31,6 +31,8 @@ router.get('/series', async (req, res) => {
   }
 });
 
+
+
 // GET /api/catalog/movies/:id
 router.get('/movies/:id', async (req, res) => {
   try {

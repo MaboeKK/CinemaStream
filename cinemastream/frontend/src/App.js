@@ -36,6 +36,8 @@ function App() {
         
         <Route path="/home" element={<Home />} />
           <Route path="/" element={<LandingPage />} />
+            <Route path="/movies" element={<Movies/>} />
+             <Route path="/series" element={<Series/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
             <Route path="/verify-otp" element={<VerifyOtp />} />
