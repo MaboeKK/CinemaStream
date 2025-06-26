@@ -11,7 +11,7 @@ const {
   getStats,
   getTopPerformingShows,
   getMonthlyUserGrowth,
-  getHeatmapData,
+  getHeatmapData
 } = require("../controllers/stats");
 const router = express.Router();
 
