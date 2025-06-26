@@ -12,6 +12,7 @@
     "concurrently": "^8.2.2"
   },
   "dependencies": {
+    "googleapis": "^150.0.1",
     "react-toastify": "^11.0.5"
   }
 }

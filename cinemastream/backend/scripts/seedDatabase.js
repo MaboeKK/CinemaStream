@@ -24,6 +24,7 @@ async function fetchTrailerId(query) {
         videoEmbeddable: 'true'
       }
     });
+    
     return res.data.items?.[0]?.id?.videoId || null;
   } catch (err) {
     console.warn(`Skipping YouTube for "${query}": ${err.response?.status} ${err.response?.statusText}`);
@@ -68,6 +69,8 @@ async function seedMovies() {
       ? `https://image.tmdb.org/t/p/original${m.poster_path}`
       : null;
     const trailer = await fetchTrailerId(m.title);
+   // const videoId = trailer?.items?.[0]?.id?.videoId || null;
+    
 
     // upsert movie and get its PK
     const upsertResult = await pool.query(

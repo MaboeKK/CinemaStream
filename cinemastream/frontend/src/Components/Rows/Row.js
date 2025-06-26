@@ -15,16 +15,16 @@ function Row({ title, fetchFunction, onMovieClick }) {
     loadMovies();
   }, [fetchFunction]);
 
-  useEffect(() => {
-  const loadSeries = async () => {
-    const series = await fetchFunction();
-    if (!series.length) {
-      console.warn("No series fetched");
-    }
-    setSeries(series);
-  };
-  loadSeries();
-}, []);
+//   useEffect(() => {
+//   const loadSeries = async () => {
+//     const series = await fetchFunction();
+//     if (!series.length) {
+//       console.warn("No series fetched");
+//     }
+//     setSeries(series);
+//   };
+//   loadSeries();
+// }, []);
 
   const scrollLeft = () => {
     rowRef.current.scrollBy({ left: -500, behavior: 'smooth' });
@@ -43,9 +43,9 @@ function Row({ title, fetchFunction, onMovieClick }) {
           {movies.map((movie, index) => (
             <MovieCard key={index} movie={movie} onClick={() => onMovieClick(movie)} />
           ))}
-           {series.map((series, index) => (
+           {/* {series.map((series, index) => (
             <MovieCard key={index} series={series} onClick={() => onMovieClick(series)} />
-          ))}
+          ))} */}
         </div>
         <button className="scroll-button right" onClick={scrollRight}>&gt;</button>
       </div>

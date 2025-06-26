@@ -1,4 +1,4 @@
-// Imports pages for each route
+
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -34,8 +34,8 @@ function App() {
         <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} /> */}
         <Route path="/HomePage" element={<HomePage />} />
         
-        <Route path="/" element={<Home />} />
-          {/* <Route path="/landingpage" element={<LandingPage />} /> */}
+        <Route path="/home" element={<Home />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
             <Route path="/verify-otp" element={<VerifyOtp />} />
@@ -55,3 +55,4 @@ function App() {
 }
 
 export default App;
+

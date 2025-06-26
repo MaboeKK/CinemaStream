@@ -10,14 +10,14 @@ export const fetchPopularSeries = async () => {
   return await res.json();
 };
 
-export const fetchMovieDetails = async (movie_id) => {
-  const res = await fetch(`/api/catalog/movies/${movie_id}`);
+export const fetchMovieDetails = async (id) => {
+  const res = await fetch(`/api/catalog/movies/${id}`);
   if (!res.ok) throw new Error("Failed to fetch movie details");
   return await res.json();
 };
 
-export const fetchSeriesDetails = async (series_id) => {
-  const res = await fetch(`/api/catalog/series/${series_id}`);
+export const fetchSeriesDetails = async (id) => {
+  const res = await fetch(`/api/catalog/series/${id}`);
   if (!res.ok) throw new Error("Failed to fetch series details");
   return await res.json();
 };
