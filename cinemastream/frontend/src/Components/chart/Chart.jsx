@@ -79,7 +79,7 @@
 
 // export default Chart;
 
- import "./chart.scss";
+import "./chart.scss";
 import { useState, useEffect } from "react";
 import {
   LineChart,
@@ -94,20 +94,44 @@ import {
 
 const Chart = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/api/stats")
-      .then((res) => res.json())
-      .then((stats) => {
-        // map stats.dailyUsers → [{ month: formattedDate, users: count }]
-        const monthly = stats.dailyUsers.map((d) => ({
-          month: new Date(d.date).toLocaleDateString(undefined, { month: "short", day: "numeric" }),
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/stats/monthly-growth");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const monthlyGrowth = await response.json();
+        
+        // Map monthlyGrowth → [{ month: formattedDate, users: count }]
+        const monthly = monthlyGrowth.map((d) => ({
+          month: new Date(d.date).toLocaleDateString(undefined, { month: "short", year: "numeric" }),
           users: Number(d.count),
         }));
+        
         setData(monthly);
-      })
-      .catch(console.error);
+        setError(null); // Clear any previous errors
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  if (loading) {
+    return <div className="loading">Loading chart data...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Error: {error}</div>;
+  }
 
   return (
     <div className="chart">
@@ -121,7 +145,7 @@ const Chart = () => {
           <XAxis
             dataKey="month"
             stroke="#ccc"
-            label={{ value: "Date", position: "insideBottom", dy: 10, fill: "#ccc" }}
+            label={{ value: "Month", position: "insideBottom", dy: 10, fill: "#ccc" }}
           />
           <YAxis
             stroke="#ccc"
@@ -146,4 +170,5 @@ const Chart = () => {
 };
 
 export default Chart;
+
  

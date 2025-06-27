@@ -122,23 +122,43 @@ exports.getTopPerformingShows = async (req, res) => {
   }
 };
 
-// 2) Monthly User Growth (last 30 days)
+// 2) Monthly User Growth
 exports.getMonthlyUserGrowth = async (req, res) => {
   try {
     const sql = `
-      SELECT DATE(created_at) AS date, COUNT(*) AS count
-      FROM users
-      WHERE created_at >= NOW() - INTERVAL '30 days'
-      GROUP BY DATE(created_at)
-      ORDER BY date;
+      WITH month_series AS (
+    SELECT 
+        DATE_TRUNC('month', NOW() - INTERVAL '1 month' * (n - 1)) AS month
+    FROM 
+        generate_series(1, 12) AS n
+)
+SELECT 
+    ms.month, 
+    COALESCE(COUNT(u.created_at), 0) AS count
+FROM 
+    month_series ms
+LEFT JOIN 
+    users u ON DATE_TRUNC('month', u.created_at) = ms.month
+GROUP BY 
+    ms.month
+ORDER BY 
+    ms.month;
     `;
     const { rows } = await pool.query(sql);
-    res.json(rows);
+    
+    // Format the response to include month names
+    const formattedRows = rows.map(row => ({
+      date: row.month.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+      count: row.count
+    }));
+
+    res.json(formattedRows);
   } catch (err) {
     console.error("Error fetching monthly growth:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 // 3) Weekly Activity Heatmap
 exports.getHeatmapData = async (req, res) => {

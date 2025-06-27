@@ -7,14 +7,15 @@
 // module.exports = router;
 
 const express = require("express");
+const router = express.Router();
 const {
   getStats,
   getTopPerformingShows,
   getMonthlyUserGrowth,
   getHeatmapData
 } = require("../controllers/stats");
-const router = express.Router();
 
+// All routes are prefixed with /api/stats
 router.get("/summary", getStats);
 router.get("/top-shows", getTopPerformingShows);
 router.get("/monthly-growth", getMonthlyUserGrowth);
