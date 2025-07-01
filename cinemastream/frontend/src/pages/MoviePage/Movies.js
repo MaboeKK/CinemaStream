@@ -170,7 +170,6 @@
 
 // export default Movies;
 
-
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/NavBar/Navbar";
 import TrailerModal from "../../Components/Modal/TrailerModal";
@@ -234,12 +233,13 @@ function Movies() {
     setLoading(false);
   };
 
-  const trackWatchEvent = async (movieId) => {
+  const trackWatchEvent = async (movie) => {
     try {
       const userId = localStorage.getItem("user_id");
 
       const payload = {
-        movie_id: movieId,
+        movie_id: movie.id,
+        movie_title: movie.title || movie.name || ""
       };
 
       if (userId) {
@@ -255,7 +255,7 @@ function Movies() {
   const openTrailerModal = async (movie, type = "movie") => {
     try {
       if (type === "movie") {
-        await trackWatchEvent(movie.id);
+        await trackWatchEvent(movie);
       }
 
       const detailsUrl = `https://api.themoviedb.org/3/${type}/${movie.id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&append_to_response=credits`;
@@ -301,10 +301,7 @@ function Movies() {
           </div>
 
           <div className="genre-filter">
-            <label
-              htmlFor="movie-genre-select"
-              style={{ marginRight: "10px", fontWeight: "bold" }}
-            >
+            <label htmlFor="movie-genre-select" style={{ marginRight: "10px", fontWeight: "bold" }}>
               Genre:
             </label>
             <select
