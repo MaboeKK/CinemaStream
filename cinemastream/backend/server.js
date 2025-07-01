@@ -33,6 +33,7 @@ app.use('/api/auth', require('./api/resetPassword'));
 app.use('/api/auth', require('./api/register'));
 app.use('/api/auth', require('./api/login'));
 app.use('/api/auth', require('./api/verifyOtp'));
+app.use('/api/auth', require('./api/resendOtp'));
 app.use('/api/auth', require('./api/checkAuth'));
 app.use('/api/auth', require('./api/refreshToken'));
 app.use('/api/protected', require('./api/protectedRoutes'));

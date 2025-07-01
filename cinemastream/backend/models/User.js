@@ -63,15 +63,19 @@ const getBasicUserInfoById = async (userId) => {
   return result.rows[0];
 };
 
+// update user's OTP
+async function updateOtpInDb(userId, otp, expiry) {
+  const query = 'UPDATE users SET verification_token = $1, otp_expiry = $2 WHERE user_id = $3';
+  await pool.query(query, [otp, expiry, userId]);
+}
+
+// dummy email sender (you can replace this with nodemailer or any real service)
+async function sendOtpToUser(email, otp) {
+  console.log(`Sending OTP ${otp} to ${email}`);
+}
 
 module.exports = {
-  createUser,
-  findUserByEmail,
-  updateUserPassword,
-  clearResetToken,
-  getUserByResetToken,
-  saveResetToken,
-  getUserByEmailAndResetToken,
-  markUserAsVerified,
-  getBasicUserInfoById
+  createUser, findUserByEmail, updateUserPassword, clearResetToken,
+  getUserByResetToken, saveResetToken, getUserByEmailAndResetToken, markUserAsVerified,
+  getBasicUserInfoById, updateOtpInDb, sendOtpToUser
 };
