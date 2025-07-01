@@ -86,16 +86,17 @@ await pool.query(
     regenerateCsrfToken(req,res);
 
     // Send response
-    res.json({
-      status: "SUCCESS",
-      message: "Login successful",
-      data: {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email
-      },
-      //csrfToken: newToken.split('|')[0]
-    });
+ res.json({
+  status: "SUCCESS",
+  message: "Login successful",
+  data: {
+    first_name: user.first_name,
+    last_name: user.last_name,
+    email: user.email,
+    role: user.role
+  }
+});
+
  
   } catch (error) {
     console.error('Login error:', error);
