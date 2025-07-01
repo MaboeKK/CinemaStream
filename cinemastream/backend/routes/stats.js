@@ -15,7 +15,7 @@ const {
   getHeatmapData
 } = require("../controllers/stats");
 
-// All routes are prefixed with /api/stats
+// All these routes are prefixed with /api/stats
 router.get("/summary", getStats);
 router.get("/top-shows", getTopPerformingShows);
 router.get("/monthly-growth", getMonthlyUserGrowth);

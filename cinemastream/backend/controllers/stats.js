@@ -1,6 +1,6 @@
 const pool = require("../config/db");
 
-// Your existing dashboard summary
+//dashboard summary
 exports.getStats = async (req, res) => {
   try {
     const totalUsersRes      = await pool.query("SELECT COUNT(*) FROM users");
@@ -12,14 +12,7 @@ exports.getStats = async (req, res) => {
       WHERE v.trailer_watched = true
       GROUP BY m.title
       ORDER BY views DESC
-      LIMIT 5
-    `);
-    const dailyUsersRes      = await pool.query(`
-      SELECT DATE(created_at) AS date, COUNT(*) AS count
-      FROM users
-      WHERE created_at > NOW() - INTERVAL '7 days'
-      GROUP BY DATE(created_at)
-      ORDER BY date
+      LIMIT 1
     `);
     const dailyTrailerViewsRes = await pool.query(`
       SELECT DATE(watched_at) AS date, COUNT(*) AS count
@@ -43,36 +36,49 @@ exports.getStats = async (req, res) => {
   }
 };
 
-// 1) Top Performing Shows (movies + series)
-exports.getTopPerformingShows = async (req, res) => {
+// Most Watched Trailers (movies + series)
+exports.getMostWatchedTrailers = async (req, res) => {
   try {
     const sql = `
-      SELECT m.title AS name, 'Movie' AS type, COUNT(*) AS views
-      FROM watched_history ve
-      JOIN movies m    ON ve.movie_id   = m.id
-      WHERE ve.event_type = 'trailer_click'
-      GROUP BY m.title
-
-      UNION ALL
-
-      SELECT s.name  AS name, 'Series' AS type, COUNT(*) AS views
-      FROM watched_history ve
-      JOIN tv_shows s ON ve.tv_show_id = s.id
-      WHERE ve.event_type = 'trailer_click'
-      GROUP BY s.name
-
-      ORDER BY views DESC
+      SELECT 
+        name,
+        type,
+        SUM(views) AS total_views
+      FROM (
+        SELECT 
+          COALESCE(wh.movie_title, wh.series_name) AS name, 
+          CASE 
+            WHEN wh.movie_id IS NOT NULL THEN 'Movie'
+            WHEN wh.series_id IS NOT NULL THEN 'Series'
+          END AS type,
+          COUNT(*) AS views
+        FROM 
+          watched_history wh
+        GROUP BY 
+          COALESCE(wh.movie_title, wh.series_name),
+          CASE 
+            WHEN wh.movie_id IS NOT NULL THEN 'Movie'
+            WHEN wh.series_id IS NOT NULL THEN 'Series'
+          END
+      ) AS combined_views
+      GROUP BY 
+        name,
+        type
+      ORDER BY 
+        total_views DESC
       LIMIT 10;
     `;
+
     const { rows } = await pool.query(sql);
     res.json(rows);
   } catch (err) {
-    console.error("Error fetching top shows:", err);
+    console.error("Error fetching top trailers:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-// 2) Monthly User Growth
+
+// Monthly User Growth
 exports.getMonthlyUserGrowth = async (req, res) => {
   try {
     const sql = `
@@ -95,7 +101,7 @@ ORDER BY
     ms.month;
     `;
     const { rows } = await pool.query(sql);
-    
+
     // Format the response to include month names
     const formattedRows = rows.map(row => ({
       date: row.month.toISOString().split('T')[0], // Format date as YYYY-MM-DD
@@ -110,7 +116,7 @@ ORDER BY
 };
 
 
-// 3) Weekly Activity Heatmap
+// Weekly Activity Heatmap
 exports.getHeatmapData = async (req, res) => {
   try {
     const sql = `

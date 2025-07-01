@@ -18,8 +18,8 @@ const ProfileDropdown = ({ adminData, onEdit, onClose }) => {
     <div className="profile-dropdown" ref={dropdownRef}>
       <h4>{adminData.name}</h4>
       <p>{adminData.email}</p>
-      <p className="login">Last Login: {adminData.lastlogin}</p>
-      <button onClick={onEdit}>Edit Profile</button>
+      {/* <p className="login">Last Login: {adminData.lastlogin}</p>
+      <button onClick={onEdit}>Edit Profile</button> */}
     </div>
   );
 };
