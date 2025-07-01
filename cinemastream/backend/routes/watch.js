@@ -3,32 +3,6 @@ const express = require("express");
 const router = express.Router();
 const pool = require('../config/db');
 
-// // Save watch event
-// router.post("/", async (req, res) => {
-//   try {
-//     const { user_id, movie_id } = req.body;
-
-//     if (!user_id || !movie_id) {
-//       return res.status(400).json({ error: "Missing user_id or movie_id" });
-//     }
-
-//     await pool.query(
-//       "INSERT INTO watched_history (user_id, movie_id) VALUES ($1, $2)",
-//       [user_id, movie_id]
-//     );
-
-//     res.status(201).json({ message: "Watch event saved" });
-//   } catch (err) {
-//     console.error("Watch insert error:", err);
-//     res.status(500).json({ error: "Server error" });
-//   }
-// });
-
-// module.exports = router;
-
-// backend/routes/watch.js
-
-
 // Save watch event
 router.post("/", async (req, res) => {
     try {

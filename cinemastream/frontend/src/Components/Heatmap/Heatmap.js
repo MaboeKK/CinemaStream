@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 import Plot from "react-plotly.js";
 
 const Heatmap = () => {
@@ -38,9 +38,9 @@ const Heatmap = () => {
   );
 };
 
-export default Heatmap;
+export default Heatmap; */
 
-/* import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js";
 
 const Heatmap = () => {
@@ -49,7 +49,7 @@ const Heatmap = () => {
   const [z, setZ] = useState([[]]);
 
   useEffect(() => {
-    fetch("/api/analytics/heatmap")
+    fetch("/api/stats/heatmap")
       .then((res) => res.json())
       .then((rows) => {
         // Define the full set of days & periods in the order you want
@@ -112,4 +112,3 @@ const Heatmap = () => {
 };
 
 export default Heatmap;
- */
