@@ -32,21 +32,19 @@ router.post('/login', authLimiter, async (req, res) => {
       return res.json({ status: "FAILED", message: "Incorrect password" });
     }
 
-// Log login attempt
-await pool.query(
-  `INSERT INTO login_history (user_id, first_name, last_name, email, ip_address, user_agent)
+    // Log login attempt
+    await pool.query(
+      `INSERT INTO login_history (user_id, first_name, last_name, email, ip_address, user_agent)
    VALUES ($1, $2, $3, $4, $5, $6)`,
-  [
-    user.id,
-    user.first_name,
-    user.last_name,
-    user.email,
-    req.ip || req.connection.remoteAddress,
-    req.headers['user-agent'] || 'unknown'
-  ]
-);
-
-
+      [
+        user.user_id,
+        user.first_name,
+        user.last_name,
+        user.email,
+        req.ip || req.connection.remoteAddress,
+        req.headers['user-agent'] || 'unknown'
+      ]
+    );
 
     // Create access token (short-lived)
     const accessToken = jwt.sign(
@@ -82,22 +80,22 @@ await pool.query(
       sameSite: 'Strict',
       maxAge: refreshExpiry
     });
-    
-    regenerateCsrfToken(req,res);
+
+    regenerateCsrfToken(req, res);
 
     // Send response
- res.json({
-  status: "SUCCESS",
-  message: "Login successful",
-  data: {
-    first_name: user.first_name,
-    last_name: user.last_name,
-    email: user.email,
-    role: user.role
-  }
-});
+    res.json({
+      status: "SUCCESS",
+      message: "Login successful",
+      data: {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        role: user.role
+      }
+    });
 
- 
+
   } catch (error) {
     console.error('Login error:', error);
     res.json({ status: "FAILED", message: "An error occurred during login" });

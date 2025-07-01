@@ -31,9 +31,9 @@ function App() {
 
         {/* Main Application Pages (Protected) */}
         <Routes>
-          {/*  <Route path="/HomePage" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-        <Route path="/Movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
-        <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} /> */}
+          <Route path="/HomePage" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+          <Route path="/Movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
+          <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} />
 
           {/* Public Pages */}
           {/* Main Application Pages (Non-Protected) */}
@@ -68,7 +68,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
-    </div>
+   // </div>
   );
 }
 
