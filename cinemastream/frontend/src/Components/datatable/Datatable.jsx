@@ -8,17 +8,6 @@ const Datatable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const handleDelete = async (user_id) => {
-  try {
-    const response = await axios.delete(`/api/users/${user_id}`);
-    console.log(response);
-    setUsers(users.filter((user) => user.user_id !== user_id));
-  } catch (error) {
-    console.error(error);
-    alert('Error deleting user');
-  }
-};
-
   const columns: GridColDef[] = [
     { field: 'user_id', headerName: 'ID', width: 70 },
     { field: 'first_name', headerName: 'First name', width: 130 },
@@ -39,20 +28,9 @@ const Datatable = () => {
       ),
     },
     {
-      field: 'action',
-      headerName: 'Action',
-      width: 100,
-      sortable: false,
-      renderCell: (params) => (
-        <div className="action">
-          <span
-            className="badge-btn delete"
-            onClick={() => handleDelete(params.row.user_id)}
-          >
-            Delete
-          </span>
-        </div>
-      ),
+      field: 'role',
+      headerName: 'Role',
+      width: 120,
     },
   ];
 
@@ -68,6 +46,7 @@ const Datatable = () => {
           last_name: user.last_name,
           email: user.email,
           is_verified: user.is_verified,
+          role: user.role,
         })));
       } catch (error) {
         console.error(error);
