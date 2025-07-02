@@ -41,7 +41,6 @@ app.use('/api/auth', require('./api/csrfToken'));
 
 app.use('/api/track', require('./routes/track'));
 app.use('/api/stats', require('./routes/stats'));
-app.use('/api/catalog', require('./routes/catalog'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/watch', require('./routes/watch'));
 

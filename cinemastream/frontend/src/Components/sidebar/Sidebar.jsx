@@ -16,7 +16,7 @@ const Sidebar = () => {
       <hr />
       <div className="dashboard-sidebar-center">
         <ul>
-          <Link to="/" className="link">
+          <Link to="/home" className="link">
             <li>
               <DashboardIcon className="icon" />
               <span>Dashboard</span>
@@ -34,7 +34,7 @@ const Sidebar = () => {
               <span>Stats</span>
             </li>
           </Link>
-          <Link to="/login" className="link">
+          <Link to="/logout" className="link">
             <li>
               <ExitToAppIcon className="icon" />
               <span>Logout</span>

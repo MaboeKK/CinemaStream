@@ -4,65 +4,89 @@ import Paper from '@mui/material/Paper';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 200,
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 120,
-    renderCell: (params) => (
-      <span className={params.value === 'Active' ? 'status active' : 'status passive'}>
-        {params.value}
-      </span>
-    ),
-  },
-  {
-    field: 'action',
-    headerName: 'Action',
-    width: 200,
-    sortable: false,
-    renderCell: (params) => (
-      <div className="action">
-        <span
-          className="badge-btn view"
-          onClick={() => alert(`Viewing user ID ${params.row.id}`)}
-        >
-          View
-        </span>
-        <span
-          className="badge-btn delete"
-          onClick={() => alert(`Deleting user ID ${params.row.id}`)}
-        >
-          Delete
-        </span>
-      </div>
-    ),
-  },
-];
-
-const paginationModel = { page: 0, pageSize: 5 };
-
 const Datatable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleDelete = async (user_id) => {
+    try {
+      await axios.delete(`/api/users/${user_id}`);
+      setUsers(users.filter((user) => user.user_id !== user_id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleVerify = async (user_id) => {
+    try {
+      await axios.patch(`/api/users/verify/${user_id}`);
+      setUsers(users.map((user) => user.user_id === user_id ? { ...user, is_verified: true } : user));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const columns: GridColDef[] = [
+    { field: 'user_id', headerName: 'ID', width: 70 },
+    { field: 'first_name', headerName: 'First name', width: 130 },
+    { field: 'last_name', headerName: 'Last name', width: 130 },
+    {
+      field: 'email',
+      headerName: 'Email',
+      width: 200,
+    },
+    {
+      field: 'is_verified',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params) => (
+        <span className={params.value ? 'status active' : 'status passive'}>
+          {params.value ? 'Verified' : 'Not Verified'}
+        </span>
+      ),
+    },
+    {
+      field: 'role',
+      headerName: 'Role',
+      width: 120,
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 150,
+      sortable: false,
+      renderCell: (params) => (
+        <div className="actions">
+          <span
+            className="badge-btn verify"
+            onClick={() => handleVerify(params.row.user_id)}
+          >
+            Verify
+          </span>
+          <span
+            className="badge-btn delete"
+            onClick={() => handleDelete(params.row.user_id)}
+          >
+            Delete
+          </span>
+        </div>
+      ),
+    },
+  ];
+
+  const paginationModel = { page: 0, pageSize: 5 };
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('/api/users');
         setUsers(response.data.map((user) => ({
-          id: user.user_id, // Use user_id as the unique id
-          firstName: user.first_name,
-          lastName: user.last_name,
+          user_id: user.user_id,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
-          status: user.is_verified ? 'Active' : 'Inactive', // Assuming you want to show status based on is_verified
+          is_verified: user.is_verified,
+          role: user.role,
         })));
       } catch (error) {
         console.error(error);
@@ -85,8 +109,8 @@ const Datatable = () => {
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
-          checkboxSelection
           sx={{ border: 0 }}
+          getRowId={(row) => row.user_id}
           getRowSpacing={() => ({
             top: 8,
             bottom: 8,
