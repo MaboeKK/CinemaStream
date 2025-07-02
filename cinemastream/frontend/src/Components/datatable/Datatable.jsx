@@ -9,13 +9,15 @@ const Datatable = () => {
   const [loading, setLoading] = useState(true);
 
   const handleDelete = async (user_id) => {
-    try {
-      await axios.delete(`/api/users/${user_id}`);
-      setUsers(users.filter((user) => user.user_id !== user_id));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    const response = await axios.delete(`/api/users/${user_id}`);
+    console.log(response);
+    setUsers(users.filter((user) => user.user_id !== user_id));
+  } catch (error) {
+    console.error(error);
+    alert('Error deleting user');
+  }
+};
 
   const columns: GridColDef[] = [
     { field: 'user_id', headerName: 'ID', width: 70 },
