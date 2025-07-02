@@ -97,7 +97,7 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
     };
 
     try {
-      await fetch("http://localhost:5000/api/watch", {
+      await fetch("/api/watch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

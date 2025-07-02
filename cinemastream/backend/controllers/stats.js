@@ -37,7 +37,7 @@ exports.getStats = async (req, res) => {
 };
 
 // Most Watched Trailers (movies + series)
-exports.getMostWatchedTrailers = async (req, res) => {
+exports.getTopPerformingShows = async (req, res) => {
   try {
     const sql = `
       SELECT 
