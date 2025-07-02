@@ -25,11 +25,11 @@ exports.getUserById = async (req, res) => {
       WHERE id = $1;
     `;
     const { rows } = await pool.query(sql, [id]);
-    
+
     if (rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
-    
+
     res.json(rows[0]);
   } catch (err) {
     console.error("Error fetching user:", err);
@@ -66,11 +66,11 @@ exports.updateUser = async (req, res) => {
       RETURNING *;
     `;
     const { rows } = await pool.query(sql, [firstName, lastName, email, status, id]);
-    
+
     if (rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
-    
+
     res.json(rows[0]);
   } catch (err) {
     console.error("Error updating user:", err);
@@ -88,11 +88,11 @@ exports.deleteUser = async (req, res) => {
       RETURNING *;
     `;
     const { rows } = await pool.query(sql, [id]);
-    
+
     if (rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
-    
+
     res.json({ message: "User deleted successfully" });
   } catch (err) {
     console.error("Error deleting user:", err);
