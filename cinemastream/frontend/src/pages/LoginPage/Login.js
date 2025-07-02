@@ -24,13 +24,24 @@ const handleLogin = async (e) => {
 
     const { status, message, data, csrfToken: newCsrfToken } = response.data;
 
-    if (status === "SUCCESS") {
+   if (status === "SUCCESS") {
   toast.success(message || 'Login successful');
+
   if (rememberMe) localStorage.setItem("rememberedEmail", email);
+
+  const role = data.role; // Extract role from backend response
+
   setTimeout(() => {
-    navigate('/Home');
+    if (role === 'admin') {
+      navigate('/home');
+    } else if (role === 'guest') {
+      navigate('/Homepage');
+    } else {
+      navigate('/'); // fallback
+    }
   }, 500); // wait 0.5s for cookies to sync
 }
+
  else if (message === "Please verify your email to login") {
       toast.warn("Please verify your email.");
       navigate('/verify-otp');
