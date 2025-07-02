@@ -8,6 +8,24 @@ const Datatable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const handleDelete = async (user_id) => {
+    try {
+      await axios.delete(`/api/users/${user_id}`);
+      setUsers(users.filter((user) => user.user_id !== user_id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleVerify = async (user_id) => {
+    try {
+      await axios.patch(`/api/users/verify/${user_id}`);
+      setUsers(users.map((user) => user.user_id === user_id ? { ...user, is_verified: true } : user));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const columns: GridColDef[] = [
     { field: 'user_id', headerName: 'ID', width: 70 },
     { field: 'first_name', headerName: 'First name', width: 130 },
@@ -31,6 +49,28 @@ const Datatable = () => {
       field: 'role',
       headerName: 'Role',
       width: 120,
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 150,
+      sortable: false,
+      renderCell: (params) => (
+        <div className="actions">
+          <span
+            className="badge-btn verify"
+            onClick={() => handleVerify(params.row.user_id)}
+          >
+            Verify
+          </span>
+          <span
+            className="badge-btn delete"
+            onClick={() => handleDelete(params.row.user_id)}
+          >
+            Delete
+          </span>
+        </div>
+      ),
     },
   ];
 
