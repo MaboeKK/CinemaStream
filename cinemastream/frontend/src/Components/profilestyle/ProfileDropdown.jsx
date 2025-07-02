@@ -1,25 +1,14 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import "./ProfileDropdown.scss";
 
-const ProfileDropdown = ({ adminData, onEdit, onClose }) => {
-  const dropdownRef = useRef();
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        onClose();
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [onClose]);
-
+const ProfileDropdown = ({ adminData, onClose }) => {
   return (
-    <div className="profile-dropdown" ref={dropdownRef}>
-      <h4>{adminData.name}</h4>
-      <p>{adminData.email}</p>
-      {/* <p className="login">Last Login: {adminData.lastlogin}</p>
-      <button onClick={onEdit}>Edit Profile</button> */}
+    <div className="profile-dropdown">
+      <div className="profile-info">
+        <h3>{adminData?.name || "User"}</h3>
+        <p>{adminData?.email || "No email available"}</p>
+      </div>
+      <button onClick={onClose}>Close</button>
     </div>
   );
 };
