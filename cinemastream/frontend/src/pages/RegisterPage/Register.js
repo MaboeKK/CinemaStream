@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import './Auth.css';
 import { MdEmail } from 'react-icons/md';
@@ -5,6 +6,7 @@ import { FaLock, FaUser } from 'react-icons/fa';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import getCsrfToken from '../../hooks/useCsrfToken';
 
 const Register = () => {
@@ -36,14 +38,18 @@ const Register = () => {
       const response = await axios.post(
         '/api/auth/register',
         { first_name, last_name, email, password },
-       {headers: { 'X-CSRF-Token': csrfToken },
-       withCredentials: true }
+        { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
       );
 
       const { status, message } = response.data;
 
       if (status === 'SUCCESS') {
-        alert(message);
+        toast.success(
+          <div>
+            <p>Registration successful!</p>
+            <p>Please verify your email to login.</p>
+          </div>
+        );
         navigate('/verify-otp', { state: { email } });
       } else {
         setErrorMessage(message || 'Registration failed');
@@ -56,7 +62,7 @@ const Register = () => {
       setLoading(false); 
     }
   };
-
+  
   return (
      <div className="auth-page">
     <div className="wrapper">

@@ -2,18 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Auth.css"; // Your CSS file
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import getCsrfToken from '../../hooks/useCsrfToken';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
 
     try {
       const csrfToken = await getCsrfToken();
@@ -23,7 +20,12 @@ const ForgotPassword = () => {
        {headers: { 'X-CSRF-Token': csrfToken },
        withCredentials: true }
     );
-      setMessage(res.data.message);
+      toast.success(
+        <div>
+          <p>OTP sent successfully!</p>
+          <p>You will be redirected to the reset password page shortly.</p>
+        </div>
+      );
 
       // Save email for reset password page
       localStorage.setItem("resetEmail", email);
@@ -33,7 +35,7 @@ const ForgotPassword = () => {
         navigate("/reset-password");
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong");
+      toast.error(err.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -54,9 +56,6 @@ const ForgotPassword = () => {
           </div>
 
           <button type="submit">Send OTP</button>
-
-          {message && <p style={{ color: "green", textAlign: "center" }}>{message}</p>}
-          {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
 
           <div className="register-link">
             <p>

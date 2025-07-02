@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Auth.css"; // Same CSS as ForgotPassword
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import getCsrfToken from '../../hooks/useCsrfToken';
 
 const ResetPassword = () => {
   const [reset_token, setResetToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -22,21 +22,25 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
     setError("");
 
     try {
       setLoading(true);
-    const csrfToken = await getCsrfToken();
+      const csrfToken = await getCsrfToken();
       const res = await axios.post('/api/auth/reset-password', {
         email,
-        resetToken: reset_token,  // sending as resetToken to match backend param
+        resetToken: reset_token,  
         newPassword},
       {headers: { 'X-CSRF-Token': csrfToken },
       withCredentials: true }
       );
 
-      setMessage(res.data.message);
+      toast.success(
+        <div>
+          <p>Password reset successful!</p>
+          <p>You will be redirected to the login page shortly.</p>
+        </div>
+      );
       localStorage.removeItem("resetEmail");
       setTimeout(() => {
         navigate("/login");
@@ -78,7 +82,6 @@ const ResetPassword = () => {
             {loading ? "Resetting..." : "Reset Password"}
           </button>
 
-          {message && <p style={{ color: "green", textAlign: "center" }}>{message}</p>}
           {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
 
           <div className="register-link">
@@ -94,4 +97,3 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
-
