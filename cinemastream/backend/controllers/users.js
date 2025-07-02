@@ -4,7 +4,7 @@ const pool = require("../config/db");
 exports.getUsers = async (req, res) => {
   try {
     const sql = `
-      SELECT *
+      SELECT user_id, first_name, last_name, email, role, is_verified
       FROM users;
     `;
     const { rows } = await pool.query(sql);

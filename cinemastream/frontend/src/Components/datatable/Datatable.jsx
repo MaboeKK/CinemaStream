@@ -58,7 +58,7 @@ const Datatable = () => {
       renderCell: (params) => (
         <div className="actions">
           <span
-            className="badge-btn verify"
+            className={params.row.is_verified ? 'badge-btn verify disabled' : 'badge-btn verify'}
             onClick={() => handleVerify(params.row.user_id)}
           >
             Verify
@@ -115,6 +115,7 @@ const Datatable = () => {
             top: 8,
             bottom: 8,
           })}
+          disableSelectionOnClick
         />
       </Paper>
     </div>
