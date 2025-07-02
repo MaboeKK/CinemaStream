@@ -4,6 +4,7 @@ import { MdEmail } from 'react-icons/md';
 import { FaLock } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import getCsrfToken from '../../hooks/useCsrfToken';
 
 const VerifyOtp = () => {
@@ -14,7 +15,6 @@ const VerifyOtp = () => {
   const [otp, setOtp] = useState('');
   const [timeLeft, setTimeLeft] = useState(180); // 3 minutes countdown
   const [resendAvailable, setResendAvailable] = useState(false);
-  const [message, setMessage] = useState('');
 
   // Countdown logic
   useEffect(() => {
@@ -53,13 +53,18 @@ const VerifyOtp = () => {
       const { status, message } = response.data;
 
       if (status === "SUCCESS") {
-        alert('Verification successful!');
+        toast.success(
+          <div>
+            <p>Verification successful!</p>
+            <p>You will be redirected to the login page shortly.</p>
+          </div>
+        );
         navigate('/login');
       } else {
-        alert(message || 'Verification failed');
+        toast.error(message || 'Verification failed');
       }
     } catch (err) {
-      alert('Error verifying OTP: ' + (err.response?.data?.message || err.message));
+      toast.error('Error verifying OTP: ' + (err.response?.data?.message || err.message));
     }
   };
 
@@ -76,11 +81,11 @@ const VerifyOtp = () => {
       );
 
       const { message } = response.data;
-      alert(message || 'OTP resent');
+      toast.success(message || 'OTP resent');
       setTimeLeft(180);
       setResendAvailable(false);
     } catch (err) {
-      alert('Failed to resend OTP: ' + (err.response?.data?.message || err.message));
+      toast.error('Failed to resend OTP: ' + (err.response?.data?.message || err.message));
     }
   };
 
