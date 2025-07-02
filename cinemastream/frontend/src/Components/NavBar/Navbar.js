@@ -14,9 +14,10 @@ function Navbar() {
 
       {/* Navigation links on the right */}
       <div className="navbar-items">
-        <Link to="/" className="navbar-item">Home</Link>
+        <Link to="/Homepage" className="navbar-item">Home</Link>
         <Link to="/movies" className="navbar-item">Movies</Link>
         <Link to="/series" className="navbar-item">Series</Link>
+        <Link to="/login" className="navbar-item">Logout</Link>
        
       </div>
     </nav>

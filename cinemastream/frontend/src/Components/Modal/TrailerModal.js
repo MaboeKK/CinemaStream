@@ -1,25 +1,135 @@
+// import React from "react";
+// import "./TrailerModal.css";
+
+// function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
+//   if (!isOpen) return null;
+
+//   const { name = "Series Details", overview = "", genres = [], actors = [] } = modalContent;
+
+//   return (
+//     <div className="modal-overlay" onClick={onClose}>
+//       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+//         <button className="modal-close" onClick={onClose}>×</button>
+
+//         {trailerUrl && (
+//           <iframe
+//             width="100%"
+//             height="400"
+//             src={trailerUrl}
+//             title="Trailer"
+//             frameBorder="0"
+//             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+//             allowFullScreen
+//           />
+//         )}
+
+//         <div className="modal-details">
+//           <h3>{name}</h3>
+//           <p>{overview}</p>
+
+//           <h4>Genres:</h4>
+//           <ul>
+//             {genres.map((genre) => (
+//               <li key={genre.id}>{genre.name}</li>
+//             ))}
+//           </ul>
+
+//           <h4>Actors:</h4>
+//           <ul className="actors-list">
+//             {actors.map((actor) => (
+//               <li key={actor.cast_id} className="actor-item">
+//                 {actor.profile_path && (
+//                   <img
+//                     src={`https://image.tmdb.org/t/p/w92${actor.profile_path}`}
+//                     alt={actor.name}
+//                     className="actor-image"
+//                   />
+//                 )}
+//                 <span>
+//                   {actor.name} as {actor.character}
+//                 </span>
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default TrailerModal;
+
 import React from "react";
+import YouTube from "react-youtube";
 import "./TrailerModal.css";
 
 function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
   if (!isOpen) return null;
 
-  const { name = "Series Details", overview = "", genres = [], actors = [] } = modalContent;
+  const {
+    name = "Series Details",
+    overview = "",
+    genres = [],
+    actors = [],
+    rawItem = null,
+  } = modalContent;
+
+  // Extract YouTube video ID
+  const getVideoId = (url) => {
+    const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+    return match ? match[1] : null;
+  };
+
+  const videoId = getVideoId(trailerUrl);
+
+  const trackTrailerPlay = async () => {
+    if (!rawItem) return;
+
+    const isMovie = rawItem.media_type === "movie" || rawItem.title;
+
+    const payload = {
+      user_id: 0, // Replace if needed
+      movie_id: isMovie ? rawItem.id : null,
+      series_id: !isMovie ? rawItem.id : null,
+      movie_title: isMovie ? (rawItem.title || rawItem.name) : null,
+      series_name: !isMovie ? (rawItem.name || rawItem.title) : null,
+      event_type: "trailer_click",
+    };
+
+    try {
+      await fetch("http://localhost:5000/api/watch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
+      console.log("✅ Trailer play tracked");
+    } catch (error) {
+      console.error("❌ Tracking failed", error);
+    }
+  };
+
+  const onPlayerStateChange = (event) => {
+    if (event.data === 1) {
+      // 1 = playing
+      trackTrailerPlay();
+    }
+  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>×</button>
 
-        {trailerUrl && (
-          <iframe
-            width="100%"
-            height="400"
-            src={trailerUrl}
-            title="Trailer"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
+        {videoId && (
+          <YouTube
+            videoId={videoId}
+            opts={{
+              width: "100%",
+              height: "400",
+              playerVars: { autoplay: 1 },
+            }}
+            onStateChange={onPlayerStateChange}
           />
         )}
 
@@ -45,9 +155,7 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
                     className="actor-image"
                   />
                 )}
-                <span>
-                  {actor.name} as {actor.character}
-                </span>
+                <span>{actor.name} as {actor.character}</span>
               </li>
             ))}
           </ul>
@@ -58,3 +166,4 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
 }
 
 export default TrailerModal;
+

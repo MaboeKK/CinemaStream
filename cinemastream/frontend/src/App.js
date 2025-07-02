@@ -20,7 +20,7 @@ import Home from './pages/home/Home';
 import './style/dark.scss'; //For dark mode
 import { DarkModeContext } from './context/darkModeContext';
 
-import ProtectedRoute from './component/ProtectedRoute';
+//import ProtectedRoute from './component/ProtectedRoute';
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -31,9 +31,9 @@ function App() {
 
         {/* Main Application Pages (Protected) */}
         <Routes>
-          <Route path="/HomePage" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+          {/* <Route path="/HomePage" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
           <Route path="/Movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
-          <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} />
+          <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} /> */}
 
           {/* Public Pages */}
           {/* Main Application Pages (Non-Protected) */}
@@ -44,6 +44,8 @@ function App() {
 
           {/* User Management */}
           <Route path="/" element={<LandingPage />} />
+            <Route path="/movies" element={<Movies/>} />
+             <Route path="/series" element={<Series/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
@@ -73,3 +75,4 @@ function App() {
 }
 
 export default App;
+

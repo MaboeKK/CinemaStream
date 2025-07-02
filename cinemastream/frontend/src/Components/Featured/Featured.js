@@ -1,4 +1,5 @@
 import "./featured.scss";
+import { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -6,33 +7,56 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
+  Cell,
 } from "recharts";
 
-const data = [
-  { name: "Monday", uv: 4000, pv: 2400 },
-  { name: "Tuesday", uv: 3000, pv: 1398 },
-  { name: "Wednesday", uv: 2000, pv: 9800 },
-  { name: "Thursday", uv: 2780, pv: 3908 },
-  { name: "Friday", uv: 1890, pv: 4800 },
-  { name: "Saturday", uv: 2390, pv: 3800 },
-  { name: "Sunday", uv: 3490, pv: 4300 },
-];
-
 const Featured = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/stats/top-shows")
+      .then((res) => res.json())
+      .then((rows) => {
+        // sort descending by total_views
+        const sorted = rows.sort((a, b) => b.total_views - a.total_views);
+        setData(sorted);
+      })
+      .catch(console.error);
+  }, []);
+
   return (
     <div className="featured">
-      <h2 className="featured-title">Top performing shows</h2>
+      <h2 className="featured-title">Most Watched Trailers</h2>
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+        <BarChart
+          data={data}
+          margin={{ top: 20, right: 30, left: 0, bottom: 80 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-          <XAxis dataKey="name" stroke="#ccc" />
+          <XAxis
+            dataKey="name"
+            stroke="#ccc"
+            interval={0}
+            angle={-45}
+            textAnchor="end"
+            height={60}
+            tick={{ fill: "#ccc" }}
+            tickMargin={10}
+          />
           <YAxis stroke="#ccc" />
-          <Tooltip contentStyle={{ backgroundColor: "#222", border: "none" }} />
-          <Legend />
-          <Bar dataKey="pv" name="Movies" fill="#e50914" />
-          <Bar dataKey="uv" name="Series" fill="#8884d8" />
+          <Tooltip
+            contentStyle={{ backgroundColor: "#222", border: "none", color: "#fff" }}
+            labelStyle={{ color: "#fff" }}
+          />
+          <Bar dataKey="total_views" name="Views">
+            {data.map((entry) => (
+              <Cell
+                key={entry.name}
+                fill={entry.type === "Movie" ? "#e50914" : "#8884d8"}
+              />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>

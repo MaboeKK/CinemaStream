@@ -14,7 +14,6 @@ const StatsCard = ({title, value}) => {
   const stats = [
     { title: "Total Trailers Watched", value: 2456 },
     { title: "Most Watched Trailer", value: "Avengers: Secret Wars" },
-    { title: "Searches With No Result", value: 87 },
     { title: "Top Genre", value: "Rom-Com" },
     { title: "Rewatches", value: 989 },
     { title: "Active Users", value: "156 of 872" },

@@ -1,7 +1,8 @@
-
 import "./datatable.scss";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -46,26 +47,41 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  { id: 1, firstName: 'Mpondo', lastName: 'Robben', email: 'mpondo.robben@example.com', status: 'Active' },
-  { id: 2, firstName: 'Khoza', lastName: 'Lala', email: 'khoza.lala@example.com', status: 'Passive' },
-  { id: 3, firstName: 'Crocs', lastName: 'Shaun', email: 'crocs.shaun@example.com', status: 'Passive' },
-  { id: 4, firstName: 'Mpondo', lastName: 'Solly', email: 'mpondo.solly@example.com', status: 'Active' },
-  { id: 5, firstName: 'Shitolo', lastName: 'Raymond', email: 'shitolo.raymond@example.com', status: 'Passive' },
-  { id: 6, firstName: null, lastName: 'Mellisa', email: 'mellisa@example.com', status: 'Active' },
-  { id: 7, firstName: 'Pheka', lastName: 'Clifford', email: 'pheka.clifford@example.com', status: 'Active' },
-  { id: 8, firstName: 'Mdebuka', lastName: 'France', email: 'mdebuka.france@example.com', status: 'Passive' },
-  { id: 9, firstName: 'Mdebuka', lastName: 'Ronnie', email: 'mdebuka.ronnie@example.com', status: 'Active' },
-];
-
 const paginationModel = { page: 0, pageSize: 5 };
 
 const Datatable = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('/api/users');
+        setUsers(response.data.map((user) => ({
+          id: user.user_id, // Use user_id as the unique id
+          firstName: user.first_name,
+          lastName: user.last_name,
+          email: user.email,
+          status: user.is_verified ? 'Active' : 'Inactive', // Assuming you want to show status based on is_verified
+        })));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="datatable">
       <Paper sx={{ height: 500, width: '100%' }}>
         <DataGrid
-          rows={rows}
+          rows={users}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
@@ -82,9 +98,3 @@ const Datatable = () => {
 };
 
 export default Datatable;
-
-
-
-
-
-
