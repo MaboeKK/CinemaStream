@@ -19,7 +19,7 @@ const Datatable = () => {
 
   const handleVerify = async (user_id) => {
     try {
-      await axios.patch(`/api/users/verify/${user_id}`);
+      await axios.patch(`/api/users/${user_id}`);
       setUsers(users.map((user) => user.user_id === user_id ? { ...user, is_verified: true } : user));
     } catch (error) {
       console.error(error);
@@ -58,7 +58,7 @@ const Datatable = () => {
       renderCell: (params) => (
         <div className="actions">
           <span
-            className="badge-btn verify"
+            className={params.row.is_verified ? 'badge-btn verify disabled' : 'badge-btn verify'}
             onClick={() => handleVerify(params.row.user_id)}
           >
             Verify
@@ -115,6 +115,7 @@ const Datatable = () => {
             top: 8,
             bottom: 8,
           })}
+          disableSelectionOnClick
         />
       </Paper>
     </div>
