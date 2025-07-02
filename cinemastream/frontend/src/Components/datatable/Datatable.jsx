@@ -88,9 +88,8 @@ const Datatable = () => {
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
-          checkboxSelection
           sx={{ border: 0 }}
-          getRowId={(row) => row.user_id} // Add this line
+          getRowId={(row) => row.user_id}
           getRowSpacing={() => ({
             top: 8,
             bottom: 8,
