@@ -15,12 +15,11 @@ import Series from './pages/SeriesPage/Series';
 // Admin Pages
 import List from './pages/list/list';
 import Statistics from './pages/stats/stats';
-import New from './pages/new/new';
 import Home from './pages/home/Home';
 import './style/dark.scss'; //For dark mode
 import { DarkModeContext } from './context/darkModeContext';
 
-//import ProtectedRoute from './component/ProtectedRoute';
+import ProtectedRoute from './component/ProtectedRoute';
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -31,9 +30,18 @@ function App() {
 
         {/* Main Application Pages (Protected) */}
         <Routes>
-          {/* <Route path="/HomePage" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+          <Route path="/HomePage" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
           <Route path="/Movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
-          <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} /> */}
+          <Route path="/Series" element={<ProtectedRoute><Series /></ProtectedRoute>} />
+           {/* Admin Pages */}
+          {/* User Profile and Statistics * (Protected)*/}
+          <Route path="/stats" element={<ProtectedRoute><Statistics /></ProtectedRoute>} />
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+
+          {/* List Pages * (Protected) */ }
+          <Route path="/list" element={<ProtectedRoute><List /></ProtectedRoute>} />
+          <Route path="/product" element={<ProtectedRoute><List /></ProtectedRoute>} />
+          <Route path="/users" element={<ProtectedRoute><List /></ProtectedRoute>} />
 
           {/* Public Pages */}
           {/* Main Application Pages (Non-Protected) */}
@@ -41,11 +49,8 @@ function App() {
           <Route path="/movies" element={<Movies />} />
           <Route path="/series" element={<Series />} />
 
-
           {/* User Management */}
           <Route path="/" element={<LandingPage />} />
-            <Route path="/movies" element={<Movies/>} />
-             <Route path="/series" element={<Series/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
@@ -54,14 +59,13 @@ function App() {
 
           {/* Admin Pages */}
           {/* User Profile and Statistics */}
-          <Route path="/profile" element={<New />} />
-          <Route path="/stats" element={<Statistics />} />
-          <Route path="/home" element={<Home />} />
+          {/* <Route path="/stats" element={<Statistics />} />
+          <Route path="/home" element={<Home />} /> */}
 
           {/* List Pages */}
-          <Route path="/list" element={<List />} />
+          {/* <Route path="/list" element={<List />} />
           <Route path="/product" element={<List />} />
-          <Route path="/users" element={<List />} />
+          <Route path="/users" element={<List />} /> */}
 
 
           {/* <Route path="/product/single" element={<Single />} /> */}
@@ -75,4 +79,3 @@ function App() {
 }
 
 export default App;
-
