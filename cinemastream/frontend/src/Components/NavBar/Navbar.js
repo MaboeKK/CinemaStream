@@ -17,7 +17,7 @@ function Navbar() {
         <Link to="/Homepage" className="navbar-item">Home</Link>
         <Link to="/movies" className="navbar-item">Movies</Link>
         <Link to="/series" className="navbar-item">Series</Link>
-        <Link to="/login" className="navbar-item">Logout</Link>
+        <Link to="/logout" className="navbar-item">Logout</Link>
        
       </div>
     </nav>
