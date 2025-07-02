@@ -18,27 +18,21 @@ const columns: GridColDef[] = [
     headerName: 'Status',
     width: 120,
     renderCell: (params) => (
-      <span className={params.value === 'Active' ? 'status active' : 'status passive'}>
-        {params.value}
+      <span className={params.row.is_verified ? 'status active' : 'status passive'}>
+        {params.row.is_verified ? 'Verified' : 'Not Verified'}
       </span>
     ),
   },
   {
     field: 'action',
     headerName: 'Action',
-    width: 200,
+    width: 100,
     sortable: false,
     renderCell: (params) => (
       <div className="action">
         <span
-          className="badge-btn view"
-          onClick={() => alert(`Viewing user ID ${params.row.id}`)}
-        >
-          View
-        </span>
-        <span
           className="badge-btn delete"
-          onClick={() => alert(`Deleting user ID ${params.row.id}`)}
+          onClick={() => handleDelete(params.row.id)}
         >
           Delete
         </span>
@@ -58,11 +52,11 @@ const Datatable = () => {
       try {
         const response = await axios.get('/api/users');
         setUsers(response.data.map((user) => ({
-          id: user.user_id, // Use user_id as the unique id
+          id: user.id,
           firstName: user.first_name,
           lastName: user.last_name,
           email: user.email,
-          status: user.is_verified ? 'Active' : 'Inactive', // Assuming you want to show status based on is_verified
+          is_verified: user.is_verified,
         })));
       } catch (error) {
         console.error(error);
@@ -72,6 +66,15 @@ const Datatable = () => {
     };
     fetchUsers();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/users/${id}`);
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
