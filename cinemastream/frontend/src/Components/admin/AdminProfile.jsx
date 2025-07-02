@@ -8,7 +8,8 @@ const AdminProfile = ({ user }) => {
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
       <InitialsAvatar 
-        fullName={user?.name || "User"} 
+        firstName={user?.first_name || ""}
+        lastName={user?.last_name || ""}
         onClick={() => setOpen(!open)} 
       />
       {open && (
