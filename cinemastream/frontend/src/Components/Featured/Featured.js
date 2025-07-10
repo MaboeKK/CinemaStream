@@ -1,3 +1,4 @@
+import React from "react";
 import "./featured.scss";
 import { useState, useEffect } from "react";
 import {
@@ -18,7 +19,6 @@ const Featured = () => {
     fetch("/api/stats/top-shows")
       .then((res) => res.json())
       .then((rows) => {
-        // sort descending by total_views
         const sorted = rows.sort((a, b) => b.total_views - a.total_views);
         setData(sorted);
       })
