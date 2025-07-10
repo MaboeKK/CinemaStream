@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
-  const [searchQuery, setSearchQuery] = useState('');
-
   return (
     <nav className="navbar">
       {/* Logo on the left */}
@@ -18,7 +16,6 @@ function Navbar() {
         <Link to="/movies" className="navbar-item">Movies</Link>
         <Link to="/series" className="navbar-item">Series</Link>
         <Link to="/logout" className="navbar-item">Logout</Link>
-       
       </div>
     </nav>
   );
