@@ -63,7 +63,7 @@ export default function LandingPage() {
       <main className="main-content">
         <div className="getting-started">
           <h2>Get access to the best movies and TV shows</h2>
-          <p>Stream your favourite shows to your heart's content.</p>
+          <p>Stream your favourite shows to your heart&apos;s content.</p>
           <p>Ready to enjoy? Click register and join us now.</p>
           <ul className="main-link">
             <li>
