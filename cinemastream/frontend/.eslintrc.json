@@ -5,7 +5,8 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -14,14 +15,16 @@
       "jsx": true
     }
   },
-  "plugins": ["react"],
+  "plugins": ["react", "react-hooks"],
   "rules": {
     "react/prop-types": "off"
   },
+  "globals": {
+    "process": "readonly"
+  },
   "settings": {
-  "react": {
-    "version": "detect"
+    "react": {
+      "version": "detect"
+    }
   }
-}
-
 }

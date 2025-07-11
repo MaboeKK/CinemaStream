@@ -4,8 +4,8 @@ import TrailerModal from "../../Components/Modal/TrailerModal";
 import { fetchGenres } from "../../api/tmdb";
 import { fetchYoutubeTrailer } from "../../api/youtube";
 import Search from "../../Components/SearchBar/Search";
-import "./Movies.css"; 
-
+import GenreFilter from "../../Components/GenreFilter/Filter";
+import "./Movies.css";
 
 function Movies() {
   const [movieList, setMovieList] = useState([]);
@@ -32,12 +32,12 @@ function Movies() {
     setMovieList([]);
     setPage(1);
     loadMovies(true);
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGenre, searchTerm]);
 
   useEffect(() => {
     if (page > 1) loadMovies();
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const loadMovies = async (reset = false) => {
@@ -102,23 +102,13 @@ function Movies() {
             }}
           />
 
-          <div className="genre-filter">
-            <label htmlFor="movie-genre-select" style={{ marginRight: "10px", fontWeight: "bold" }}>
-              Genre:
-            </label>
-            <select
-              id="movie-genre-select"
-              value={selectedGenre}
-              onChange={(e) => setSelectedGenre(e.target.value)}
-            >
-              <option value="">Select Genre</option>
-              {genres.map((genre) => (
-                <option key={genre.id} value={genre.id}>
-                  {genre.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <GenreFilter
+            genres={genres}
+            selectedGenre={selectedGenre}
+            onChange={(e) => setSelectedGenre(e.target.value)}
+            id="movie-genre-select"
+            label="Genre"
+          />
         </div>
 
         <div className="series-grid">
