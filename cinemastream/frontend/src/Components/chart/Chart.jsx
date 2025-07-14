@@ -1,4 +1,5 @@
 import "./chart.scss";
+import React from "react";
 import { useState, useEffect } from "react";
 import {
   LineChart,
