@@ -1,6 +1,6 @@
 import React from "react";
 import "./datatable.scss";
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -9,7 +9,7 @@ const Datatable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const columns: GridColDef[] = [
+  const columns = [
     { field: 'user_id', headerName: 'ID', width: 70 },
     { field: 'first_name', headerName: 'First name', width: 130 },
     { field: 'last_name', headerName: 'Last name', width: 130 },
