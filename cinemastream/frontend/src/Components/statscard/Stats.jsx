@@ -1,3 +1,4 @@
+import React from "react";
 import "./Stats.scss";
 //import StatsCard from "./StatsCard";
 

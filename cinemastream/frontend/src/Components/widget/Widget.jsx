@@ -1,4 +1,4 @@
-
+import React from "react";
 import "./widget.scss";
 import { Link } from "react-router-dom";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";

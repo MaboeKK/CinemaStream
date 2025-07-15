@@ -1,3 +1,4 @@
+import React from "react";
 import "./list.scss"
 import Sidebar from "../../Components/sidebar/Sidebar"
 import Navbar from "../../Components/dashNavbar/Navbar"
@@ -16,7 +17,3 @@ const List = () => {
 };
 
 export default List
-
-
-
-

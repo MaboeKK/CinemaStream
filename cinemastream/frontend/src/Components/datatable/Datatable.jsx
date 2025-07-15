@@ -1,3 +1,4 @@
+import React from "react";
 import "./datatable.scss";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';

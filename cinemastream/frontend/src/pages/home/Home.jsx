@@ -1,4 +1,4 @@
-
+import React from "react";
 import "./home.scss";
 import Sidebar from "../../Components/sidebar/Sidebar";
 import Navbar from "../../Components/dashNavbar/Navbar";
