@@ -22,7 +22,8 @@ const Login = () => {
         { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
       );
 
-      const { status, message, data, csrfToken: newCsrfToken } = response.data;
+      const { status, message, data } = response.data;
+
 
       if (status === "SUCCESS") {
         toast.success(
@@ -100,7 +101,7 @@ const Login = () => {
             <button type="submit">Login</button>
 
             <div className="register-link">
-              <p>Don't have an account? <Link to="/register">Register</Link></p>
+             <p>Don&apos;t have an account? <Link to="/register">Register</Link></p>
             </div>
           </form>
         </div>
