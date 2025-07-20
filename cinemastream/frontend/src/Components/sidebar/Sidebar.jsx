@@ -3,7 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 

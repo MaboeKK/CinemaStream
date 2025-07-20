@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./Auth.css"; // Your CSS file
+import "./Auth.css";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
-import getCsrfToken from '../../hooks/useCsrfToken';
+import { toast } from "react-toastify";
+import getCsrfToken from "../../hooks/useCsrfToken";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -14,12 +14,16 @@ const ForgotPassword = () => {
 
     try {
       const csrfToken = await getCsrfToken();
-      const res = await axios.post('/api/auth/forgot-password', {
-        email,
-      },
-       {headers: { 'X-CSRF-Token': csrfToken },
-       withCredentials: true }
-    );
+
+      await axios.post(
+        "/api/auth/forgot-password",
+        { email },
+        {
+          headers: { "X-CSRF-Token": csrfToken },
+          withCredentials: true,
+        }
+      );
+
       toast.success(
         <div>
           <p>OTP sent successfully!</p>
@@ -27,10 +31,8 @@ const ForgotPassword = () => {
         </div>
       );
 
-      // Save email for reset password page
       localStorage.setItem("resetEmail", email);
 
-      // Redirect after short delay to reset password page
       setTimeout(() => {
         navigate("/reset-password");
       }, 1500);
@@ -59,8 +61,7 @@ const ForgotPassword = () => {
 
           <div className="register-link">
             <p>
-              Remember your password?{" "}
-              <Link to="/login">Login</Link>
+              Remember your password? <Link to="/login">Login</Link>
             </p>
           </div>
         </form>
