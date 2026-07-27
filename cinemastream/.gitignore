@@ -1,1 +1,6 @@
 node_modules/
+
+# Full production data dump (real user PII, real password hashes) -- local use only,
+# for seeding a local dev DB. The version-controlled schema lives at backend/db/schema.sql.
+cinemastream.sql
+backend/db/seed.local.sql
