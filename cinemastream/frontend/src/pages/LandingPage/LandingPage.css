@@ -31,13 +31,13 @@ ul {
   justify-content: space-between;
   align-items: center;
 }
-  /* Highlighted part of logo */
-  .navbar-logo .highlight {
-    color: #e50914; /* Cinema-red color  */
-  }
+/* Highlighted part of logo */
+.navbar-logo .highlight {
+  color: #e50914; /* Cinema-red color  */
+}
 
- /* Logo styles */
- .navbar-logo {
+/* Logo styles */
+.navbar-logo {
   font-size: 1.5rem; /* Logo size */
   font-weight: bold; /* Bold text */
   cursor: pointer; /* Pointer cursor on hover */

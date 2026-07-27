@@ -1,6 +1,6 @@
 // src/api/tmdb.js
-const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
-const BASE_URL = "https://api.themoviedb.org/3";
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+const BASE_URL = 'https://api.themoviedb.org/3';
 
 // To fetch trending mocies/series
 export async function fetchTrending() {
@@ -8,7 +8,6 @@ export async function fetchTrending() {
   const data = await res.json();
   return data.results;
 }
-
 
 export async function fetchPopularSeries() {
   const res = await fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&language=en-US&page=1`);
@@ -22,5 +21,3 @@ export async function fetchPopularMovies() {
   const data = await res.json();
   return data.results;
 }
-
-

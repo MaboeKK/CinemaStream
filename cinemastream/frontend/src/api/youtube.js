@@ -1,5 +1,5 @@
 // Youtube API TO FETCH TRAILER
-const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
+const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 
 export const fetchYoutubeTrailer = async (movieTitle) => {
   const searchQuery = `${movieTitle} official trailer`;

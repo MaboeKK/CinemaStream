@@ -1,8 +1,8 @@
-#  CinemaStream
+# CinemaStream
 
 CinemaStream is a modern, responsive web application for browsing, streaming, and managing movies and series.Built with React, it delivers a dynamic and user-friendly experience.
 
-##  Features
+## Features
 
 - Browse trending and top-rated movies & series
 - Responsive design for all devices
@@ -12,7 +12,7 @@ CinemaStream is a modern, responsive web application for browsing, streaming, an
 
 --
 
-##  Technologies Used
+## Technologies Used
 
 - React
 - Visual studio code
@@ -23,5 +23,5 @@ CinemaStream is a modern, responsive web application for browsing, streaming, an
 - Express
 - PostgreSQL
 
-Getting started 
+Getting started
 -
