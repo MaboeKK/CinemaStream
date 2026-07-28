@@ -139,7 +139,7 @@ const Register = () => {
           <p style={{ color: 'red', fontSize: '0.9rem', marginBottom: '10px' }}>{errorMessage}</p>
         )}
 
-        <button type="submit" disabled={!doPasswordsMatch}>
+        <button type="submit" className="btn-primary" disabled={!doPasswordsMatch}>
           Register
         </button>
 

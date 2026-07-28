@@ -27,7 +27,7 @@ function ProfileMenu() {
         <div className="profile-menu-dropdown">
           <p className="profile-menu-name">{fullName || 'Account'}</p>
           <p className="profile-menu-email">{user?.email}</p>
-          <button className="profile-menu-logout" onClick={handleLogout}>
+          <button className="profile-menu-logout btn-primary" onClick={handleLogout}>
             Logout
           </button>
         </div>

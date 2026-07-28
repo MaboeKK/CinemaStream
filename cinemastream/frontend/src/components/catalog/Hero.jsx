@@ -60,11 +60,11 @@ function Hero({ onPlayTrailer }) {
         <p className="hero-overview">{featured.overview}</p>
 
         <div className="hero-actions">
-          <button className="hero-btn primary" onClick={() => onPlayTrailer?.(featured)}>
+          <button className="hero-btn btn-primary" onClick={() => onPlayTrailer?.(featured)}>
             <FaPlay /> Watch Now
           </button>
           <button
-            className={`hero-btn secondary${saved ? ' active' : ''}`}
+            className={`hero-btn btn-secondary${saved ? ' active' : ''}`}
             onClick={() => toggle({ ...featured, media_type: 'movie' })}
           >
             {saved ? <FaCheck /> : <FaPlus />} My List

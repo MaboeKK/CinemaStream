@@ -93,14 +93,14 @@ const VerifyOtp = () => {
           <FaLock className="icon" />
         </div>
         <p>Time remaining: {formatTime(timeLeft)}</p>
-        <button type="submit" disabled={timeLeft <= 0}>
+        <button type="submit" className="btn-primary" disabled={timeLeft <= 0}>
           Verify
         </button>
 
         {resendAvailable && (
           <div className="resend-section">
             <p>Didn&apos;t receive OTP?</p>
-            <button type="button" onClick={handleResendOtp}>
+            <button type="button" className="btn-secondary" onClick={handleResendOtp}>
               Resend OTP
             </button>
           </div>

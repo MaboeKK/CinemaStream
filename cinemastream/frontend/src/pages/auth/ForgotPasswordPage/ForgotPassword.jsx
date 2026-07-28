@@ -47,7 +47,9 @@ const ForgotPassword = () => {
           />
         </div>
 
-        <button type="submit">Send OTP</button>
+        <button type="submit" className="btn-primary">
+          Send OTP
+        </button>
 
         <div className="register-link">
           <p>

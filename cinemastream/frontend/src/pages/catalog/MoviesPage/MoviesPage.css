@@ -1,18 +1,18 @@
 .catalog-list-page {
-  background-color: #141414;
+  background-color: var(--color-surface);
   min-height: 100vh;
   padding-top: 100px;
-  color: white;
+  color: var(--color-text);
 }
 
 .catalog-list-content {
-  padding: 20px 40px;
+  padding: var(--space-4) var(--space-6);
 }
 
 .catalog-page-title {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #e5e5e5;
+  font-size: var(--font-size-h1);
+  margin-bottom: var(--space-4);
+  color: var(--color-text);
 }
 
 .catalog-filter-bar {
@@ -41,42 +41,22 @@
 }
 
 .catalog-genre-filter select {
-  padding: 10px 15px;
+  padding: var(--space-2) var(--space-3);
   border-radius: 5px;
-  font-size: 1rem;
-  background-color: #1f1f1f;
-  color: white;
-  border: 1px solid #444;
+  font-size: var(--font-size-body);
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   outline: none;
 }
 
 .catalog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  gap: var(--space-4);
 }
 
 .catalog-load-more {
   text-align: center;
-  margin-top: 30px;
-}
-
-.catalog-load-more button {
-  background-color: #e50914;
-  color: white;
-  border: none;
-  padding: 10px 25px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.catalog-load-more button:hover:not(:disabled) {
-  background-color: #f40612;
-}
-
-.catalog-load-more button:disabled {
-  opacity: 0.6;
-  cursor: default;
+  margin-top: var(--space-5);
 }
