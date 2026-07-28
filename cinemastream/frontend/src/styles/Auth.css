@@ -88,26 +88,26 @@ form h1 {
   text-decoration: underline;
 }
 
-/* Button style*/
-button[type='submit'] {
+/* Submit buttons use the shared .btn-primary class (src/styles/buttons.css)
+   -- width: 100% here because it's a stretched flex child in .wrapper form,
+   but the auth card is narrower than the pill inputs would suggest, so it
+   gets the same 45px height as before for visual continuity. */
+.auth-page .btn-primary,
+.auth-page .btn-secondary {
   height: 45px;
-  border: none;
   border-radius: 30px;
-  background-color: #000;
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  width: 100%;
 }
 
-button[type='submit']:hover {
-  background-color: #999;
+.resend-section {
+  text-align: center;
 }
 
-button[type='submit']:disabled {
-  background-color: #555;
-  cursor: not-allowed;
+.resend-section .btn-secondary {
+  height: auto;
+  width: auto;
+  padding: 8px 20px;
+  margin-top: 8px;
 }
 
 .register-link {

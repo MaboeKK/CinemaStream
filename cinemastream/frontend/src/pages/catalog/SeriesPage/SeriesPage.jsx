@@ -100,7 +100,7 @@ function SeriesPage() {
         </div>
 
         <div className="catalog-load-more">
-          <button onClick={handleLoadMore} disabled={loading}>
+          <button className="btn-primary" onClick={handleLoadMore} disabled={loading}>
             {loading ? 'Loading...' : 'Load More'}
           </button>
         </div>

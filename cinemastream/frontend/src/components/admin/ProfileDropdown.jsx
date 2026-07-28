@@ -10,7 +10,9 @@ const ProfileDropdown = ({ adminData, onClose }) => {
         <h3>{fullName || 'Admin'}</h3>
         <p>{adminData?.email || 'No email available'}</p>
       </div>
-      <button onClick={onClose}>Close</button>
+      <button className="btn-secondary" onClick={onClose}>
+        Close
+      </button>
     </div>
   );
 };
