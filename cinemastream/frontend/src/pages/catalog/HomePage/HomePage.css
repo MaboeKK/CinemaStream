@@ -1,0 +1,25 @@
+.catalog-home-container {
+  padding-bottom: 40px;
+}
+
+.catalog-home-rows {
+  padding-top: 24px;
+}
+
+.catalog-home-filtered {
+  padding-top: 12px;
+}
+
+.catalog-home-filtered-title {
+  padding: 0 48px;
+  margin-bottom: 16px;
+}
+
+.catalog-home-filtered-grid {
+  padding: 0 48px;
+}
+
+.catalog-home-filtered-status {
+  padding: 0 48px;
+  color: var(--color-text-muted);
+}

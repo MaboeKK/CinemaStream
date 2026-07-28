@@ -1,0 +1,32 @@
+.genre-chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 0 48px 32px;
+}
+
+.genre-chip {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text);
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.genre-chip:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.genre-chip.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  font-weight: 700;
+}

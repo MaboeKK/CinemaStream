@@ -1,0 +1,19 @@
+.initials-avatar {
+  width: 36px;
+  height: 36px;
+  background-color: var(--color-surface-raised, #4a4a4a);
+  color: var(--color-text, white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.3s;
+}
+
+.initials-avatar:hover {
+  background-color: var(--color-accent, #636363);
+}

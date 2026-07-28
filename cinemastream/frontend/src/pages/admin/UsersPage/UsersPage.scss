@@ -1,0 +1,15 @@
+.admin-list {
+  display: flex;
+  width: 100%;
+
+  .admin-listContainer {
+    margin-left: 220px;
+    padding: 20px;
+    padding-top: 60px;
+    flex: 1;
+    background-color: #121212;
+    min-height: 100vh;
+    color: white;
+    overflow-x: auto;
+  }
+}

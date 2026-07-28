@@ -1,0 +1,83 @@
+.dashboard-sidebar {
+  width: 220px;
+  height: 100vh;
+  background-color: #141414;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #222;
+
+  .dashboard-sidebar-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    padding: 0 20px;
+    background-color: #141414;
+
+    .dashboard-sidebar-logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #e50914;
+      white-space: nowrap;
+    }
+  }
+
+  hr {
+    border: 0.5px solid #333;
+    margin: 0 20px;
+  }
+
+  .dashboard-sidebar-center {
+    flex: 1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      .link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
+
+        li {
+          display: flex;
+          align-items: center;
+          padding: 15px 20px;
+          transition: background-color 0.2s;
+
+          .icon {
+            font-size: 1.2rem;
+            margin-right: 15px;
+          }
+
+          span {
+            font-size: 0.95rem;
+            font-weight: 500;
+          }
+
+          &:hover {
+            background-color: #222;
+            cursor: pointer;
+            color: #e50914;
+
+            .icon {
+              color: #e50914;
+            }
+          }
+        }
+      }
+    }
+  }
+}

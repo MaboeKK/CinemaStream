@@ -1,0 +1,32 @@
+.chart {
+  flex: 1;
+  padding: 20px;
+  margin: 20px;
+  background-color: #1f1f1f;
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  font-family: inherit;
+
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #e50914;
+    font-weight: 500;
+  }
+
+  .recharts-cartesian-axis-tick-value {
+    fill: #ccc;
+    font-family: inherit;
+  }
+
+  .recharts-legend-item-text {
+    fill: #ccc !important;
+    font-family: inherit;
+  }
+
+  .recharts-responsive-container {
+    min-height: 250px;
+    width: 100%;
+  }
+}

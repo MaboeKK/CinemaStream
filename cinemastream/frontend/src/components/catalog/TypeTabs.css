@@ -1,0 +1,27 @@
+.type-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 48px 20px;
+}
+
+.type-tab {
+  padding: 8px 16px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.type-tab:hover {
+  color: var(--color-text);
+}
+
+.type-tab.active {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
