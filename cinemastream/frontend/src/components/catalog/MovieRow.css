@@ -1,0 +1,55 @@
+.row-container {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.row-title {
+  color: #fcf9f9;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
+
+.row-wrapper {
+  position: relative;
+}
+
+.row-movies {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+  scrollbar-width: none;
+}
+
+.row-movies::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 10px;
+  z-index: 5;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 50%;
+}
+
+.scroll-button:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.scroll-button.left {
+  left: 0;
+}
+
+.scroll-button.right {
+  right: 0;
+}

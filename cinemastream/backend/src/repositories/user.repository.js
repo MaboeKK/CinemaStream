@@ -50,10 +50,17 @@ const markAsVerified = async (userId) => {
 
 const getBasicInfoById = async (userId) => {
   const result = await pool.query(
-    'SELECT first_name, last_name, email FROM users WHERE user_id = $1',
+    'SELECT first_name, last_name, email, role FROM users WHERE user_id = $1',
     [userId]
   );
   return result.rows[0];
+};
+
+const listAll = async () => {
+  const result = await pool.query(
+    'SELECT user_id, first_name, last_name, email, role, is_verified FROM users ORDER BY user_id'
+  );
+  return result.rows;
 };
 
 const updateOtp = async (userId, otp, expiry) => {
@@ -74,4 +81,5 @@ module.exports = {
   markAsVerified,
   getBasicInfoById,
   updateOtp,
+  listAll,
 };

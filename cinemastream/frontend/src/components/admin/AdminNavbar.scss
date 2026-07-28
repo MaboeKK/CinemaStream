@@ -1,0 +1,39 @@
+.dashboard-navbar {
+  position: fixed;
+  top: 0;
+  left: 220px;
+  width: calc(100% - 220px);
+  height: 60px;
+  background-color: #141414;
+  color: white;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+
+  .dashboard-navbar-wrapper {
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .dashboard-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .icon {
+      font-size: 1.5rem;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.1);
+        color: #e50914;
+      }
+    }
+  }
+}

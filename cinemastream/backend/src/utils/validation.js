@@ -83,6 +83,15 @@ const schemas = {
   resendOtp: Joi.object({
     email: emailField,
   }),
+
+  watch: Joi.object({
+    movie_id: Joi.number().integer().optional(),
+    series_id: Joi.number().integer().optional(),
+    movie_title: Joi.string().trim().optional(),
+    series_name: Joi.string().trim().optional(),
+  })
+    .or('movie_id', 'series_id')
+    .messages({ 'object.missing': 'movie_id or series_id is required' }),
 };
 
 module.exports = { validate, schemas };

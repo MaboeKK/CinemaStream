@@ -21,3 +21,77 @@ export async function fetchPopularMovies() {
   const data = await res.json();
   return data.results;
 }
+
+export async function fetchDiscoverMovie() {
+  const res = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}`);
+  const data = await res.json();
+  return data.results;
+}
+
+export async function fetchGenres() {
+  const res = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=en-US`);
+  const data = await res.json();
+  return data.genres; // array of { id, name }
+}
+
+export async function fetchSeriesGenres() {
+  const res = await fetch(`${BASE_URL}/genre/tv/list?api_key=${API_KEY}&language=en-US`);
+  const data = await res.json();
+  return data.genres; // [{ id, name }]
+}
+
+export async function fetchMovieDetails(movieId) {
+  const res = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&append_to_response=credits`);
+  const data = await res.json();
+  return {
+    name: data.title,
+    overview: data.overview,
+    genres: data.genres,
+    actors: (data.credits?.cast || []).slice(0, 5),
+  };
+}
+
+export async function searchMovies(query, page = 1) {
+  const res = await fetch(
+    `${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&page=${page}&query=${encodeURIComponent(query)}`
+  );
+  const data = await res.json();
+  return data.results;
+}
+
+export async function discoverMovies(genreId, page = 1) {
+  const genreParam = genreId ? `&with_genres=${genreId}` : '';
+  const res = await fetch(
+    `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US&page=${page}${genreParam}`
+  );
+  const data = await res.json();
+  return data.results;
+}
+
+export async function searchSeries(query, page = 1) {
+  const res = await fetch(
+    `${BASE_URL}/search/tv?api_key=${API_KEY}&language=en-US&page=${page}&query=${encodeURIComponent(query)}`
+  );
+  const data = await res.json();
+  return data.results;
+}
+
+export async function discoverSeries(genreId, page = 1) {
+  const genreParam = genreId ? `&with_genres=${genreId}` : '';
+  const res = await fetch(
+    `${BASE_URL}/discover/tv?api_key=${API_KEY}&language=en-US&page=${page}${genreParam}`
+  );
+  const data = await res.json();
+  return data.results;
+}
+
+export async function fetchSeriesDetails(seriesId) {
+  const res = await fetch(`${BASE_URL}/tv/${seriesId}?api_key=${API_KEY}&append_to_response=credits`);
+  const data = await res.json();
+  return {
+    name: data.name,
+    overview: data.overview,
+    genres: data.genres,
+    actors: (data.credits?.cast || []).slice(0, 5),
+  };
+}

@@ -1,0 +1,20 @@
+.heatmap-container {
+  flex: 1;
+  padding: 20px;
+  margin: 20px;
+  background-color: #1f1f1f;
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #e50914;
+  }
+
+  .plotly-graph-div {
+    width: 100% !important;
+    height: 300px !important;
+  }
+}
