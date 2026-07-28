@@ -15,6 +15,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import HomePage from './pages/catalog/HomePage/HomePage';
 import MoviesPage from './pages/catalog/MoviesPage/MoviesPage';
 import SeriesPage from './pages/catalog/SeriesPage/SeriesPage';
+import MyListPage from './pages/catalog/MyListPage/MyListPage';
 import DashboardPage from './pages/admin/DashboardPage/DashboardPage';
 import UsersPage from './pages/admin/UsersPage/UsersPage';
 import StatsPage from './pages/admin/StatsPage/StatsPage';
@@ -54,6 +55,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <SeriesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/my-list"
+              element={
+                <ProtectedRoute>
+                  <MyListPage />
                 </ProtectedRoute>
               }
             />

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import CatalogNavbar from '../../../components/catalog/CatalogNavbar';
 import MovieCard from '../../../components/catalog/MovieCard';
 import SearchBar from '../../../components/catalog/SearchBar';
@@ -11,12 +12,13 @@ import './MoviesPage.css';
 const EMPTY_MODAL_CONTENT = { name: '', overview: '', genres: [], actors: [], rawItem: null };
 
 function MoviesPage() {
+  const [searchParams] = useSearchParams();
   const [movieList, setMovieList] = useState([]);
   const [genres, setGenres] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState(searchParams.get('genre') || '');
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
 
   const [trailerUrl, setTrailerUrl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);

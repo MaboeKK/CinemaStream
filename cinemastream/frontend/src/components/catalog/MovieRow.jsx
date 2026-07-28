@@ -3,15 +3,22 @@ import MovieCard from './MovieCard';
 import './MovieRow.css';
 
 function MovieRow({ title, fetchFunction, onMovieClick }) {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(null);
   const rowRef = useRef(null);
 
   useEffect(() => {
-    fetchFunction().then(setMovies);
-  }, [fetchFunction]);
+    fetchFunction()
+      .then(setMovies)
+      .catch((err) => {
+        console.error('Failed to load row', title, err);
+        setMovies([]);
+      });
+  }, [fetchFunction, title]);
 
   const scrollLeft = () => rowRef.current.scrollBy({ left: -500, behavior: 'smooth' });
   const scrollRight = () => rowRef.current.scrollBy({ left: 500, behavior: 'smooth' });
+
+  if (movies !== null && movies.length === 0) return null;
 
   return (
     <div className="row-container">
@@ -21,7 +28,7 @@ function MovieRow({ title, fetchFunction, onMovieClick }) {
           &lt;
         </button>
         <div className="row-movies" ref={rowRef}>
-          {movies.map((movie) => (
+          {(movies || []).map((movie) => (
             <MovieCard key={movie.id} movie={movie} onClick={() => onMovieClick(movie)} />
           ))}
         </div>

@@ -15,4 +15,9 @@ const recordWatch = asyncHandler(async (req, res) => {
   res.status(201).json({ status: 'SUCCESS', message: 'Watch event saved' });
 });
 
-module.exports = { recordWatch };
+const getHistory = asyncHandler(async (req, res) => {
+  const history = await watchService.getRecentByUser(req.user.id);
+  res.json(history);
+});
+
+module.exports = { recordWatch, getHistory };

@@ -1,8 +1,8 @@
 .initials-avatar {
   width: 36px;
   height: 36px;
-  background-color: #4a4a4a;
-  color: white;
+  background-color: var(--color-surface-raised, #4a4a4a);
+  color: var(--color-text, white);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -15,5 +15,5 @@
 }
 
 .initials-avatar:hover {
-  background-color: #636363;
+  background-color: var(--color-accent, #636363);
 }

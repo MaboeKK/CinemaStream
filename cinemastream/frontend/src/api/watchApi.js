@@ -10,6 +10,8 @@ const recordWatch = ({ movieId, seriesId, movieTitle, seriesName }) =>
     })
     .then((r) => r.data);
 
-const watchApi = { recordWatch };
+const getHistory = () => httpClient.get('/watch/history').then((r) => r.data);
+
+const watchApi = { recordWatch, getHistory };
 
 export default watchApi;

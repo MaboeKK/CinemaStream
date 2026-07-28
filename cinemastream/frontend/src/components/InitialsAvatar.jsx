@@ -1,5 +1,5 @@
 import React from 'react';
-import './InitialsAvatar.scss';
+import './InitialsAvatar.css';
 
 const InitialsAvatar = ({ firstName, lastName, onClick }) => {
   const getInitials = () => {
@@ -9,7 +9,7 @@ const InitialsAvatar = ({ firstName, lastName, onClick }) => {
   };
 
   return (
-    <div className="initials-avatar" onClick={onClick} title="Admin Profile">
+    <div className="initials-avatar" onClick={onClick} title="Profile">
       {getInitials()}
     </div>
   );

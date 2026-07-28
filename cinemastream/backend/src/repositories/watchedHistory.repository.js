@@ -8,6 +8,19 @@ const recordWatch = async ({ userId, movieId, seriesId, movieTitle, seriesName }
   );
 };
 
+const getRecentByUser = async (userId, limit = 10) => {
+  const { rows } = await pool.query(
+    `SELECT movie_id, series_id, movie_title, series_name, MAX(watched_at) AS watched_at
+     FROM watched_history
+     WHERE user_id = $1
+     GROUP BY movie_id, series_id, movie_title, series_name
+     ORDER BY watched_at DESC
+     LIMIT $2`,
+    [userId, limit]
+  );
+  return rows;
+};
+
 const getTopShows = async () => {
   const { rows } = await pool.query(`
     SELECT
@@ -69,4 +82,10 @@ const getHeatmapData = async () => {
   return rows.map((row) => ({ ...row, count: Number(row.count) }));
 };
 
-module.exports = { recordWatch, getTopShows, getMonthlyUserGrowth, getHeatmapData };
+module.exports = {
+  recordWatch,
+  getRecentByUser,
+  getTopShows,
+  getMonthlyUserGrowth,
+  getHeatmapData,
+};

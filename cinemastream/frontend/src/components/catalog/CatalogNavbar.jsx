@@ -1,17 +1,13 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { NavLink } from 'react-router-dom';
+import SearchInput from './SearchInput';
+import NotificationsBell from './NotificationsBell';
+import ProfileMenu from './ProfileMenu';
 import './CatalogNavbar.css';
 
+const navItemClass = ({ isActive }) => `catalog-navbar-item${isActive ? ' active' : ''}`;
+
 function CatalogNavbar() {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
-  };
-
   return (
     <nav className="catalog-navbar">
       <div className="catalog-navbar-logo">
@@ -19,18 +15,24 @@ function CatalogNavbar() {
       </div>
 
       <div className="catalog-navbar-items">
-        <Link to="/Homepage" className="catalog-navbar-item">
+        <NavLink to="/Homepage" className={navItemClass}>
           Home
-        </Link>
-        <Link to="/movies" className="catalog-navbar-item">
+        </NavLink>
+        <NavLink to="/movies" className={navItemClass}>
           Movies
-        </Link>
-        <Link to="/series" className="catalog-navbar-item">
+        </NavLink>
+        <NavLink to="/series" className={navItemClass}>
           Series
-        </Link>
-        <button className="catalog-navbar-item" onClick={handleLogout}>
-          Logout
-        </button>
+        </NavLink>
+        <NavLink to="/my-list" className={navItemClass}>
+          My List
+        </NavLink>
+      </div>
+
+      <div className="catalog-navbar-actions">
+        <SearchInput />
+        <NotificationsBell />
+        <ProfileMenu />
       </div>
     </nav>
   );

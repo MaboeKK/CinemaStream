@@ -4,4 +4,6 @@ const recordWatch = async ({ userId, movieId, seriesId, movieTitle, seriesName }
   await watchedHistoryRepository.recordWatch({ userId, movieId, seriesId, movieTitle, seriesName });
 };
 
-module.exports = { recordWatch };
+const getRecentByUser = (userId) => watchedHistoryRepository.getRecentByUser(userId);
+
+module.exports = { recordWatch, getRecentByUser };
