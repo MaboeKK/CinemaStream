@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaTv } from 'react-icons/fa';
 import CatalogNavbar from '../../../components/catalog/CatalogNavbar';
 import MovieCard from '../../../components/catalog/MovieCard';
@@ -6,11 +6,17 @@ import SearchBar from '../../../components/catalog/SearchBar';
 import GenreFilter from '../../../components/catalog/GenreFilter';
 import TrailerModal from '../../../components/catalog/TrailerModal';
 import EmptyState from '../../../components/catalog/EmptyState';
+import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 import { fetchSeriesGenres, fetchSeriesDetails, searchSeries, discoverSeries } from '../../../api/tmdb';
 import { fetchYoutubeTrailer } from '../../../api/youtube';
 import '../MoviesPage/MoviesPage.css';
 
 const EMPTY_MODAL_CONTENT = { name: '', overview: '', genres: [], actors: [], rawItem: null };
+// TMDB list endpoints return 20 results per page and simply give fewer on
+// the last page -- no reliable total-pages field is plumbed through
+// api/tmdb.js today, so "fewer than a full page" is the signal used here
+// to stop infinite-scrolling instead.
+const TMDB_PAGE_SIZE = 20;
 
 function SeriesPage() {
   const [seriesList, setSeriesList] = useState([]);
@@ -18,7 +24,9 @@ function SeriesPage() {
   const [selectedGenre, setSelectedGenre] = useState('');
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const loadingRef = useRef(false);
 
   const [trailerUrl, setTrailerUrl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -31,28 +39,36 @@ function SeriesPage() {
   useEffect(() => {
     setSeriesList([]);
     setPage(1);
+    setHasMore(true);
     loadSeries(1, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGenre, searchTerm]);
 
   const loadSeries = async (targetPage, reset = false) => {
+    loadingRef.current = true;
     setLoading(true);
     try {
       const results = searchTerm.trim()
         ? await searchSeries(searchTerm, targetPage)
         : await discoverSeries(selectedGenre, targetPage);
       setSeriesList((prev) => (reset ? results : [...prev, ...results]));
+      setHasMore(results.length >= TMDB_PAGE_SIZE);
     } catch (err) {
       console.error('Failed to load series', err);
+      setHasMore(false);
     }
+    loadingRef.current = false;
     setLoading(false);
   };
 
   const handleLoadMore = () => {
+    if (loadingRef.current || !hasMore) return;
     const nextPage = page + 1;
     setPage(nextPage);
     loadSeries(nextPage);
   };
+
+  const sentinelRef = useInfiniteScroll({ onLoadMore: handleLoadMore, hasMore });
 
   const openTrailerModal = async (show) => {
     try {
@@ -122,13 +138,13 @@ function SeriesPage() {
               {seriesList.map((show) => (
                 <MovieCard key={show.id} movie={show} onClick={() => openTrailerModal(show)} />
               ))}
+              {loading &&
+                Array.from({ length: 6 }).map((_, i) => (
+                  <div key={`more-${i}`} className="skeleton skeleton-card" />
+                ))}
             </div>
 
-            <div className="catalog-load-more">
-              <button className="btn-primary" onClick={handleLoadMore} disabled={loading}>
-                {loading ? 'Loading...' : 'Load More'}
-              </button>
-            </div>
+            {hasMore && <div ref={sentinelRef} className="catalog-scroll-sentinel" />}
           </>
         )}
       </div>

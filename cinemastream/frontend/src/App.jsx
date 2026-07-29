@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import muiTheme from './theme/muiTheme';
 import { AuthProvider } from './context/AuthContext';
@@ -105,7 +103,6 @@ function App() {
       <AuthProvider>
         <DarkModeProvider>
           <Router>
-            <ToastContainer position="top-right" autoClose={3000} />
             <AppRoutes />
           </Router>
         </DarkModeProvider>

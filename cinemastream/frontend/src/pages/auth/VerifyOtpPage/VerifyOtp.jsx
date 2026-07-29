@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { MdEmail } from 'react-icons/md';
 import { FaLock } from 'react-icons/fa';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import AuthLayout from '../../../components/auth/AuthLayout';
 import authApi from '../../../api/authApi';
 
@@ -42,29 +41,20 @@ const VerifyOtp = () => {
       const result = await authApi.verifyOtp(email, otp);
 
       if (result.status === 'SUCCESS') {
-        toast.success(
-          <div>
-            <p>Verification successful!</p>
-            <p>You will be redirected to the login page shortly.</p>
-          </div>
-        );
         navigate('/login');
-      } else {
-        toast.error(result.message || 'Verification failed');
       }
-    } catch (err) {
-      toast.error('Error verifying OTP: ' + (err.response?.data?.message || err.message));
+    } catch {
+      // Verification failed -- no toast/error UI per current design.
     }
   };
 
   const handleResendOtp = async () => {
     try {
-      const result = await authApi.resendOtp(email);
-      toast.success(result.message || 'OTP resent');
+      await authApi.resendOtp(email);
       setTimeLeft(180);
       setResendAvailable(false);
-    } catch (err) {
-      toast.error('Failed to resend OTP: ' + (err.response?.data?.message || err.message));
+    } catch {
+      // Resend failed -- no toast/error UI per current design.
     }
   };
 

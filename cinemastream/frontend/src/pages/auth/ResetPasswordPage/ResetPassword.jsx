@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import AuthLayout from '../../../components/auth/AuthLayout';
 import authApi from '../../../api/authApi';
 import { getPasswordError } from '../../../utils/validators';
@@ -34,12 +33,6 @@ const ResetPassword = () => {
       setLoading(true);
       await authApi.resetPassword(email, reset_token, newPassword);
 
-      toast.success(
-        <div>
-          <p>Password reset successful!</p>
-          <p>You will be redirected to the login page shortly.</p>
-        </div>
-      );
       localStorage.removeItem('resetEmail');
       setTimeout(() => {
         navigate('/login');
