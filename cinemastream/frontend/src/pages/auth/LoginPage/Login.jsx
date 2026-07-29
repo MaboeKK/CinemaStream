@@ -3,7 +3,7 @@ import { FaLock } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import AuthLayout from '../../../components/AuthLayout';
+import AuthLayout from '../../../components/auth/AuthLayout';
 import { useAuth } from '../../../context/AuthContext';
 
 const Login = () => {

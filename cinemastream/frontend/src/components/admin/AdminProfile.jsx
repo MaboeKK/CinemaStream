@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InitialsAvatar from '../InitialsAvatar';
+import InitialsAvatar from '../common/InitialsAvatar';
 import ProfileDropdown from './ProfileDropdown';
 import './AdminProfile.scss';
 
