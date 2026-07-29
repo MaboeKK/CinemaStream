@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchPopularSeries, fetchPopularMovies } from '../../api/tmdb';
+import { fetchPopularSeries, fetchPopularMovies } from '../../../api/tmdb';
 import './LandingPage.css';
 
 function MovieGridSkeleton() {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import InitialsAvatar from '../InitialsAvatar';
+import InitialsAvatar from '../common/InitialsAvatar';
 import { useAuth } from '../../context/AuthContext';
 import './ProfileMenu.css';
 

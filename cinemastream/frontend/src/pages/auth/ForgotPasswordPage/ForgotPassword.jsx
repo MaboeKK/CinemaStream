@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import AuthLayout from '../../../components/AuthLayout';
+import AuthLayout from '../../../components/auth/AuthLayout';
 import authApi from '../../../api/authApi';
 
 const ForgotPassword = () => {

@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(rgba(9, 9, 9, 0.6), rgba(9, 9, 9, 0.85)), url('./auth-bg.jpg') no-repeat center center
+  background: linear-gradient(rgba(9, 9, 9, 0.6), rgba(9, 9, 9, 0.85)), url('../assets/auth-bg.jpg') no-repeat center center
     fixed;
   background-size: cover;
   font-family: var(--font-family);
