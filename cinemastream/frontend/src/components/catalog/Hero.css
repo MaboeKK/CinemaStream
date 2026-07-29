@@ -69,6 +69,20 @@
   border-color: rgba(255, 209, 102, 0.4);
 }
 
+.hero-badge.match {
+  color: #fff;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.hero-badge.trending {
+  color: #ff9f43;
+  border-color: rgba(255, 159, 67, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .hero-overview {
   font-size: 1.05rem;
   line-height: 1.6;

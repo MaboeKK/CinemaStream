@@ -64,6 +64,7 @@ export async function fetchMovieDetails(movieId) {
     poster_path: data.poster_path,
     vote_average: data.vote_average,
     release_date: data.release_date,
+    runtime: data.runtime,
   };
 }
 
