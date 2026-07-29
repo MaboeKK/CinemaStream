@@ -111,3 +111,50 @@
     padding: 0 20px 40px;
   }
 }
+
+.hero-loading {
+  background-color: var(--color-surface);
+}
+
+.hero-skel-title {
+  width: 60%;
+  max-width: 480px;
+  height: 56px;
+  margin-bottom: 16px;
+}
+
+.hero-skel-badges {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.hero-skel-badge {
+  width: 80px;
+  height: 26px;
+  border-radius: 999px;
+}
+
+.hero-skel-line {
+  width: 100%;
+  max-width: 560px;
+  height: 16px;
+  margin-bottom: 10px;
+}
+
+.hero-skel-line.short {
+  width: 70%;
+  max-width: 380px;
+  margin-bottom: 28px;
+}
+
+.hero-skel-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.hero-skel-btn {
+  width: 160px;
+  height: 48px;
+  border-radius: 8px;
+}
