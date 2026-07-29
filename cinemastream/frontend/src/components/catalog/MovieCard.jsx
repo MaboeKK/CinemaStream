@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { FaPlay, FaPlus, FaCheck, FaRegHeart, FaHeart } from 'react-icons/fa';
+import { FaPlay, FaPlus, FaCheck, FaRegHeart, FaHeart, FaInfoCircle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useMyList } from '../../hooks/useMyList';
 import { useLikedTitles } from '../../hooks/useLikedTitles';
@@ -68,9 +68,12 @@ function MovieCard({ movie, onClick, progress }) {
           <button
             className={`catalog-card-action-btn${liked ? ' liked' : ''}`}
             onClick={handleToggleLiked}
-            aria-label={liked ? 'Unlike' : 'Like'}
+            aria-label={liked ? 'Remove from Favourites' : 'Add to Favourites'}
           >
             {liked ? <FaHeart size={12} /> : <FaRegHeart size={12} />}
+          </button>
+          <button className="catalog-card-action-btn" onClick={onClick} aria-label="View Details">
+            <FaInfoCircle size={12} />
           </button>
         </div>
         <h3 className="catalog-card-title">{movie.title || movie.name}</h3>

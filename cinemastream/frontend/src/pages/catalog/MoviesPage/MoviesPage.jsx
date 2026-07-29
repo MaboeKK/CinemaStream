@@ -79,9 +79,12 @@ function MoviesPage() {
     <div className="catalog-list-page">
       <CatalogNavbar />
       <div className="catalog-list-content">
-        <div className="catalog-filter-bar">
+        <div className="catalog-header">
           <h2 className="catalog-page-title">Movies</h2>
+          <p className="catalog-page-subtitle">Browse our full catalog of movies</p>
+        </div>
 
+        <div className="catalog-filter-bar">
           <SearchBar
             searchTerm={searchTerm}
             onSearch={setSearchTerm}

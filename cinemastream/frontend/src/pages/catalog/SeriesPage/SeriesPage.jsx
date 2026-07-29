@@ -77,9 +77,12 @@ function SeriesPage() {
     <div className="catalog-list-page">
       <CatalogNavbar />
       <div className="catalog-list-content">
-        <div className="catalog-filter-bar">
+        <div className="catalog-header">
           <h2 className="catalog-page-title">Series</h2>
+          <p className="catalog-page-subtitle">Discover binge-worthy series</p>
+        </div>
 
+        <div className="catalog-filter-bar">
           <SearchBar
             searchTerm={searchTerm}
             onSearch={setSearchTerm}
