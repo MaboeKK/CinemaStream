@@ -12,14 +12,24 @@ const WIDGET_DATA = {
     value: 'See all the users that have registered',
     link: 'See all users',
     linkTo: '/admin/users',
-    icon: <PersonOutlineOutlinedIcon className="icon" style={{ color: 'crimson', backgroundColor: 'rgba(255, 0, 0, 0.2)' }} />,
+    icon: (
+      <PersonOutlineOutlinedIcon
+        className="icon"
+        style={{ color: 'var(--color-accent)', backgroundColor: 'rgba(229, 9, 20, 0.15)' }}
+      />
+    ),
   },
   genres: {
     title: 'TOP GENRES',
     value: ['Action', 'Drama', 'Thriller', 'Comedy', 'Sci-Fi'].join(', '),
     link: 'Explore genres',
     linkTo: '/admin/stats',
-    icon: <MovieOutlinedIcon className="icon" style={{ backgroundColor: 'rgba(128, 0, 128, 0.2)', color: 'purple' }} />,
+    icon: (
+      <MovieOutlinedIcon
+        className="icon"
+        style={{ backgroundColor: 'rgba(229, 9, 20, 0.15)', color: 'var(--color-accent)' }}
+      />
+    ),
   },
 };
 
