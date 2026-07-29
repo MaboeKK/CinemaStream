@@ -147,7 +147,11 @@ function HomePage() {
           <TypeTabs activeTab={typeTab} onChange={setTypeTab} counts={counts} />
 
           {filterLoading ? (
-            <p className="catalog-home-filtered-status">Loading...</p>
+            <div className="catalog-grid catalog-home-filtered-grid">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className="skeleton skeleton-card" />
+              ))}
+            </div>
           ) : displayItems.length === 0 ? (
             <EmptyState
               icon={<FaFilter />}

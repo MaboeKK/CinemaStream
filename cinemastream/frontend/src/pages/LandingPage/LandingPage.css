@@ -1,16 +1,8 @@
-/* Reset & Base */
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #000;
-  color: #fff;
-}
-
-a {
+.landing-page a {
   text-decoration: none;
 }
 
-ul {
+.landing-page ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -21,47 +13,52 @@ ul {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
 }
 
 /* Navbar */
 .navbar {
-  background-color: #141414;
-  padding: 1rem 2rem;
+  background-color: var(--color-surface);
+  padding: var(--space-3) var(--space-5);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 /* Highlighted part of logo */
 .navbar-logo .highlight {
-  color: #e50914; /* Cinema-red color  */
+  color: var(--color-accent);
 }
 
 /* Logo styles */
 .navbar-logo {
-  font-size: 1.5rem; /* Logo size */
-  font-weight: bold; /* Bold text */
-  cursor: pointer; /* Pointer cursor on hover */
-  white-space: nowrap; /* Prevent text wrapping */
+  font-size: var(--font-size-h3);
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .nav-links {
   display: flex;
-  gap: 1.5rem;
+  gap: var(--space-4);
 }
 
 .nav-links a {
-  color: #fff;
-  font-size: 0.95rem;
-  transition: color 0.3s;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
-  color: #e50914;
+  color: var(--color-text);
 }
 
 /* Main */
 .main-content {
-  padding: 2rem;
+  padding: var(--space-5);
 }
 
 .main-content .getting-started {
@@ -70,41 +67,53 @@ ul {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #fff;
+  color: var(--color-text);
+  padding: var(--space-6) 0;
 }
 
 .main-content h2 {
-  font-size: 1.6rem;
-  margin-bottom: 1.5rem;
+  font-size: var(--font-size-h2);
+  margin-bottom: var(--space-4);
+}
+
+.main-link {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-4);
 }
 
 .loading-text {
   text-align: center;
-  color: #ccc;
+  color: var(--color-text-muted);
 }
 
 /* Movie Grid */
 .movie-grid {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-3);
   grid-template-columns: repeat(auto-fit, minmax(180px, 0.5fr));
   justify-content: center;
 }
 
-.movie-card {
+.movie-card,
+.movie-card-skeleton {
   position: relative;
-  background-color: #1c1c1c;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
-  transition: transform 0.3s ease;
   width: 220px;
   height: 340px;
+}
+
+.movie-card {
+  background-color: var(--color-surface-raised);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
 }
 
 .movie-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
 }
 
 .movie-card img {
@@ -120,11 +129,11 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  padding: 10px;
+  background: rgba(9, 9, 9, 0.9);
+  color: var(--color-text);
+  padding: var(--space-2);
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -135,17 +144,17 @@ ul {
 }
 
 .movie-info h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.1rem;
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-h3);
 }
 
 .movie-info p {
-  font-size: 0.9rem;
-  color: #ccc;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
   max-height: 200px;
   overflow-y: auto;
-  line-height: 1;
-  padding: 10px;
+  line-height: 1.4;
+  padding: var(--space-2);
 }
 
 /* Hide Scrollbar */
@@ -156,9 +165,9 @@ ul {
 /* Footer */
 .footer {
   text-align: center;
-  padding: 1.5rem 0;
-  font-size: 0.9rem;
-  background-color: #111;
-  color: #777;
+  padding: var(--space-4) 0;
+  font-size: var(--font-size-caption);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
   margin-top: auto;
 }

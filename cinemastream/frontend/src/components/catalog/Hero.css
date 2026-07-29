@@ -14,8 +14,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, var(--color-bg) 0%, rgba(11, 11, 11, 0.55) 45%, rgba(11, 11, 11, 0.15) 75%),
-    linear-gradient(to right, rgba(11, 11, 11, 0.85) 0%, rgba(11, 11, 11, 0.15) 55%, transparent 100%);
+    linear-gradient(to top, var(--color-bg) 0%, rgba(9, 9, 9, 0.55) 45%, rgba(9, 9, 9, 0.15) 75%),
+    linear-gradient(to right, rgba(9, 9, 9, 0.85) 0%, rgba(9, 9, 9, 0.15) 55%, transparent 100%);
 }
 
 .hero-content {
@@ -65,18 +65,18 @@
 }
 
 .hero-badge.rating {
-  color: #ffd166;
+  color: var(--color-rating);
   border-color: rgba(255, 209, 102, 0.4);
 }
 
 .hero-badge.match {
-  color: #fff;
+  color: var(--color-on-accent);
   background: var(--color-accent);
   border-color: var(--color-accent);
 }
 
 .hero-badge.trending {
-  color: #ff9f43;
+  color: var(--color-warning);
   border-color: rgba(255, 159, 67, 0.4);
   display: inline-flex;
   align-items: center;

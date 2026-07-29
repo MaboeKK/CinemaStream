@@ -43,7 +43,7 @@
 .catalog-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.15) 55%, transparent 100%);
+  background: linear-gradient(to top, rgba(9, 9, 9, 0.85) 0%, rgba(9, 9, 9, 0.15) 55%, transparent 100%);
   opacity: 0;
   transition: opacity 0.25s ease;
   display: flex;
@@ -75,7 +75,7 @@
 }
 
 .catalog-card-badge.rating {
-  color: #ffd166;
+  color: var(--color-rating);
   border-color: rgba(255, 209, 102, 0.4);
 }
 
@@ -122,7 +122,7 @@
 
 .catalog-card-action-btn.liked {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-on-accent);
   border-color: var(--color-accent);
 }
 
@@ -130,6 +130,6 @@
   font-size: 0.95rem;
   margin: 0;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-text);
   line-height: 1.4;
 }
