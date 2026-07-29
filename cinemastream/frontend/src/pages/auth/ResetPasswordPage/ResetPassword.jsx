@@ -80,7 +80,7 @@ const ResetPassword = () => {
           {loading ? 'Resetting...' : 'Reset Password'}
         </button>
 
-        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+        {error && <p style={{ color: 'var(--color-accent)', textAlign: 'center' }}>{error}</p>}
 
         <div className="register-link">
           <p>

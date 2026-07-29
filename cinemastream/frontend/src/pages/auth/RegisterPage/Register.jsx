@@ -126,7 +126,7 @@ const Register = () => {
         {confirmPassword && (
           <p
             style={{
-              color: doPasswordsMatch ? '#1e7f4c' : 'var(--color-accent)',
+              color: doPasswordsMatch ? 'var(--color-success)' : 'var(--color-accent)',
               marginBottom: '10px',
               fontSize: '0.9rem',
             }}

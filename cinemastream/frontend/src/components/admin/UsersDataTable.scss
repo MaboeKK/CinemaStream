@@ -16,7 +16,7 @@
   }
 
   .MuiDataGrid-columnHeaderTitle {
-    color: #fff !important;
+    color: var(--color-on-accent) !important;
     font-weight: bold;
   }
 
@@ -58,15 +58,15 @@
     border: 1px solid transparent;
 
     &.active {
-      background-color: #1e7f4c33;
-      color: #1e7f4c;
-      border-color: #1e7f4c;
+      background-color: rgba(30, 127, 76, 0.2);
+      color: var(--color-success);
+      border-color: var(--color-success);
     }
 
     &.passive {
-      background-color: #c6282822;
-      color: #c62828;
-      border-color: #c62828;
+      background-color: rgba(198, 40, 40, 0.13);
+      color: var(--color-danger);
+      border-color: var(--color-danger);
     }
   }
 }

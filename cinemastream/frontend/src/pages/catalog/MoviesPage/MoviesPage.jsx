@@ -112,6 +112,12 @@ function MoviesPage() {
                 : undefined
             }
           />
+        ) : loading && movieList.length === 0 ? (
+          <div className="catalog-grid">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div key={i} className="skeleton skeleton-card" />
+            ))}
+          </div>
         ) : (
           <>
             <div className="catalog-grid">

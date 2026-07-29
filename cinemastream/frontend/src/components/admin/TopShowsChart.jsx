@@ -36,7 +36,7 @@ const TopShowsChart = () => {
           />
           <Bar dataKey="total_views" name="Views">
             {data.map((entry) => (
-              <Cell key={entry.name} fill={entry.type === 'Movie' ? '#e50914' : '#8884d8'} />
+              <Cell key={entry.name} fill={entry.type === 'Movie' ? '#e50914' : '#ff9f43'} />
             ))}
           </Bar>
         </BarChart>

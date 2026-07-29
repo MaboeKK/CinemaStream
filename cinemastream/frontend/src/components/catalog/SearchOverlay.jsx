@@ -133,7 +133,16 @@ function SearchOverlay({ term, onSelect, onClear }) {
 
       {hasQuery && (
         <>
-          {loading && <p className="search-overlay-empty">Searching...</p>}
+          {loading && (
+            <div className="search-overlay-list">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="search-overlay-skeleton-row">
+                  <div className="skeleton search-overlay-skeleton-thumb" />
+                  <div className="skeleton search-overlay-skeleton-line" />
+                </div>
+              ))}
+            </div>
+          )}
 
           {!loading && !hasResults && (
             <EmptyState

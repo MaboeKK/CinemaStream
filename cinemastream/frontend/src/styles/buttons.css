@@ -26,7 +26,7 @@
 /* Primary: Netflix red, rounded corners, soft shadow, hover lift */
 .btn-primary {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-on-accent);
   box-shadow: 0 4px 14px rgba(229, 9, 20, 0.35);
 }
 
@@ -57,7 +57,7 @@
 }
 
 .btn-secondary svg {
-  color: #fff;
+  color: var(--color-on-accent);
 }
 
 .btn-secondary:hover:not(:disabled) {
