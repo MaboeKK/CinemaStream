@@ -116,6 +116,18 @@ export async function fetchTitlesByGenre({ movieGenreId, seriesGenreId }) {
   };
 }
 
+export async function fetchSimilarMovies(movieId) {
+  const res = await fetch(`${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=en-US&page=1`);
+  const data = await res.json();
+  return data.results;
+}
+
+export async function fetchSimilarSeries(seriesId) {
+  const res = await fetch(`${BASE_URL}/tv/${seriesId}/similar?api_key=${API_KEY}&language=en-US&page=1`);
+  const data = await res.json();
+  return data.results;
+}
+
 export async function fetchSeriesDetails(seriesId) {
   const res = await fetch(`${BASE_URL}/tv/${seriesId}?api_key=${API_KEY}&append_to_response=credits`);
   const data = await res.json();

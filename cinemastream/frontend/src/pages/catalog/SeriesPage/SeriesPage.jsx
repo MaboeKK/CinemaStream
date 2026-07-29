@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { FaTv } from 'react-icons/fa';
 import CatalogNavbar from '../../../components/catalog/CatalogNavbar';
 import MovieCard from '../../../components/catalog/MovieCard';
 import SearchBar from '../../../components/catalog/SearchBar';
 import GenreFilter from '../../../components/catalog/GenreFilter';
 import TrailerModal from '../../../components/catalog/TrailerModal';
+import EmptyState from '../../../components/catalog/EmptyState';
 import { fetchSeriesGenres, fetchSeriesDetails, searchSeries, discoverSeries } from '../../../api/tmdb';
 import { fetchYoutubeTrailer } from '../../../api/youtube';
 import '../MoviesPage/MoviesPage.css';
@@ -93,17 +95,36 @@ function SeriesPage() {
           />
         </div>
 
-        <div className="catalog-grid">
-          {seriesList.map((show) => (
-            <MovieCard key={show.id} movie={show} onClick={() => openTrailerModal(show)} />
-          ))}
-        </div>
+        {!loading && seriesList.length === 0 ? (
+          <EmptyState
+            icon={<FaTv />}
+            title="No series found"
+            description="Try a different search term or genre."
+            actionLabel={searchTerm || selectedGenre ? 'Clear filters' : undefined}
+            onAction={
+              searchTerm || selectedGenre
+                ? () => {
+                    setSearchTerm('');
+                    setSelectedGenre('');
+                  }
+                : undefined
+            }
+          />
+        ) : (
+          <>
+            <div className="catalog-grid">
+              {seriesList.map((show) => (
+                <MovieCard key={show.id} movie={show} onClick={() => openTrailerModal(show)} />
+              ))}
+            </div>
 
-        <div className="catalog-load-more">
-          <button className="btn-primary" onClick={handleLoadMore} disabled={loading}>
-            {loading ? 'Loading...' : 'Load More'}
-          </button>
-        </div>
+            <div className="catalog-load-more">
+              <button className="btn-primary" onClick={handleLoadMore} disabled={loading}>
+                {loading ? 'Loading...' : 'Load More'}
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       <TrailerModal

@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaFire } from 'react-icons/fa';
+import { FaFire, FaSearch } from 'react-icons/fa';
 import { fetchGenres, fetchTrending, searchMovies, searchSeries } from '../../api/tmdb';
 import { useRecentSearches } from '../../hooks/useRecentSearches';
+import EmptyState from './EmptyState';
 import './SearchOverlay.css';
 
 const POSTER_BASE = 'https://image.tmdb.org/t/p/w92';
 
-function SearchOverlay({ term, onSelect }) {
+function SearchOverlay({ term, onSelect, onClear }) {
   const navigate = useNavigate();
   const { recent, add, clear } = useRecentSearches();
   const [genres, setGenres] = useState([]);
@@ -120,7 +121,12 @@ function SearchOverlay({ term, onSelect }) {
           )}
 
           {recent.length === 0 && trending.length === 0 && (
-            <p className="search-overlay-empty">Start typing to search titles and genres.</p>
+            <EmptyState
+              compact
+              icon={<FaSearch />}
+              title="Start typing to search"
+              description="Find titles and genres across CinemaStream."
+            />
           )}
         </>
       )}
@@ -129,7 +135,16 @@ function SearchOverlay({ term, onSelect }) {
         <>
           {loading && <p className="search-overlay-empty">Searching...</p>}
 
-          {!loading && !hasResults && <p className="search-overlay-empty">No results for &quot;{trimmed}&quot;</p>}
+          {!loading && !hasResults && (
+            <EmptyState
+              compact
+              icon={<FaSearch />}
+              title={`No results for "${trimmed}"`}
+              description="Try a different title or genre."
+              actionLabel={onClear ? 'Clear search' : undefined}
+              onAction={onClear}
+            />
+          )}
 
           {movieResults.length > 0 && (
             <div className="search-overlay-section">

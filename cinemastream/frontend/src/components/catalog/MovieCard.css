@@ -18,6 +18,21 @@
   z-index: 2;
 }
 
+.catalog-card-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 1;
+}
+
+.catalog-card-progress-fill {
+  height: 100%;
+  background: var(--color-accent);
+}
+
 .catalog-card-poster {
   width: 100%;
   aspect-ratio: 2 / 3;
