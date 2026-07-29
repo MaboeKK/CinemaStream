@@ -77,7 +77,7 @@
   }
 }
 
-.catalog-load-more {
-  text-align: center;
+.catalog-scroll-sentinel {
+  height: 1px;
   margin-top: var(--space-5);
 }

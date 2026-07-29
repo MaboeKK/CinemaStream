@@ -3,7 +3,6 @@ import { MdEmail } from 'react-icons/md';
 import { FaLock, FaUser } from 'react-icons/fa';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import AuthLayout from '../../../components/auth/AuthLayout';
 import authApi from '../../../api/authApi';
 import { passwordsMatch, isValidPassword, getPasswordError } from '../../../utils/validators';
@@ -39,12 +38,6 @@ const Register = () => {
       const result = await authApi.register({ first_name, last_name, email, password });
 
       if (result.status === 'SUCCESS') {
-        toast.success(
-          <div>
-            <p>Registration successful!</p>
-            <p>Please verify your email to login.</p>
-          </div>
-        );
         navigate('/verify-otp', { state: { email } });
       } else {
         setErrorMessage(result.message || 'Registration failed');

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { FaPlay, FaPlus, FaCheck, FaRegHeart, FaHeart } from 'react-icons/fa';
-import { toast } from 'react-toastify';
 import { useMyList } from '../../hooks/useMyList';
 import { useLikedTitles } from '../../hooks/useLikedTitles';
 import { useGenreLookup } from '../../hooks/useGenreLookup';
@@ -25,7 +24,6 @@ function MovieCard({ movie, onClick, progress }) {
   const handleToggleMyList = (e) => {
     e.stopPropagation();
     toggle({ ...movie, media_type: mediaType });
-    toast.success(saved ? 'Removed from My List' : 'Added to My List');
   };
 
   const handleToggleLiked = (e) => {

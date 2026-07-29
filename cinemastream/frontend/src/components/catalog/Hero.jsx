@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FaPlay, FaPlus, FaCheck, FaFire } from 'react-icons/fa';
-import { toast } from 'react-toastify';
 import { fetchDiscoverMovie, fetchGenres, fetchTrending, fetchMovieDetails } from '../../api/tmdb';
 import { useMyList } from '../../hooks/useMyList';
 import './Hero.css';
@@ -121,10 +120,7 @@ function Hero({ onPlayTrailer }) {
           </button>
           <button
             className={`hero-btn btn-secondary${saved ? ' active' : ''}`}
-            onClick={() => {
-              toggle({ ...featured, media_type: 'movie' });
-              toast.success(saved ? 'Removed from My List' : 'Added to My List');
-            }}
+            onClick={() => toggle({ ...featured, media_type: 'movie' })}
           >
             {saved ? <FaCheck /> : <FaPlus />} My List
           </button>
