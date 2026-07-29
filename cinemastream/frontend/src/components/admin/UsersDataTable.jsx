@@ -36,14 +36,13 @@ const UsersDataTable = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-
   return (
     <div className="datatable">
       <Paper sx={{ height: 500, width: '100%' }}>
         <DataGrid
           rows={users}
           columns={columns}
+          loading={loading}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           sx={{ border: 0 }}

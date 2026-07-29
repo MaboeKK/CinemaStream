@@ -2,22 +2,22 @@
   flex: 1;
   padding: 20px;
   margin: 20px;
-  background-color: #1f1f1f;
+  background-color: var(--color-surface-raised);
   border-radius: 12px;
-  color: #fff;
+  color: var(--color-text);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
 
   .featured-title {
     font-size: 1.2rem;
     margin-bottom: 10px;
-    color: #e50914;
+    color: var(--color-accent);
   }
 
   .recharts-cartesian-axis-tick-value {
-    fill: #ccc;
+    fill: var(--color-text-muted);
   }
 
   .recharts-legend-item-text {
-    fill: #ccc !important;
+    fill: var(--color-text-muted) !important;
   }
 }

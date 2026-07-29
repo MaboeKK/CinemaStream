@@ -1,44 +1,44 @@
 .datatable {
   height: 600px;
   padding: 30px;
-  background-color: #1f1f1f;
+  background-color: var(--color-surface-raised);
   border-radius: 12px;
   font-family: inherit;
 
   .MuiDataGrid-root {
-    background-color: #1f1f1f;
-    color: #fff;
+    background-color: var(--color-surface-raised);
+    color: var(--color-text);
     border: none;
   }
 
   .MuiDataGrid-columnHeaders {
-    background-color: #e50914 !important;
+    background-color: var(--color-accent) !important;
   }
 
   .MuiDataGrid-columnHeaderTitle {
-    color: #000 !important;
+    color: #fff !important;
     font-weight: bold;
   }
 
   .MuiDataGrid-cell {
-    color: #ddd;
-    border-bottom: 1px solid #222;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
     display: flex;
     align-items: center;
   }
 
   .MuiDataGrid-footerContainer {
-    background-color: #af0d15;
-    color: #ccc;
-    border-top: 1px solid #333;
+    background-color: var(--color-surface);
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
   }
 
   .MuiCheckbox-root svg {
-    fill: #e50914;
+    fill: var(--color-accent);
   }
 
   .MuiDataGrid-row:hover {
-    background-color: gray;
+    background-color: var(--color-hover);
   }
 
   .status {

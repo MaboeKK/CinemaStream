@@ -126,7 +126,7 @@ const Register = () => {
         {confirmPassword && (
           <p
             style={{
-              color: doPasswordsMatch ? 'green' : 'red',
+              color: doPasswordsMatch ? '#1e7f4c' : 'var(--color-accent)',
               marginBottom: '10px',
               fontSize: '0.9rem',
             }}
@@ -136,7 +136,9 @@ const Register = () => {
         )}
 
         {errorMessage && (
-          <p style={{ color: 'red', fontSize: '0.9rem', marginBottom: '10px' }}>{errorMessage}</p>
+          <p style={{ color: 'var(--color-accent)', fontSize: '0.9rem', marginBottom: '10px' }}>
+            {errorMessage}
+          </p>
         )}
 
         <button type="submit" className="btn-primary" disabled={!doPasswordsMatch}>
