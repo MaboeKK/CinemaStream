@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,6 +22,82 @@ import DashboardPage from './pages/admin/DashboardPage/DashboardPage';
 import UsersPage from './pages/admin/UsersPage/UsersPage';
 import StatsPage from './pages/admin/StatsPage/StatsPage';
 
+function AppRoutes() {
+  const location = useLocation();
+  return (
+    <div key={location.pathname} className="page-transition">
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+
+        <Route
+          path="/Homepage"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/movies"
+          element={
+            <ProtectedRoute>
+              <MoviesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/series"
+          element={
+            <ProtectedRoute>
+              <SeriesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-list"
+          element={
+            <ProtectedRoute>
+              <MyListPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <UsersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/stats"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <StatsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
+  );
+}
+
 function App() {
   return (
     <ThemeProvider theme={muiTheme}>
@@ -30,74 +106,7 @@ function App() {
         <DarkModeProvider>
           <Router>
             <ToastContainer position="top-right" autoClose={3000} />
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/verify-otp" element={<VerifyOtp />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-
-              <Route
-                path="/Homepage"
-                element={
-                  <ProtectedRoute>
-                    <HomePage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/movies"
-                element={
-                  <ProtectedRoute>
-                    <MoviesPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/series"
-                element={
-                  <ProtectedRoute>
-                    <SeriesPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/my-list"
-                element={
-                  <ProtectedRoute>
-                    <MyListPage />
-                  </ProtectedRoute>
-                }
-              />
-
-              <Route
-                path="/home"
-                element={
-                  <ProtectedRoute roles={['admin']}>
-                    <DashboardPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/users"
-                element={
-                  <ProtectedRoute roles={['admin']}>
-                    <UsersPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/stats"
-                element={
-                  <ProtectedRoute roles={['admin']}>
-                    <StatsPage />
-                  </ProtectedRoute>
-                }
-              />
-
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <AppRoutes />
           </Router>
         </DarkModeProvider>
       </AuthProvider>

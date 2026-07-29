@@ -70,7 +70,9 @@ function SearchInput() {
         onFocus={() => setExpanded(true)}
         onKeyDown={handleKeyDown}
       />
-      {expanded && <SearchOverlay term={debouncedTerm} onSelect={handleSelect} />}
+      {expanded && (
+        <SearchOverlay term={debouncedTerm} onSelect={handleSelect} onClear={() => setTerm('')} />
+      )}
     </div>
   );
 }

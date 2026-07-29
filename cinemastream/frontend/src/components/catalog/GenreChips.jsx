@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { FaTags } from 'react-icons/fa';
 import { fetchGenres, fetchSeriesGenres } from '../../api/tmdb';
+import EmptyState from './EmptyState';
 import './GenreChips.css';
 
 const FEATURED_GENRE_NAMES = ['Action', 'Comedy', 'Drama', 'Horror', 'Science Fiction'];
@@ -14,25 +16,39 @@ const TV_GENRE_SYNONYMS = {
 
 function GenreChips({ selected, onSelect }) {
   const [genres, setGenres] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    Promise.all([fetchGenres(), fetchSeriesGenres()]).then(([movieGenres, tvGenres]) => {
-      const merged = movieGenres
-        .filter((g) => FEATURED_GENRE_NAMES.includes(g.name))
-        .map((movieGenre) => {
-          const tvName = TV_GENRE_SYNONYMS[movieGenre.name] || movieGenre.name;
-          const tvGenre = tvGenres.find((g) => g.name === tvName);
-          return {
-            name: movieGenre.name,
-            movieGenreId: movieGenre.id,
-            seriesGenreId: tvGenre?.id,
-          };
-        });
-      setGenres(merged);
-    });
+    Promise.all([fetchGenres(), fetchSeriesGenres()])
+      .then(([movieGenres, tvGenres]) => {
+        const merged = movieGenres
+          .filter((g) => FEATURED_GENRE_NAMES.includes(g.name))
+          .map((movieGenre) => {
+            const tvName = TV_GENRE_SYNONYMS[movieGenre.name] || movieGenre.name;
+            const tvGenre = tvGenres.find((g) => g.name === tvName);
+            return {
+              name: movieGenre.name,
+              movieGenreId: movieGenre.id,
+              seriesGenreId: tvGenre?.id,
+            };
+          });
+        setGenres(merged);
+      })
+      .finally(() => setLoaded(true));
   }, []);
 
-  if (genres.length === 0) return null;
+  if (!loaded) return null;
+
+  if (genres.length === 0) {
+    return (
+      <EmptyState
+        compact
+        icon={<FaTags />}
+        title="No genres available"
+        description="We couldn't load genres right now — try refreshing the page."
+      />
+    );
+  }
 
   return (
     <div className="genre-chips">

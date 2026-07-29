@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { FaPlay, FaPlus, FaCheck, FaRegHeart, FaHeart } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import { useMyList } from '../../hooks/useMyList';
 import { useLikedTitles } from '../../hooks/useLikedTitles';
 import { useGenreLookup } from '../../hooks/useGenreLookup';
 import './MovieCard.css';
 
-function MovieCard({ movie, onClick }) {
+function MovieCard({ movie, onClick, progress }) {
   const { isSaved, toggle } = useMyList();
   const { isLiked, toggle: toggleLiked } = useLikedTitles();
   const genreMaps = useGenreLookup();
@@ -24,6 +25,7 @@ function MovieCard({ movie, onClick }) {
   const handleToggleMyList = (e) => {
     e.stopPropagation();
     toggle({ ...movie, media_type: mediaType });
+    toast.success(saved ? 'Removed from My List' : 'Added to My List');
   };
 
   const handleToggleLiked = (e) => {
@@ -73,6 +75,11 @@ function MovieCard({ movie, onClick }) {
         </div>
         <h3 className="catalog-card-title">{movie.title || movie.name}</h3>
       </div>
+      {typeof progress === 'number' && (
+        <div className="catalog-card-progress">
+          <div className="catalog-card-progress-fill" style={{ width: `${progress}%` }} />
+        </div>
+      )}
     </div>
   );
 }

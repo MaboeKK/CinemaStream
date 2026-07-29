@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { FaBookmark } from 'react-icons/fa';
 import CatalogNavbar from '../../../components/catalog/CatalogNavbar';
 import MovieCard from '../../../components/catalog/MovieCard';
 import TrailerModal from '../../../components/catalog/TrailerModal';
+import EmptyState from '../../../components/catalog/EmptyState';
 import { useMyList } from '../../../hooks/useMyList';
 import { fetchMovieDetails, fetchSeriesDetails } from '../../../api/tmdb';
 import { fetchYoutubeTrailer } from '../../../api/youtube';
@@ -42,9 +44,13 @@ function MyListPage() {
         <h2 className="catalog-page-title">My List</h2>
 
         {list.length === 0 ? (
-          <p style={{ color: 'var(--color-text-muted)' }}>
-            Nothing saved yet — click the + icon on any title to add it here.
-          </p>
+          <EmptyState
+            icon={<FaBookmark />}
+            title="Your list is empty"
+            description="Save movies and shows you want to watch later — click the + icon on any title to add it here."
+            actionLabel="Browse Movies"
+            actionTo="/movies"
+          />
         ) : (
           <div className="catalog-grid">
             {list.map((item) => (
