@@ -28,9 +28,13 @@ function MovieRow({ title, fetchFunction, onMovieClick }) {
           &lt;
         </button>
         <div className="row-movies" ref={rowRef}>
-          {(movies || []).map((movie) => (
-            <MovieCard key={movie.id} movie={movie} onClick={() => onMovieClick(movie)} />
-          ))}
+          {movies === null
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="skeleton skeleton-card" />
+              ))
+            : movies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} onClick={() => onMovieClick(movie)} />
+              ))}
         </div>
         <button className="scroll-button right" onClick={scrollRight}>
           &gt;

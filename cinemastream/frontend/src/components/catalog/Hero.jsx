@@ -57,7 +57,26 @@ function Hero({ onPlayTrailer }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [featured]);
 
-  if (!featured) return <div className="hero" />;
+  if (!featured) {
+    return (
+      <div className="hero hero-loading">
+        <div className="hero-content">
+          <div className="skeleton hero-skel-title" />
+          <div className="hero-skel-badges">
+            <div className="skeleton hero-skel-badge" />
+            <div className="skeleton hero-skel-badge" />
+            <div className="skeleton hero-skel-badge" />
+          </div>
+          <div className="skeleton hero-skel-line" />
+          <div className="skeleton hero-skel-line short" />
+          <div className="hero-skel-actions">
+            <div className="skeleton hero-skel-btn" />
+            <div className="skeleton hero-skel-btn" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const year = featured.release_date?.slice(0, 4);
   const saved = isSaved(featured.id);
