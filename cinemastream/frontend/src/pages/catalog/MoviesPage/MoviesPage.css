@@ -1,18 +1,18 @@
 .catalog-list-page {
-  background-color: #141414;
+  background-color: var(--color-surface);
   min-height: 100vh;
   padding-top: 100px;
-  color: white;
+  color: var(--color-text);
 }
 
 .catalog-list-content {
-  padding: 20px 40px;
+  padding: var(--space-4) var(--space-6);
 }
 
 .catalog-page-title {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #e5e5e5;
+  font-size: var(--font-size-h1);
+  margin-bottom: var(--space-4);
+  color: var(--color-text);
 }
 
 .catalog-filter-bar {
@@ -34,49 +34,50 @@
   width: 100%;
   padding: 12px 18px;
   border-radius: 25px;
-  border: 1px solid #444;
-  font-size: 16px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+  font-size: var(--font-size-body);
   outline: none;
   transition: all 0.3s ease;
 }
 
-.catalog-genre-filter select {
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-size: 1rem;
-  background-color: #1f1f1f;
-  color: white;
-  border: 1px solid #444;
-  outline: none;
+.catalog-search-input::placeholder {
+  color: var(--color-text-muted);
 }
 
 .catalog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-4);
 }
 
-.catalog-load-more {
-  text-align: center;
-  margin-top: 30px;
+.catalog-grid .catalog-card,
+.catalog-grid .skeleton-card {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
 }
 
-.catalog-load-more button {
-  background-color: #e50914;
-  color: white;
-  border: none;
-  padding: 10px 25px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
+@media (max-width: 1400px) {
+  .catalog-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 
-.catalog-load-more button:hover:not(:disabled) {
-  background-color: #f40612;
+@media (max-width: 1100px) {
+  .catalog-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
-.catalog-load-more button:disabled {
-  opacity: 0.6;
-  cursor: default;
+@media (max-width: 700px) {
+  .catalog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.catalog-scroll-sentinel {
+  height: 1px;
+  margin-top: var(--space-5);
 }

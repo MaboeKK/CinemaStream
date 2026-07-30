@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, afterAll } from 'vitest';
 import request from 'supertest';
-import app from '../src/app.js';
-import pool from '../src/config/db.js';
+import app from '../../src/app.js';
+import pool from '../../src/config/db.js';
 
 const newUser = {
   first_name: 'Test',

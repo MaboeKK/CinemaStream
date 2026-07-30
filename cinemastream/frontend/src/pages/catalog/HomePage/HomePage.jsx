@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { FaFilter } from 'react-icons/fa';
 import CatalogNavbar from '../../../components/catalog/CatalogNavbar';
 import Hero from '../../../components/catalog/Hero';
 import GenreChips from '../../../components/catalog/GenreChips';
@@ -6,6 +7,7 @@ import TypeTabs from '../../../components/catalog/TypeTabs';
 import MovieRow from '../../../components/catalog/MovieRow';
 import MovieCard from '../../../components/catalog/MovieCard';
 import TrailerModal from '../../../components/catalog/TrailerModal';
+import EmptyState from '../../../components/catalog/EmptyState';
 import Footer from '../../../components/catalog/Footer';
 import {
   fetchTrending,
@@ -24,6 +26,12 @@ import './HomePage.css';
 const EMPTY_MODAL_CONTENT = { name: '', overview: '', genres: [], actors: [], rawItem: null };
 const EMPTY_FILTERED = { movies: [], series: [] };
 
+// watchApi has no playback-position field yet (only records that a title was
+// opened, not how far into it) -- this derives a stable-per-id placeholder
+// percentage so Continue Watching cards can show a progress bar today,
+// rather than jumping randomly on every render, until real tracking exists.
+const pseudoProgress = (id) => Math.floor(15 + (Math.abs(Math.sin(id) * 10000) % 78));
+
 // Stable module-level reference so MovieRow's effect doesn't refire on every
 // HomePage render. Enriches the user's real watch history with poster art.
 const fetchContinueWatching = async () => {
@@ -33,10 +41,22 @@ const fetchContinueWatching = async () => {
       try {
         if (entry.movie_id) {
           const details = await fetchMovieDetails(entry.movie_id);
-          return { id: entry.movie_id, title: details.name, poster_path: details.poster_path, media_type: 'movie' };
+          return {
+            id: entry.movie_id,
+            title: details.name,
+            poster_path: details.poster_path,
+            media_type: 'movie',
+            progress: pseudoProgress(entry.movie_id),
+          };
         }
         const details = await fetchSeriesDetails(entry.series_id);
-        return { id: entry.series_id, name: details.name, poster_path: details.poster_path, media_type: 'tv' };
+        return {
+          id: entry.series_id,
+          name: details.name,
+          poster_path: details.poster_path,
+          media_type: 'tv',
+          progress: pseudoProgress(entry.series_id),
+        };
       } catch {
         return null;
       }
@@ -127,9 +147,19 @@ function HomePage() {
           <TypeTabs activeTab={typeTab} onChange={setTypeTab} counts={counts} />
 
           {filterLoading ? (
-            <p className="catalog-home-filtered-status">Loading...</p>
+            <div className="catalog-grid catalog-home-filtered-grid">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className="skeleton skeleton-card" />
+              ))}
+            </div>
           ) : displayItems.length === 0 ? (
-            <p className="catalog-home-filtered-status">No titles found for this filter.</p>
+            <EmptyState
+              icon={<FaFilter />}
+              title="No titles match this genre"
+              description="Try a different genre or clear the filter to see everything."
+              actionLabel="Clear Filter"
+              onAction={() => setSelectedGenre(null)}
+            />
           ) : (
             <div className="catalog-grid catalog-home-filtered-grid">
               {displayItems.map((item) => (

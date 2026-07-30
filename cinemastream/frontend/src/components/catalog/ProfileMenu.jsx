@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import InitialsAvatar from '../InitialsAvatar';
+import InitialsAvatar from '../common/InitialsAvatar';
 import { useAuth } from '../../context/AuthContext';
 import './ProfileMenu.css';
 
@@ -27,7 +27,7 @@ function ProfileMenu() {
         <div className="profile-menu-dropdown">
           <p className="profile-menu-name">{fullName || 'Account'}</p>
           <p className="profile-menu-email">{user?.email}</p>
-          <button className="profile-menu-logout" onClick={handleLogout}>
+          <button className="profile-menu-logout btn-primary" onClick={handleLogout}>
             Logout
           </button>
         </div>

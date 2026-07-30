@@ -4,8 +4,8 @@
   left: 220px;
   width: calc(100% - 220px);
   height: 60px;
-  background-color: #141414;
-  color: white;
+  background-color: var(--color-surface);
+  color: var(--color-text);
   display: flex;
   align-items: center;
   z-index: 1000;
@@ -26,13 +26,13 @@
 
     .icon {
       font-size: 1.5rem;
-      color: white;
+      color: var(--color-text);
       cursor: pointer;
       transition: transform 0.2s ease;
 
       &:hover {
         transform: scale(1.1);
-        color: #e50914;
+        color: var(--color-accent);
       }
     }
   }

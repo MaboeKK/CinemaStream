@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import AuthLayout from '../../../components/AuthLayout';
+import AuthLayout from '../../../components/auth/AuthLayout';
 import authApi from '../../../api/authApi';
 
 const ForgotPassword = () => {
@@ -13,12 +12,6 @@ const ForgotPassword = () => {
 
     try {
       await authApi.forgotPassword(email);
-      toast.success(
-        <div>
-          <p>OTP sent successfully!</p>
-          <p>You will be redirected to the reset password page shortly.</p>
-        </div>
-      );
 
       // Save email for reset password page
       localStorage.setItem('resetEmail', email);
@@ -27,8 +20,8 @@ const ForgotPassword = () => {
       setTimeout(() => {
         navigate('/reset-password');
       }, 1500);
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Something went wrong');
+    } catch {
+      // Request failed -- no toast/error UI per current design.
     }
   };
 
@@ -47,7 +40,9 @@ const ForgotPassword = () => {
           />
         </div>
 
-        <button type="submit">Send OTP</button>
+        <button type="submit" className="btn-primary">
+          Send OTP
+        </button>
 
         <div className="register-link">
           <p>

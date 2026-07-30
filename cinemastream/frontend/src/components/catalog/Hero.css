@@ -14,8 +14,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, var(--color-bg) 0%, rgba(11, 11, 11, 0.55) 45%, rgba(11, 11, 11, 0.15) 75%),
-    linear-gradient(to right, rgba(11, 11, 11, 0.85) 0%, rgba(11, 11, 11, 0.15) 55%, transparent 100%);
+    linear-gradient(to top, var(--color-bg) 0%, rgba(9, 9, 9, 0.55) 45%, rgba(9, 9, 9, 0.15) 75%),
+    linear-gradient(to right, rgba(9, 9, 9, 0.85) 0%, rgba(9, 9, 9, 0.15) 55%, transparent 100%);
 }
 
 .hero-content {
@@ -65,8 +65,22 @@
 }
 
 .hero-badge.rating {
-  color: #ffd166;
+  color: var(--color-rating);
   border-color: rgba(255, 209, 102, 0.4);
+}
+
+.hero-badge.match {
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.hero-badge.trending {
+  color: var(--color-warning);
+  border-color: rgba(255, 159, 67, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .hero-overview {
@@ -85,49 +99,62 @@
   gap: 14px;
 }
 
+/* Colors/hover/shadow come from the shared .btn-primary/.btn-secondary
+   classes (src/styles/buttons.css) -- this just sizes them up for the hero. */
 .hero-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   font-size: 1rem;
-  font-weight: 600;
-  padding: 12px 28px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.15s ease, background 0.2s ease, opacity 0.2s ease;
-}
-
-.hero-btn:hover {
-  transform: translateY(-2px);
-}
-
-.hero-btn.primary {
-  background: var(--color-accent);
-  color: #fff;
-}
-
-.hero-btn.primary:hover {
-  background: var(--color-accent-hover);
-}
-
-.hero-btn.secondary {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--color-text);
-  backdrop-filter: blur(6px);
-}
-
-.hero-btn.secondary:hover {
-  background: rgba(255, 255, 255, 0.22);
-}
-
-.hero-btn.secondary.active {
-  background: var(--color-text);
-  color: var(--color-bg);
+  padding: 14px 28px;
 }
 
 @media (max-width: 600px) {
   .hero-content {
     padding: 0 20px 40px;
   }
+}
+
+.hero-loading {
+  background-color: var(--color-surface);
+}
+
+.hero-skel-title {
+  width: 60%;
+  max-width: 480px;
+  height: 56px;
+  margin-bottom: 16px;
+}
+
+.hero-skel-badges {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.hero-skel-badge {
+  width: 80px;
+  height: 26px;
+  border-radius: 999px;
+}
+
+.hero-skel-line {
+  width: 100%;
+  max-width: 560px;
+  height: 16px;
+  margin-bottom: 10px;
+}
+
+.hero-skel-line.short {
+  width: 70%;
+  max-width: 380px;
+  margin-bottom: 28px;
+}
+
+.hero-skel-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.hero-skel-btn {
+  width: 160px;
+  height: 48px;
+  border-radius: 8px;
 }

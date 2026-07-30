@@ -28,6 +28,13 @@
   display: none;
 }
 
+.skeleton-card {
+  width: 230px;
+  height: 330px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
 .scroll-button {
   position: absolute;
   top: 50%;
@@ -37,7 +44,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(11, 11, 11, 0.55);
+  background: rgba(9, 9, 9, 0.55);
   backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: var(--color-text);

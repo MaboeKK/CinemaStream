@@ -1,7 +1,7 @@
 import { describe, test, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import LandingPage from '../../src/pages/LandingPage/LandingPage';
+import LandingPage from '../../src/pages/marketing/LandingPage/LandingPage';
 
 vi.mock('../../src/api/tmdb', () => ({
   fetchPopularMovies: vi.fn().mockResolvedValue([]),

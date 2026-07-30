@@ -34,9 +34,9 @@ const ActivityHeatmap = () => {
           margin: { l: 80, r: 10, t: 30, b: 40 },
           paper_bgcolor: 'transparent',
           plot_bgcolor: 'transparent',
-          font: { color: '#fff', family: 'inherit' },
-          xaxis: { tickfont: { color: '#ccc', family: 'inherit' } },
-          yaxis: { tickfont: { color: '#ccc', family: 'inherit' } },
+          font: { color: '#f5f5f5', family: 'inherit' },
+          xaxis: { tickfont: { color: '#b3b3b3', family: 'inherit' } },
+          yaxis: { tickfont: { color: '#b3b3b3', family: 'inherit' } },
         }}
         config={{ responsive: true }}
         style={{ width: '100%', height: '300px' }}

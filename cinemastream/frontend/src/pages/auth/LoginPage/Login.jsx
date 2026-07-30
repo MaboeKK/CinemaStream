@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { FaLock } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import AuthLayout from '../../../components/AuthLayout';
+import AuthLayout from '../../../components/auth/AuthLayout';
 import { useAuth } from '../../../context/AuthContext';
 
 const Login = () => {
@@ -19,13 +18,6 @@ const Login = () => {
       const result = await login(email, password, rememberMe);
 
       if (result.status === 'SUCCESS') {
-        toast.success(
-          <div>
-            <p>Login successful!</p>
-            <p>Welcome, {result.data.first_name}!</p>
-          </div>
-        );
-
         if (rememberMe) localStorage.setItem('rememberedEmail', email);
 
         const role = result.data.role;
@@ -40,13 +32,10 @@ const Login = () => {
           }
         }, 500); // wait 0.5s for cookies to sync
       } else if (result.message === 'Please verify your email to login') {
-        toast.warn('Please verify your email.');
         navigate('/verify-otp');
-      } else {
-        toast.error(result.message || 'Login failed');
       }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
+    } catch {
+      // Login failed -- form stays as-is; no toast/error UI per current design.
     }
   };
 
@@ -89,7 +78,9 @@ const Login = () => {
           <Link to="/forgot-password">Forgot Password?</Link>
         </div>
 
-        <button type="submit">Login</button>
+        <button type="submit" className="btn-primary">
+          Login
+        </button>
 
         <div className="register-link">
           <p>

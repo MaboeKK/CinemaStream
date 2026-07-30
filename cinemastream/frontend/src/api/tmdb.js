@@ -64,6 +64,7 @@ export async function fetchMovieDetails(movieId) {
     poster_path: data.poster_path,
     vote_average: data.vote_average,
     release_date: data.release_date,
+    runtime: data.runtime,
   };
 }
 
@@ -113,6 +114,18 @@ export async function fetchTitlesByGenre({ movieGenreId, seriesGenreId }) {
     movies: movies.map((m) => ({ ...m, media_type: 'movie' })),
     series: series.map((s) => ({ ...s, media_type: 'tv' })),
   };
+}
+
+export async function fetchSimilarMovies(movieId) {
+  const res = await fetch(`${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=en-US&page=1`);
+  const data = await res.json();
+  return data.results;
+}
+
+export async function fetchSimilarSeries(seriesId) {
+  const res = await fetch(`${BASE_URL}/tv/${seriesId}/similar?api_key=${API_KEY}&language=en-US&page=1`);
+  const data = await res.json();
+  return data.results;
 }
 
 export async function fetchSeriesDetails(seriesId) {

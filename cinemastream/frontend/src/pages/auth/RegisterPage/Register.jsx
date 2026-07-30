@@ -3,8 +3,7 @@ import { MdEmail } from 'react-icons/md';
 import { FaLock, FaUser } from 'react-icons/fa';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import AuthLayout from '../../../components/AuthLayout';
+import AuthLayout from '../../../components/auth/AuthLayout';
 import authApi from '../../../api/authApi';
 import { passwordsMatch, isValidPassword, getPasswordError } from '../../../utils/validators';
 
@@ -39,12 +38,6 @@ const Register = () => {
       const result = await authApi.register({ first_name, last_name, email, password });
 
       if (result.status === 'SUCCESS') {
-        toast.success(
-          <div>
-            <p>Registration successful!</p>
-            <p>Please verify your email to login.</p>
-          </div>
-        );
         navigate('/verify-otp', { state: { email } });
       } else {
         setErrorMessage(result.message || 'Registration failed');
@@ -126,7 +119,7 @@ const Register = () => {
         {confirmPassword && (
           <p
             style={{
-              color: doPasswordsMatch ? 'green' : 'red',
+              color: doPasswordsMatch ? 'var(--color-success)' : 'var(--color-accent)',
               marginBottom: '10px',
               fontSize: '0.9rem',
             }}
@@ -136,10 +129,12 @@ const Register = () => {
         )}
 
         {errorMessage && (
-          <p style={{ color: 'red', fontSize: '0.9rem', marginBottom: '10px' }}>{errorMessage}</p>
+          <p style={{ color: 'var(--color-accent)', fontSize: '0.9rem', marginBottom: '10px' }}>
+            {errorMessage}
+          </p>
         )}
 
-        <button type="submit" disabled={!doPasswordsMatch}>
+        <button type="submit" className="btn-primary" disabled={!doPasswordsMatch}>
           Register
         </button>
 

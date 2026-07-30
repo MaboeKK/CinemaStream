@@ -18,22 +18,25 @@ const TopShowsChart = () => {
       <h2 className="featured-title">Most Watched Trailers</h2>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 80 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2a" />
           <XAxis
             dataKey="name"
-            stroke="#ccc"
+            stroke="#b3b3b3"
             interval={0}
             angle={-45}
             textAnchor="end"
             height={60}
-            tick={{ fill: '#ccc' }}
+            tick={{ fill: '#b3b3b3' }}
             tickMargin={10}
           />
-          <YAxis stroke="#ccc" />
-          <Tooltip contentStyle={{ backgroundColor: '#222', border: 'none', color: '#fff' }} labelStyle={{ color: '#fff' }} />
+          <YAxis stroke="#b3b3b3" />
+          <Tooltip
+            contentStyle={{ backgroundColor: '#1f1f1f', border: 'none', color: '#f5f5f5' }}
+            labelStyle={{ color: '#f5f5f5' }}
+          />
           <Bar dataKey="total_views" name="Views">
             {data.map((entry) => (
-              <Cell key={entry.name} fill={entry.type === 'Movie' ? '#e50914' : '#8884d8'} />
+              <Cell key={entry.name} fill={entry.type === 'Movie' ? '#e50914' : '#ff9f43'} />
             ))}
           </Bar>
         </BarChart>
