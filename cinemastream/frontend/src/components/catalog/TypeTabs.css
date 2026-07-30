@@ -23,5 +23,5 @@
 
 .type-tab.active {
   color: var(--color-text);
-  border-color: var(--color-accent);
+  border-image: var(--gradient-accent) 1;
 }

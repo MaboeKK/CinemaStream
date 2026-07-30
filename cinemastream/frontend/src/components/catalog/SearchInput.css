@@ -2,11 +2,19 @@
   position: relative;
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid transparent;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
   overflow: hidden;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  min-width: 38px;
+  transition: background 0.2s ease, border-color 0.25s ease, min-width 0.3s ease;
+}
+
+.nav-search:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  min-width: 60px;
 }
 
 .nav-search-icon {
@@ -32,8 +40,8 @@
 }
 
 .nav-search.expanded {
-  background: rgba(0, 0, 0, 0.55);
-  border-color: var(--color-border);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--glass-border);
 }
 
 .nav-search.expanded .nav-search-input {

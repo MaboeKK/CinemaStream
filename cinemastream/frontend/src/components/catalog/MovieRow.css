@@ -3,9 +3,37 @@
   position: relative;
 }
 
+/* Glass tray -- used for Continue Watching, pulled up to overlap the hero's
+   bottom fade (negative margin) rather than sitting flush below it. */
+.row-container.tray {
+  margin: -64px 48px 44px;
+  padding: 24px 0;
+  border-radius: 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  position: relative;
+  z-index: 2;
+}
+
+.row-container.tray .row-title,
+.row-container.tray .row-movies {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.row-container.tray .scroll-button.left {
+  left: -8px;
+}
+
+.row-container.tray .scroll-button.right {
+  right: -8px;
+}
+
 .row-title {
   color: var(--color-text);
-  font-size: 1.4rem;
+  font-size: var(--font-size-section-heading);
   font-weight: 700;
   margin-bottom: 14px;
   padding-left: 48px;
@@ -29,10 +57,15 @@
 }
 
 .skeleton-card {
-  width: 230px;
-  height: 330px;
-  border-radius: 10px;
+  width: 184px;
+  height: 264px;
+  border-radius: 11px;
   flex-shrink: 0;
+}
+
+.skeleton-card.still {
+  width: 240px;
+  height: 135px;
 }
 
 .scroll-button {
@@ -44,9 +77,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(9, 9, 9, 0.55);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   color: var(--color-text);
   font-size: 1.4rem;
   z-index: 5;
@@ -56,7 +90,7 @@
 }
 
 .scroll-button:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.16);
   transform: translateY(-50%) scale(1.08);
 }
 

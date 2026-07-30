@@ -5,13 +5,16 @@ import { useLikedTitles } from '../../hooks/useLikedTitles';
 import { useGenreLookup } from '../../hooks/useGenreLookup';
 import './MovieCard.css';
 
-function MovieCard({ movie, onClick, progress }) {
+// variant: 'poster' (default, 2:3 -- most rows) | 'still' (16:9 -- Continue
+// Watching, which tracks progress rather than genre/rating metadata).
+function MovieCard({ movie, onClick, progress, variant = 'poster', rank }) {
   const { isSaved, toggle } = useMyList();
   const { isLiked, toggle: toggleLiked } = useLikedTitles();
   const genreMaps = useGenreLookup();
   const mediaType = movie.media_type || (movie.title ? 'movie' : 'tv');
   const saved = isSaved(movie.id);
   const liked = isLiked(movie.id);
+  const isStill = variant === 'still';
 
   const year = (movie.release_date || movie.first_air_date)?.slice(0, 4);
 
@@ -31,26 +34,33 @@ function MovieCard({ movie, onClick, progress }) {
     toggleLiked({ ...movie, media_type: mediaType });
   };
 
+  const imagePath = isStill
+    ? movie.backdrop_path || movie.poster_path
+    : movie.poster_path;
+
   return (
-    <div className="catalog-card" onClick={onClick}>
+    <div className={`catalog-card${isStill ? ' still' : ''}`} onClick={onClick}>
+      {typeof rank === 'number' && <span className="catalog-card-rank">{rank}</span>}
       <img
         className="catalog-card-poster"
-        src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+        src={`https://image.tmdb.org/t/p/${isStill ? 'w500' : 'w300'}${imagePath}`}
         alt={movie.title || movie.name}
         loading="lazy"
       />
       <div className="catalog-card-overlay">
-        <div className="catalog-card-badges">
-          {movie.vote_average > 0 && (
-            <span className="catalog-card-badge rating">★ {movie.vote_average.toFixed(1)}</span>
-          )}
-          {year && <span className="catalog-card-badge">{year}</span>}
-          {genreNames.map((name) => (
-            <span className="catalog-card-badge" key={name}>
-              {name}
-            </span>
-          ))}
-        </div>
+        {!isStill && (
+          <div className="catalog-card-badges">
+            {movie.vote_average > 0 && (
+              <span className="catalog-card-badge rating">★ {movie.vote_average.toFixed(1)}</span>
+            )}
+            {year && <span className="catalog-card-badge">{year}</span>}
+            {genreNames.map((name) => (
+              <span className="catalog-card-badge" key={name}>
+                {name}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div className="catalog-card-actions">
           <button className="catalog-card-action-btn play" onClick={onClick} aria-label="Play">

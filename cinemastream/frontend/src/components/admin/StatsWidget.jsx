@@ -15,7 +15,7 @@ const WIDGET_DATA = {
     icon: (
       <PersonOutlineOutlinedIcon
         className="icon"
-        style={{ color: 'var(--color-accent)', backgroundColor: 'rgba(229, 9, 20, 0.15)' }}
+        style={{ color: 'var(--color-accent)', backgroundColor: 'rgba(244, 83, 166, 0.15)' }}
       />
     ),
   },
@@ -27,7 +27,7 @@ const WIDGET_DATA = {
     icon: (
       <MovieOutlinedIcon
         className="icon"
-        style={{ backgroundColor: 'rgba(229, 9, 20, 0.15)', color: 'var(--color-accent)' }}
+        style={{ backgroundColor: 'rgba(244, 83, 166, 0.15)', color: 'var(--color-accent)' }}
       />
     ),
   },

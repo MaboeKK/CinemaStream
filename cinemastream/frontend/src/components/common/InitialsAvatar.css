@@ -1,7 +1,10 @@
 .initials-avatar {
   width: 36px;
   height: 36px;
-  background-color: var(--color-surface-raised, #1f1f1f);
+  background: var(--glass-bg, rgba(255, 255, 255, 0.07));
+  backdrop-filter: blur(var(--glass-blur, 18px));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 18px));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.14));
   color: var(--color-text, #f5f5f5);
   border-radius: 50%;
   display: flex;
@@ -11,9 +14,9 @@
   font-size: 14px;
   cursor: pointer;
   user-select: none;
-  transition: background 0.3s;
+  transition: background 0.3s, border-color 0.2s ease;
 }
 
 .initials-avatar:hover {
-  background-color: var(--color-accent, #e50914);
+  border-color: var(--color-accent, #f453a6);
 }

@@ -4,8 +4,10 @@
 }
 
 .notifications-bell {
-  background: none;
-  border: none;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   color: var(--color-text);
   font-size: 1.1rem;
   padding: 8px;
@@ -15,7 +17,7 @@
 }
 
 .notifications-bell:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .notifications-dropdown {
