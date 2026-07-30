@@ -1,19 +1,20 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Watches a sentinel element and calls onLoadMore whenever it scrolls into
 // view. onLoadMore is read from a ref (not a hook dependency) so callers
-// don't need to memoize it -- the observer itself only needs to be
-// recreated when `hasMore` flips (permanently stops observing once false,
-// satisfying "stop attempting to fetch once all pages are loaded"). Callers
-// are still expected to guard their own onLoadMore against re-entrant calls
-// while a fetch is already in flight.
+// don't need to memoize it. The sentinel node itself is tracked in state
+// (not a plain ref) and included as an effect dependency -- callers only
+// render the sentinel <div> once data has loaded (it doesn't exist during
+// the initial empty/skeleton state), so a plain ref's `.current` would
+// still be null the one time this effect ran, with nothing left to ever
+// re-trigger it. Using a state-backed callback ref means the effect reruns
+// as soon as the node actually mounts, not just when `hasMore` changes.
 export function useInfiniteScroll({ onLoadMore, hasMore }) {
-  const sentinelRef = useRef(null);
+  const [node, setNode] = useState(null);
   const onLoadMoreRef = useRef(onLoadMore);
   onLoadMoreRef.current = onLoadMore;
 
   useEffect(() => {
-    const node = sentinelRef.current;
     if (!node || !hasMore) return undefined;
 
     const observer = new IntersectionObserver(
@@ -27,9 +28,9 @@ export function useInfiniteScroll({ onLoadMore, hasMore }) {
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [hasMore]);
+  }, [node, hasMore]);
 
-  return sentinelRef;
+  return setNode;
 }
 
 export default useInfiniteScroll;

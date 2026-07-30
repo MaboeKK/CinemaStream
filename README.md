@@ -1,119 +1,117 @@
 # CinemaStream
 
-CinemaStream is a full-stack movie & TV catalog application: browse trending, top-rated, and genre-filtered titles pulled live from TMDB, save favourites, track watch history, and manage users through a role-based admin dashboard. The frontend is a React SPA with a custom dark theme; the backend is a small Node/Express API handling auth and user-generated data only.
+CinemaStream is a movie & TV catalogue app: a React frontend for browsing, searching, and tracking titles (catalogue data comes live from [TMDB](https://www.themoviedb.org/)), with a small Express/PostgreSQL API behind it that handles authentication and user data, accounts, login history, and watch history. There's also an admin dashboard for managing users and viewing basic platform stats.
 
 ## Features
 
-- **Live catalog from TMDB** — trending, popular, top-rated, new-release, and genre-filtered movies & TV series, all fetched directly from The Movie Database API (no local movie/series database)
-- **Infinite scroll** on `/movies` and `/series` — the catalog grid loads the next page automatically as you scroll, replacing manual pagination
-- **Search** — an overlay search experience across titles and genres, plus per-page search/genre filtering
-- **Trailer & details modal** — trailer playback, cast, genres, and "more like this" recommendations for any title
-- **My List & Liked Titles** — client-side (`localStorage`) personalization, no account sync required
-- **Watch history** — recorded per user and surfaced as "Continue Watching" and in the admin dashboard
-- **Role-based authentication** — email/password registration with OTP email verification, JWT access/refresh tokens in httpOnly cookies, CSRF protection, and `guest`/`admin` roles
-- **Admin dashboard** — user management table, top-shows chart, monthly user growth chart, and a weekly activity heatmap
-- **Dark theme design system** — CSS custom properties for colors/spacing/typography, shared across auth, catalog, and admin surfaces
-
-## Tech Stack
-
-### Frontend (`cinemastream/frontend`)
-
-- React 19 + Vite
-- React Router v7
-- Axios (`api/httpClient.js`) for backend requests; native `fetch` for TMDB/YouTube calls
-- Plain CSS with CSS custom properties for the design-token system (no Tailwind or CSS Modules) — MUI (`@mui/material`, `@mui/x-data-grid`) is used only in the admin dashboard, with `recharts` and `react-plotly.js` for its charts
-- `react-icons` for icons, `react-youtube` for trailer embeds
-- Vitest + React Testing Library for tests, ESLint + Prettier for linting/formatting
-
-### Backend (`cinemastream/backend`)
-
-- Node.js + Express 5
-- PostgreSQL (via `pg`)
-- JWT (`jsonwebtoken`) access/refresh tokens delivered as httpOnly cookies, `bcrypt` for password hashing
-- `express-rate-limit` for auth rate limiting, `cors` + custom CSRF middleware, `joi` for request validation
-- `nodemailer` (Gmail SMTP) for OTP/password-reset emails
-- Vitest + Supertest for integration tests, ESLint + Prettier for linting/formatting
-
-Layered architecture: `routes/` → `controllers/` → `services/` → `repositories/`, with `middleware/`, `config/`, and `utils/` alongside.
-
-## Database Architecture
-
-The database holds **only user accounts and user-generated data — no movie/series/genre catalog data**. All title metadata (posters, descriptions, cast, ratings, genres, trending/popular lists) is fetched directly from TMDB by the frontend at request time; the schema was audited and trimmed to remove a set of unused TMDB-cache tables (`movies`, `series`, `genres`, `movie_genres`, `series_genres`) that had no code path reading or writing them.
-
-Three tables remain:
-
-| Table | Purpose |
+| Feature | Notes |
 |---|---|
-| `users` | Accounts — name, email, hashed password, email-verification/reset tokens, role (`guest`/`admin`), timestamps |
-| `login_history` | Login/logout audit trail (timestamp, IP, user agent, success flag) — also powers the admin "Monthly User Growth" chart |
-| `watched_history` | Per-user watch events (movie/series id + a denormalized title snapshot) — powers "Continue Watching" and the admin "Top Shows"/activity-heatmap charts |
+| Live TMDB catalogue | Trending, popular, top-rated, new-release, and genre-filtered movies & TV series |
+| Infinite scroll | `/movies` and `/series` load more as you scroll |
+| Search | Overlay search from the navbar, plus filters on the catalogue pages |
+| Trailer & details modal | Trailer playback, cast, genres, and "more like this" recommendations |
+| My List & Liked Titles | Personal watchlist/favourites, kept in `localStorage` (not synced to the account) |
+| Watch history | Recorded server-side per user; powers a "Continue Watching" row and admin analytics |
+| Authentication | Email/password with OTP verification, JWT access + refresh tokens in httpOnly cookies, CSRF protection, password reset |
+| Role-based access | `guest` vs `admin`, enforced server-side and client-side |
+| Admin dashboard | User list, top-shows chart, monthly user growth, activity heatmap |
+| Dark design system | CSS custom properties for colour/spacing/typography, used consistently across the app |
 
-Schema DDL lives in `cinemastream/backend/db/schema.sql`; `cinemastream/backend/db/seed.local.sql` is a local-only (not version-controlled) dump for seeding a dev database.
+## Architecture
 
-## Setup
+Two independent Node.js apps in one repo, frontend and backend, each with its own `package.json` and `node_modules`. The root `cinemastream/package.json` just runs both dev servers at once via `concurrently`.
+
+```mermaid
+flowchart LR
+    subgraph Browser
+        SPA["React SPA (Vite)"]
+    end
+
+    subgraph "cinemastream/backend"
+        API["Express API<br/>routes -> controllers -> services -> repositories"]
+    end
+
+    DB[(PostgreSQL<br/>users / login_history / watched_history)]
+    TMDB["TMDB API"]
+    YT["YouTube Data API"]
+    SMTP["Gmail SMTP<br/>via Nodemailer"]
+
+    SPA -- "Axios, httpOnly cookies<br/>/api/auth /api/watch /api/admin" --> API
+    SPA -- "fetch, VITE_TMDB_API_KEY" --> TMDB
+    SPA -- "fetch, VITE_YOUTUBE_API_KEY" --> YT
+    API -- "pg.Pool" --> DB
+    API -- "OTP / reset emails" --> SMTP
+```
+
+A few things worth knowing:
+- There's no local movie/series database: all catalogue data comes straight from TMDB. An earlier `movies`/`series`/`genres` table set existed but was never used, so it's gone.
+- TMDB and YouTube are called directly from the browser, not proxied through the backend.
+- The backend is a plain stateless REST API: no server-rendered views, no WebSockets, no background jobs.
+
+## Repository Structure
+
+```
+.
+├── .github/workflows/ci.yml        # GitHub Actions: frontend lint + test only
+├── .editorconfig
+├── README.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+└── cinemastream/
+    ├── package.json                 # `concurrently` scripts to run both apps at once
+    ├── eslint.config.base.cjs       # ESLint config shared by frontend & backend
+    ├── docs/                        # UI design-recommendation + audit markdown docs
+    ├── backend/
+    │   ├── src/
+    │   │   ├── routes/              # auth, protected, watch, admin routers
+    │   │   ├── controllers/         # Request/response handling
+    │   │   ├── services/            # Business logic (auth, otp, token, email, watch, admin)
+    │   │   ├── repositories/        # SQL queries (user, loginHistory, watchedHistory)
+    │   │   ├── middleware/          # auth (JWT), csrf, rateLimiter, role, errorHandler
+    │   │   ├── config/              # env.js (Joi-validated env), db.js (pg Pool)
+    │   │   ├── utils/                # AppError, asyncHandler, cookies, validation schemas
+    │   │   ├── app.js                # Express app + middleware/route wiring
+    │   │   └── server.js             # HTTP listener entrypoint
+    │   ├── db/schema.sql             # DDL for the 3 live tables
+    │   └── tests/integration/        # Vitest + Supertest, hits a real DB
+    └── frontend/
+        ├── src/
+        │   ├── api/                  # httpClient (Axios), authApi, adminApi, watchApi, tmdb, youtube
+        │   ├── components/{auth,common,catalog,admin}/
+        │   ├── pages/{marketing,auth,catalog,admin}/
+        │   ├── context/               # AuthContext, DarkModeContext
+        │   ├── hooks/                  # useMyList, useLikedTitles, useGenreLookup, useInfiniteScroll, ...
+        │   ├── theme/                  # MUI theme mirroring the CSS tokens (admin-only)
+        │   └── styles/, assets/        # Global design tokens, shared button/skeleton styles, images
+        └── tests/                      # Vitest + React Testing Library
+```
+
+## Getting Started
 
 ### Prerequisites
 
 - Node.js 20+
 - A local PostgreSQL instance
-- A [TMDB API key](https://www.themoviedb.org/settings/api) and a [YouTube Data API v3 key](https://console.cloud.google.com/apis/credentials)
-- A Gmail account with an [App Password](https://myaccount.google.com/apppasswords) (for sending OTP/reset emails)
+- A [TMDB API key](https://www.themoviedb.org/settings/api)
+- A [YouTube Data API v3 key](https://console.cloud.google.com/apis/credentials)
+- A Gmail account with an [App Password](https://myaccount.google.com/apppasswords), for sending OTP/reset emails
 
-### 1. Database
-
-```bash
-createdb cinemastream
-psql -d cinemastream -f cinemastream/backend/db/schema.sql
-```
-
-### 2. Backend
+### Installation
 
 ```bash
-cd cinemastream/backend
-npm install
-cp .env.example .env   # then fill in the values below
-npm run dev             # starts on http://localhost:5000
+git clone <repository-url>
+cd daas-graduate-project/cinemastream
+
+cd backend && npm install
+cd ../frontend && npm install
 ```
 
-Required `backend/.env` values:
-
-| Variable | Description |
-|---|---|
-| `POSTGRES_URI` | Postgres connection string, e.g. `postgres://user:password@localhost:5432/cinemastream` |
-| `EMAIL_USER` / `EMAIL_PASS` | Gmail address + App Password used to send OTP/reset emails |
-| `JWT_SECRET` / `REFRESH_SECRET` | Long, random, **distinct** secrets for signing access/refresh JWTs (e.g. `openssl rand -hex 32`) |
-| `PORT` | Port the API listens on (default `5000`) |
-| `CORS_ORIGIN` | Exact origin the frontend is served from, e.g. `http://localhost:3000` |
-| `NODE_ENV` | `development` \| `test` \| `production` |
-
-### 3. Frontend
+### Running Locally
 
 ```bash
-cd cinemastream/frontend
-npm install
-cp .env.example .env   # then fill in the values below
-npm run dev             # starts on http://localhost:3000
+cd cinemastream && npm run dev
 ```
 
-Required `frontend/.env` values:
+This starts both the backend (`http://localhost:5000`) and frontend (`http://localhost:3000`) together. The Vite dev server proxies `/api/*` to the backend, so the SPA can call it same-origin.
 
-| Variable | Description |
-|---|---|
-| `VITE_TMDB_API_KEY` | TMDB API key, used for all catalog/search data |
-| `VITE_YOUTUBE_API_KEY` | YouTube Data API key, used to resolve trailer videos |
-
-## Scripts & Testing
-
-Run from `cinemastream/frontend/` or `cinemastream/backend/` respectively:
-
-| Command | Frontend | Backend |
-|---|---|---|
-| Start dev server | `npm run dev` | `npm run dev` (nodemon) |
-| Run production build | `npm run build` | `npm start` |
-| Lint | `npm run lint` | `npm run lint` |
-| Format | `npm run format` | `npm run format` |
-| Run tests | `npm test` | `npm test` |
-
-Backend tests (`backend/tests/integration/`) run against a real local Postgres database — make sure it's running and migrated (see [Database](#1-database)) before running `npm test`.
-
-CI (`.github/workflows/ci.yml`) runs frontend lint + tests on every push to `develop` and every PR into `develop`/`main`.
+You can also run each app separately in its own terminal with `npm run dev`.
