@@ -5,10 +5,12 @@ import authApi from '../../../api/authApi';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
 
     try {
       await authApi.forgotPassword(email);
@@ -16,12 +18,11 @@ const ForgotPassword = () => {
       // Save email for reset password page
       localStorage.setItem('resetEmail', email);
 
-      // Redirect after short delay to reset password page
-      setTimeout(() => {
-        navigate('/reset-password');
-      }, 1500);
-    } catch {
-      // Request failed -- no toast/error UI per current design.
+      // The awaited request having resolved is the real "OTP sent" signal --
+      // no need to also wait out a fixed delay before moving on.
+      navigate('/reset-password');
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || 'Request failed. Please try again.');
     }
   };
 
@@ -39,6 +40,12 @@ const ForgotPassword = () => {
             required
           />
         </div>
+
+        {errorMessage && (
+          <p style={{ color: 'var(--color-accent)', fontSize: '0.9rem', marginBottom: '10px' }}>
+            {errorMessage}
+          </p>
+        )}
 
         <button type="submit" className="btn-primary">
           Send OTP

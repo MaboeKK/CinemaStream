@@ -63,6 +63,11 @@ const listAll = async () => {
   return result.rows;
 };
 
+const countAll = async () => {
+  const result = await pool.query('SELECT COUNT(*) AS count FROM users');
+  return Number(result.rows[0].count);
+};
+
 const updateOtp = async (userId, otp, expiry) => {
   await pool.query('UPDATE users SET verification_token = $1, otp_expiry = $2 WHERE user_id = $3', [
     otp,
@@ -82,4 +87,5 @@ module.exports = {
   getBasicInfoById,
   updateOtp,
   listAll,
+  countAll,
 };

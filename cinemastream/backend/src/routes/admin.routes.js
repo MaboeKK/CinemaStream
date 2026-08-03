@@ -12,5 +12,6 @@ router.get('/users', adminUsersController.listUsers);
 router.get('/stats/top-shows', adminStatsController.topShows);
 router.get('/stats/monthly-growth', adminStatsController.monthlyGrowth);
 router.get('/stats/heatmap', adminStatsController.heatmap);
+router.get('/stats/overview', adminStatsController.overview);
 
 module.exports = router;

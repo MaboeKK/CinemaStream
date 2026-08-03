@@ -8,6 +8,8 @@ const getMonthlyGrowth = () => httpClient.get('/admin/stats/monthly-growth').the
 
 const getHeatmap = () => httpClient.get('/admin/stats/heatmap').then((r) => r.data);
 
-const adminApi = { getUsers, getTopShows, getMonthlyGrowth, getHeatmap };
+const getOverview = () => httpClient.get('/admin/stats/overview').then((r) => r.data);
+
+const adminApi = { getUsers, getTopShows, getMonthlyGrowth, getHeatmap, getOverview };
 
 export default adminApi;

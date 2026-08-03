@@ -2,59 +2,63 @@
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
+// Shared fetch wrapper: builds the query string and throws on a non-2xx
+// response, so a bad API key or rate-limit (429) surfaces as a rejected
+// promise instead of quietly resolving with `undefined` result fields that
+// crash a downstream .map()/.slice() call.
+async function tmdbFetch(path, params = {}) {
+  const query = new URLSearchParams({ api_key: API_KEY, ...params }).toString();
+  const res = await fetch(`${BASE_URL}${path}?${query}`);
+  if (!res.ok) {
+    throw new Error(`TMDB request failed (${res.status}): ${path}`);
+  }
+  return res.json();
+}
+
 // To fetch trending mocies/series
 export async function fetchTrending() {
-  const res = await fetch(`${BASE_URL}/trending/all/day?api_key=${API_KEY}`);
-  const data = await res.json();
+  const data = await tmdbFetch('/trending/all/day');
   return data.results;
 }
 
 export async function fetchPopularSeries() {
-  const res = await fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&language=en-US&page=1`);
-  const data = await res.json();
+  const data = await tmdbFetch('/tv/popular', { language: 'en-US', page: 1 });
   return data.results;
 }
 
 // To fetch popular movies
 export async function fetchPopularMovies() {
-  const res = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`);
-  const data = await res.json();
+  const data = await tmdbFetch('/movie/popular', { language: 'en-US', page: 1 });
   return data.results;
 }
 
 export async function fetchDiscoverMovie() {
-  const res = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}`);
-  const data = await res.json();
+  const data = await tmdbFetch('/discover/movie');
   return data.results;
 }
 
 export async function fetchGenres() {
-  const res = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=en-US`);
-  const data = await res.json();
+  const data = await tmdbFetch('/genre/movie/list', { language: 'en-US' });
   return data.genres; // array of { id, name }
 }
 
 export async function fetchSeriesGenres() {
-  const res = await fetch(`${BASE_URL}/genre/tv/list?api_key=${API_KEY}&language=en-US`);
-  const data = await res.json();
+  const data = await tmdbFetch('/genre/tv/list', { language: 'en-US' });
   return data.genres; // [{ id, name }]
 }
 
 export async function fetchTopRatedMovies() {
-  const res = await fetch(`${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`);
-  const data = await res.json();
+  const data = await tmdbFetch('/movie/top_rated', { language: 'en-US', page: 1 });
   return data.results;
 }
 
 export async function fetchNewReleaseMovies() {
-  const res = await fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`);
-  const data = await res.json();
+  const data = await tmdbFetch('/movie/now_playing', { language: 'en-US', page: 1 });
   return data.results;
 }
 
 export async function fetchMovieDetails(movieId) {
-  const res = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&append_to_response=credits`);
-  const data = await res.json();
+  const data = await tmdbFetch(`/movie/${movieId}`, { append_to_response: 'credits' });
   return {
     id: data.id,
     name: data.title,
@@ -69,36 +73,30 @@ export async function fetchMovieDetails(movieId) {
 }
 
 export async function searchMovies(query, page = 1) {
-  const res = await fetch(
-    `${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&page=${page}&query=${encodeURIComponent(query)}`
-  );
-  const data = await res.json();
+  const data = await tmdbFetch('/search/movie', { language: 'en-US', page, query });
   return data.results;
 }
 
 export async function discoverMovies(genreId, page = 1) {
-  const genreParam = genreId ? `&with_genres=${genreId}` : '';
-  const res = await fetch(
-    `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US&page=${page}${genreParam}`
-  );
-  const data = await res.json();
+  const data = await tmdbFetch('/discover/movie', {
+    language: 'en-US',
+    page,
+    ...(genreId ? { with_genres: genreId } : {}),
+  });
   return data.results;
 }
 
 export async function searchSeries(query, page = 1) {
-  const res = await fetch(
-    `${BASE_URL}/search/tv?api_key=${API_KEY}&language=en-US&page=${page}&query=${encodeURIComponent(query)}`
-  );
-  const data = await res.json();
+  const data = await tmdbFetch('/search/tv', { language: 'en-US', page, query });
   return data.results;
 }
 
 export async function discoverSeries(genreId, page = 1) {
-  const genreParam = genreId ? `&with_genres=${genreId}` : '';
-  const res = await fetch(
-    `${BASE_URL}/discover/tv?api_key=${API_KEY}&language=en-US&page=${page}${genreParam}`
-  );
-  const data = await res.json();
+  const data = await tmdbFetch('/discover/tv', {
+    language: 'en-US',
+    page,
+    ...(genreId ? { with_genres: genreId } : {}),
+  });
   return data.results;
 }
 
@@ -117,20 +115,17 @@ export async function fetchTitlesByGenre({ movieGenreId, seriesGenreId }) {
 }
 
 export async function fetchSimilarMovies(movieId) {
-  const res = await fetch(`${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=en-US&page=1`);
-  const data = await res.json();
+  const data = await tmdbFetch(`/movie/${movieId}/similar`, { language: 'en-US', page: 1 });
   return data.results;
 }
 
 export async function fetchSimilarSeries(seriesId) {
-  const res = await fetch(`${BASE_URL}/tv/${seriesId}/similar?api_key=${API_KEY}&language=en-US&page=1`);
-  const data = await res.json();
+  const data = await tmdbFetch(`/tv/${seriesId}/similar`, { language: 'en-US', page: 1 });
   return data.results;
 }
 
 export async function fetchSeriesDetails(seriesId) {
-  const res = await fetch(`${BASE_URL}/tv/${seriesId}?api_key=${API_KEY}&append_to_response=credits`);
-  const data = await res.json();
+  const data = await tmdbFetch(`/tv/${seriesId}`, { append_to_response: 'credits' });
   return {
     id: data.id,
     name: data.name,

@@ -21,11 +21,12 @@ function GenreChips({ selected, onSelect }) {
   useEffect(() => {
     Promise.all([fetchGenres(), fetchSeriesGenres()])
       .then(([movieGenres, tvGenres]) => {
+        const tvByName = new Map(tvGenres.map((g) => [g.name, g]));
         const merged = movieGenres
           .filter((g) => FEATURED_GENRE_NAMES.includes(g.name))
           .map((movieGenre) => {
             const tvName = TV_GENRE_SYNONYMS[movieGenre.name] || movieGenre.name;
-            const tvGenre = tvGenres.find((g) => g.name === tvName);
+            const tvGenre = tvByName.get(tvName);
             return {
               name: movieGenre.name,
               movieGenreId: movieGenre.id,
