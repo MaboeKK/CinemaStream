@@ -1,22 +1,41 @@
 :root {
   /* Colors -- CinemaStream_UI_Improvement_Recommendations.md, point 3 */
-  --color-bg: #090909;
-  --color-surface: #161616;
-  --color-surface-raised: #1f1f1f;
-  --color-hover: #252525;
-  --color-accent: #e50914;
-  --color-accent-hover: #f40612;
+  /* Dark blue-charcoal ground. Kept as a flat colour (not the page wash
+     gradient below) because several components use var(--color-bg) as a
+     solid fill -- e.g. .btn-secondary.active text colour, .hero-loading
+     background, avatar hover text. The actual violet-glow/near-black wash
+     is applied directly on body's background instead. */
+  --color-bg: #0f1620;
+  --color-surface: #161d29;
+  --color-surface-raised: #202838;
+  --color-hover: #283044;
+  --color-border: #2e3648;
+
+  /* Official sunset gradient -- the core accent, applied consistently to
+     every interactive/stateful accent element (see component CSS).
+     --color-accent/-hover remain solid reference tones for contexts a
+     gradient can't fill (SVG fill, box-shadow color, plain background
+     shorthand consumers). */
+  --gradient-accent: linear-gradient(90deg, #ff8a3d 0%, #f453a6 50%, #8b5cf6 100%);
+  --color-accent: #f453a6;
+  --color-accent-hover: #d43d8d;
   --color-text: #f5f5f5;
-  --color-text-muted: #b3b3b3;
-  --color-border: #2a2a2a;
+  --color-text-muted: rgba(245, 245, 245, 0.64);
+  /* The single warm tint for small secondary text/accents. */
+  --color-text-accent: #ffab6b;
   --color-success: #1e7f4c;
   --color-danger: #c62828;
   --color-rating: #ffd166;
   --color-warning: #ff9f43;
   --color-on-accent: #fff;
-  --font-family:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+  /* Unified glass recipe, applied uniformly across nav/chip/card/tray
+     surfaces (see individual component CSS). */
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-blur: 18px;
+
+  --font-family: Helvetica, Arial, sans-serif;
 
   /* 8pt spacing scale -- point 2 */
   --space-1: 4px;
@@ -34,6 +53,15 @@
   --font-size-h3: 22px;
   --font-size-body: 16px;
   --font-size-caption: 14px;
+
+  /* Hierarchy additions for the hero/card system */
+  --font-size-hero-title: 64px;
+  --letter-spacing-hero-title: -0.045em;
+  --font-size-eyebrow: 11px;
+  --letter-spacing-eyebrow: 0.14em;
+  --font-size-section-heading: 20px;
+  --font-size-card-title: 14px;
+  --font-size-meta: 12.5px;
 }
 
 * {
@@ -42,7 +70,14 @@
 
 body {
   margin: 0;
-  background: var(--color-bg);
+  /* Page wash: subtle violet-tinted radial glow top-right, fading to
+     near-black at the bottom. Layered over the flat --color-bg so anything
+     that doesn't scroll far enough to see the radial glow still sits on
+     the correct base tone. */
+  background:
+    radial-gradient(ellipse 900px 700px at 88% -10%, rgba(139, 92, 246, 0.22), transparent 60%),
+    linear-gradient(to bottom, var(--color-bg) 0%, #0a0710 100%);
+  background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;

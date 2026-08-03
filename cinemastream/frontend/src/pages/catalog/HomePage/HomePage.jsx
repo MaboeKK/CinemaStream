@@ -62,7 +62,8 @@ const fetchContinueWatching = async () => {
       }
     })
   );
-  return enriched.filter((item) => item?.poster_path);
+  // "Four 16:9 thumbnail stills" per the Continue Watching row spec.
+  return enriched.filter((item) => item?.poster_path).slice(0, 4);
 };
 
 const fetchRecommended = () => discoverMovies();
@@ -76,6 +77,12 @@ function HomePage() {
   const [typeTab, setTypeTab] = useState('all');
   const [filtered, setFiltered] = useState(EMPTY_FILTERED);
   const [filterLoading, setFilterLoading] = useState(false);
+
+  // Local, non-persisted display toggles -- no existing settings surface to
+  // attach these to, so they're rendered as a small control row above the
+  // rails themselves.
+  const [showContinueWatching, setShowContinueWatching] = useState(true);
+  const [showRankBadges, setShowRankBadges] = useState(true);
 
   useEffect(() => {
     if (!selectedGenre) {
@@ -174,8 +181,40 @@ function HomePage() {
         </div>
       ) : (
         <div className="catalog-home-rows">
-          <MovieRow title="Continue Watching" fetchFunction={fetchContinueWatching} onMovieClick={openTrailerModal} />
-          <MovieRow title="Trending Now" fetchFunction={fetchTrending} onMovieClick={openTrailerModal} />
+          <div className="catalog-home-row-toggles">
+            <label className="catalog-home-toggle">
+              <input
+                type="checkbox"
+                checked={showContinueWatching}
+                onChange={(e) => setShowContinueWatching(e.target.checked)}
+              />
+              Continue Watching
+            </label>
+            <label className="catalog-home-toggle">
+              <input
+                type="checkbox"
+                checked={showRankBadges}
+                onChange={(e) => setShowRankBadges(e.target.checked)}
+              />
+              Rank badges
+            </label>
+          </div>
+
+          {showContinueWatching && (
+            <MovieRow
+              title="Continue Watching"
+              fetchFunction={fetchContinueWatching}
+              onMovieClick={openTrailerModal}
+              variant="still"
+              tray
+            />
+          )}
+          <MovieRow
+            title="Trending Now"
+            fetchFunction={fetchTrending}
+            onMovieClick={openTrailerModal}
+            showRank={showRankBadges}
+          />
           <MovieRow title="Top Rated" fetchFunction={fetchTopRatedMovies} onMovieClick={openTrailerModal} />
           <MovieRow title="New Releases" fetchFunction={fetchNewReleaseMovies} onMovieClick={openTrailerModal} />
           <MovieRow title="Recommended For You" fetchFunction={fetchRecommended} onMovieClick={openTrailerModal} />

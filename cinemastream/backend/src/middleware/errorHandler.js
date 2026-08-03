@@ -1,5 +1,3 @@
-const AppError = require('../utils/AppError');
-
 // Centralized error handler -- must be registered last, after all routes.
 // Anything reaching here is an unexpected failure (asyncHandler forwards
 // rejected promises here); expected business outcomes ("wrong password",
@@ -7,17 +5,13 @@ const AppError = require('../utils/AppError');
 // and never reach this middleware.
 // eslint-disable-next-line no-unused-vars -- Express identifies error middleware by its 4-arg arity
 const errorHandler = (err, req, res, next) => {
-  const statusCode = err instanceof AppError ? err.statusCode : 500;
   const isProduction = process.env.NODE_ENV === 'production';
 
   console.error(err);
 
-  res.status(statusCode).json({
+  res.status(500).json({
     status: 'FAILED',
-    message:
-      statusCode === 500 && isProduction
-        ? 'An unexpected error occurred'
-        : err.message || 'An unexpected error occurred',
+    message: isProduction ? 'An unexpected error occurred' : err.message || 'An unexpected error occurred',
   });
 };
 

@@ -13,27 +13,30 @@
   font-size: var(--font-size-body);
   font-weight: 600;
   padding: var(--space-3) var(--space-5);
-  border-radius: 8px;
+  border-radius: 50px;
   border: none;
   cursor: pointer;
   transition:
-    transform 0.15s ease,
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     background 0.2s ease,
     box-shadow 0.2s ease,
     opacity 0.2s ease;
 }
 
-/* Primary: Netflix red, rounded corners, soft shadow, hover lift */
+/* Primary: official sunset gradient fill, hover lift (2px per spec) */
 .btn-primary {
-  background: var(--color-accent);
+  background: var(--gradient-accent);
   color: var(--color-on-accent);
-  box-shadow: 0 4px 14px rgba(229, 9, 20, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 4px 18px rgba(244, 83, 166, 0.25);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--color-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(229, 9, 20, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 8px 24px rgba(244, 83, 166, 0.35);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -47,13 +50,13 @@
   cursor: not-allowed;
 }
 
-/* Secondary: glass background, white icons, blur effect */
+/* Secondary: unified glass recipe, hover lift (2px per spec) */
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--glass-bg);
   color: var(--color-text);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 .btn-secondary svg {
@@ -61,7 +64,7 @@
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.14);
   transform: translateY(-2px);
 }
 

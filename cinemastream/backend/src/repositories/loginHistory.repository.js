@@ -24,4 +24,13 @@ const recordLogout = async (userId) => {
   );
 };
 
-module.exports = { recordLogin, recordLogout };
+// Distinct users with at least one successful login -- the "active" half
+// of the admin Stats page's users-active-of-total figure.
+const getActiveUserCount = async () => {
+  const { rows } = await pool.query(
+    'SELECT COUNT(DISTINCT user_id) AS count FROM login_history WHERE was_successful = true'
+  );
+  return Number(rows[0].count);
+};
+
+module.exports = { recordLogin, recordLogout, getActiveUserCount };

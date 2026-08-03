@@ -6,6 +6,27 @@
   padding-top: 24px;
 }
 
+.catalog-home-row-toggles {
+  display: flex;
+  gap: 20px;
+  padding: 0 48px 20px;
+}
+
+.catalog-home-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-meta);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.catalog-home-toggle input {
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
 .catalog-home-filtered {
   padding-top: 12px;
 }

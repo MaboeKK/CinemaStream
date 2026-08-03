@@ -125,6 +125,14 @@ ALTER TABLE ONLY public.watched_history
 
 CREATE INDEX idx_users_created_at ON public.users USING btree (created_at);
 
+-- Both indexes below back per-user lookups that previously required a full
+-- table scan: watchedHistory.repository.js's getRecentByUser() filters on
+-- user_id and sorts by watched_at, and loginHistory.repository.js's
+-- recordLogout() filters on user_id for still-open sessions specifically.
+CREATE INDEX idx_watched_history_user_id ON public.watched_history USING btree (user_id, watched_at DESC);
+
+CREATE INDEX idx_login_history_user_id_active ON public.login_history USING btree (user_id, login_time DESC) WHERE (logout_time IS NULL);
+
 CREATE TRIGGER set_role_to_guest BEFORE INSERT ON public.users FOR EACH ROW EXECUTE FUNCTION public.set_default_role();
 
 ALTER TABLE ONLY public.login_history

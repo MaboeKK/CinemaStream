@@ -9,11 +9,13 @@ const Login = () => {
   const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
     try {
       const result = await login(email, password, rememberMe);
 
@@ -22,20 +24,24 @@ const Login = () => {
 
         const role = result.data.role;
 
-        setTimeout(() => {
-          if (role === 'admin') {
-            navigate('/home');
-          } else if (role === 'guest') {
-            navigate('/Homepage');
-          } else {
-            navigate('/'); // fallback
-          }
-        }, 500); // wait 0.5s for cookies to sync
+        // The awaited login() response is itself the real signal: the
+        // browser has already applied the Set-Cookie headers from that
+        // response before the promise resolved, so there's nothing left
+        // to wait out with a fixed delay.
+        if (role === 'admin') {
+          navigate('/home');
+        } else if (role === 'guest') {
+          navigate('/Homepage');
+        } else {
+          navigate('/'); // fallback
+        }
       } else if (result.message === 'Please verify your email to login') {
         navigate('/verify-otp');
+      } else {
+        setErrorMessage(result.message || 'Login failed');
       }
-    } catch {
-      // Login failed -- form stays as-is; no toast/error UI per current design.
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || 'Login failed. Please try again.');
     }
   };
 
@@ -77,6 +83,12 @@ const Login = () => {
           </label>
           <Link to="/forgot-password">Forgot Password?</Link>
         </div>
+
+        {errorMessage && (
+          <p style={{ color: 'var(--color-accent)', fontSize: '0.9rem', marginBottom: '10px' }}>
+            {errorMessage}
+          </p>
+        )}
 
         <button type="submit" className="btn-primary">
           Login

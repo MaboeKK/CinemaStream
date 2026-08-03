@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import MovieCard from './MovieCard';
 import './MovieRow.css';
 
-function MovieRow({ title, fetchFunction, onMovieClick }) {
+function MovieRow({ title, fetchFunction, onMovieClick, variant = 'poster', showRank = false, tray = false }) {
   const [movies, setMovies] = useState(null);
   const rowRef = useRef(null);
 
@@ -21,7 +21,7 @@ function MovieRow({ title, fetchFunction, onMovieClick }) {
   if (movies !== null && movies.length === 0) return null;
 
   return (
-    <div className="row-container">
+    <div className={`row-container${tray ? ' tray' : ''}`}>
       <h2 className="row-title">{title}</h2>
       <div className="row-wrapper">
         <button className="scroll-button left" onClick={scrollLeft}>
@@ -30,13 +30,18 @@ function MovieRow({ title, fetchFunction, onMovieClick }) {
         <div className="row-movies" ref={rowRef}>
           {movies === null
             ? Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="skeleton skeleton-card" />
+                <div
+                  key={i}
+                  className={`skeleton skeleton-card${variant === 'still' ? ' still' : ''}`}
+                />
               ))
-            : movies.map((movie) => (
+            : movies.map((movie, i) => (
                 <MovieCard
                   key={movie.id}
                   movie={movie}
                   progress={movie.progress}
+                  variant={variant}
+                  rank={showRank ? i + 1 : undefined}
                   onClick={() => onMovieClick(movie)}
                 />
               ))}

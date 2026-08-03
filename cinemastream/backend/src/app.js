@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const { CORS_ORIGIN } = require('./config/env');
 
 const authRoutes = require('./routes/auth.routes');
-const protectedRoutes = require('./routes/protected.routes');
 const watchRoutes = require('./routes/watch.routes');
 const adminRoutes = require('./routes/admin.routes');
 const errorHandler = require('./middleware/errorHandler');
@@ -24,7 +23,6 @@ app.use(cookieParser());
 app.set('trust proxy', 1);
 
 app.use('/api/auth', authRoutes);
-app.use('/api/protected', protectedRoutes);
 app.use('/api/watch', watchRoutes);
 app.use('/api/admin', adminRoutes);
 

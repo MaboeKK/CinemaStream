@@ -33,10 +33,10 @@ const ResetPassword = () => {
       setLoading(true);
       await authApi.resetPassword(email, reset_token, newPassword);
 
+      // The awaited request having resolved is the real "password reset"
+      // signal -- no need to also wait out a fixed delay before moving on.
       localStorage.removeItem('resetEmail');
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+      navigate('/login');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to reset password');
     } finally {

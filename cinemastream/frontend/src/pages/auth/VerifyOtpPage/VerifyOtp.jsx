@@ -13,6 +13,7 @@ const VerifyOtp = () => {
   const [otp, setOtp] = useState('');
   const [timeLeft, setTimeLeft] = useState(180); // 3 minutes countdown
   const [resendAvailable, setResendAvailable] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Countdown logic
   useEffect(() => {
@@ -36,25 +37,29 @@ const VerifyOtp = () => {
 
   const handleOtpVerification = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
 
     try {
       const result = await authApi.verifyOtp(email, otp);
 
       if (result.status === 'SUCCESS') {
         navigate('/login');
+      } else {
+        setErrorMessage(result.message || 'Verification failed');
       }
-    } catch {
-      // Verification failed -- no toast/error UI per current design.
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || 'Verification failed. Please try again.');
     }
   };
 
   const handleResendOtp = async () => {
+    setErrorMessage('');
     try {
       await authApi.resendOtp(email);
       setTimeLeft(180);
       setResendAvailable(false);
-    } catch {
-      // Resend failed -- no toast/error UI per current design.
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || 'Failed to resend OTP. Please try again.');
     }
   };
 
@@ -83,6 +88,13 @@ const VerifyOtp = () => {
           <FaLock className="icon" />
         </div>
         <p>Time remaining: {formatTime(timeLeft)}</p>
+
+        {errorMessage && (
+          <p style={{ color: 'var(--color-accent)', fontSize: '0.9rem', marginBottom: '10px' }}>
+            {errorMessage}
+          </p>
+        )}
+
         <button type="submit" className="btn-primary" disabled={timeLeft <= 0}>
           Verify
         </button>

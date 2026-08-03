@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FaPlay, FaPlus, FaCheck, FaFire } from 'react-icons/fa';
-import { fetchDiscoverMovie, fetchGenres, fetchTrending, fetchMovieDetails } from '../../api/tmdb';
+import { FaPlay, FaPlus, FaCheck } from 'react-icons/fa';
+import { fetchDiscoverMovie, fetchGenres, fetchMovieDetails } from '../../api/tmdb';
 import { useMyList } from '../../hooks/useMyList';
 import './Hero.css';
+
+const MAX_CAROUSEL_DOTS = 5;
 
 function formatRuntime(mins) {
   if (!mins) return null;
@@ -14,18 +16,17 @@ function formatRuntime(mins) {
 function Hero({ onPlayTrailer }) {
   const [movies, setMovies] = useState([]);
   const [genreMap, setGenreMap] = useState({});
-  const [trendingIds, setTrendingIds] = useState(() => new Set());
   const [runtimeCache, setRuntimeCache] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isSaved, toggle } = useMyList();
 
   useEffect(() => {
-    fetchDiscoverMovie().then(setMovies);
+    // Capped to MAX_CAROUSEL_DOTS so the rotation index and the dot count
+    // always agree -- otherwise currentIndex could advance past the last
+    // rendered dot and none would show as active.
+    fetchDiscoverMovie().then((items) => setMovies(items.slice(0, MAX_CAROUSEL_DOTS)));
     fetchGenres().then((genres) => {
       setGenreMap(Object.fromEntries(genres.map((g) => [g.id, g.name])));
-    });
-    fetchTrending().then((items) => {
-      setTrendingIds(new Set(items.map((item) => item.id)));
     });
   }, []);
 
@@ -37,6 +38,7 @@ function Hero({ onPlayTrailer }) {
   }, [movies]);
 
   const featured = movies[currentIndex];
+  const dotCount = movies.length;
 
   const genreNames = useMemo(
     () => (featured?.genre_ids || []).slice(0, 2).map((id) => genreMap[id]).filter(Boolean),
@@ -82,7 +84,6 @@ function Hero({ onPlayTrailer }) {
   const saved = isSaved(featured.id);
   const matchPercent = featured.vote_average > 0 ? Math.round(featured.vote_average * 10) : null;
   const runtimeLabel = formatRuntime(runtimeCache[featured.id]);
-  const isTrending = trendingIds.has(featured.id);
 
   return (
     <div
@@ -91,22 +92,39 @@ function Hero({ onPlayTrailer }) {
     >
       <div className="hero-scrim" />
       <div className="hero-content">
+        <div className="hero-eyebrow">
+          <span className="hero-eyebrow-rule" />
+          CinemaStream Original
+        </div>
+
         <h1 className="hero-title">{featured.title || featured.name}</h1>
 
-        <div className="hero-badges">
-          {isTrending && (
-            <span className="hero-badge trending">
-              <FaFire /> Trending
+        {/* Age rating (e.g. PG-13) and quality tags (e.g. 4K HDR) aren't in
+            this data set -- TMDB's discover results carry no certification,
+            and "quality/HDR" isn't a TMDB concept at all. Rather than show
+            a fabricated rating on every title, genre pills (real data)
+            fill that slot with the same thin-pill treatment instead. */}
+        <div className="hero-meta">
+          {matchPercent != null && (
+            <span className="hero-meta-match">
+              <FaCheck size={12} /> {matchPercent}% Match
             </span>
           )}
-          {matchPercent != null && <span className="hero-badge match">{matchPercent}% Match</span>}
-          {featured.vote_average > 0 && (
-            <span className="hero-badge rating">★ {featured.vote_average.toFixed(1)} Rating</span>
+          {year && (
+            <>
+              <span className="hero-meta-divider">|</span>
+              <span className="hero-meta-item">{year}</span>
+            </>
           )}
-          {year && <span className="hero-badge">{year}</span>}
-          {runtimeLabel && <span className="hero-badge">{runtimeLabel}</span>}
+          {runtimeLabel && (
+            <>
+              <span className="hero-meta-divider">|</span>
+              <span className="hero-meta-item">{runtimeLabel}</span>
+            </>
+          )}
+          {genreNames.length > 0 && <span className="hero-meta-divider">|</span>}
           {genreNames.map((name) => (
-            <span className="hero-badge" key={name}>
+            <span className="hero-meta-pill" key={name}>
               {name}
             </span>
           ))}
@@ -126,6 +144,19 @@ function Hero({ onPlayTrailer }) {
           </button>
         </div>
       </div>
+
+      {dotCount > 1 && (
+        <div className="hero-dots">
+          {Array.from({ length: dotCount }).map((_, i) => (
+            <button
+              key={i}
+              className={`hero-dot${i === currentIndex ? ' active' : ''}`}
+              aria-label={`Show featured title ${i + 1}`}
+              onClick={() => setCurrentIndex(i)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

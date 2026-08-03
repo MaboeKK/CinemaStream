@@ -4,7 +4,6 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 
 import muiTheme from './theme/muiTheme';
 import { AuthProvider } from './context/AuthContext';
-import { DarkModeProvider } from './context/DarkModeContext';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import Login from './pages/auth/LoginPage/Login';
 import Register from './pages/auth/RegisterPage/Register';
@@ -101,11 +100,9 @@ function App() {
     <ThemeProvider theme={muiTheme}>
       <CssBaseline />
       <AuthProvider>
-        <DarkModeProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </DarkModeProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
       </AuthProvider>
     </ThemeProvider>
   );

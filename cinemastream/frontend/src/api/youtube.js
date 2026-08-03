@@ -6,8 +6,11 @@ export const fetchYoutubeTrailer = async (movieTitle) => {
   const response = await fetch(
     `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&key=${API_KEY}&maxResults=1&type=video`
   );
+  if (!response.ok) {
+    throw new Error(`YouTube search failed (${response.status})`);
+  }
   const data = await response.json();
-  if (data.items.length > 0) {
+  if (data.items?.length > 0) {
     return `https://www.youtube.com/embed/${data.items[0].id.videoId}`;
   }
   return null;

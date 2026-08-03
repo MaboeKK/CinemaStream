@@ -16,4 +16,9 @@ const heatmap = asyncHandler(async (req, res) => {
   res.json(rows);
 });
 
-module.exports = { topShows, monthlyGrowth, heatmap };
+const overview = asyncHandler(async (req, res) => {
+  const data = await adminStatsService.getOverview();
+  res.json(data);
+});
+
+module.exports = { topShows, monthlyGrowth, heatmap, overview };

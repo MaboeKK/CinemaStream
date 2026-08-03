@@ -36,3 +36,65 @@ jobs:
       - name: Run Tests
         run: npm test
         working-directory: cinemastream/frontend
+
+  test-backend:
+    name: Backend Lint & Tests
+    runs-on: ubuntu-latest
+
+    # backend/.env.test is gitignored (never checked out here), and
+    # config/env.js throws at import time if these are missing -- so they're
+    # set directly as job env vars instead. dotenv.config() (called from
+    # config/env.js) never overrides a var that's already set, so this is
+    # equivalent to a checked-out .env.test as far as the app is concerned.
+    # Values match backend/.env.test's placeholders (test-only, not secrets).
+    env:
+      NODE_ENV: test
+      POSTGRES_URI: postgres://kmaboe:localdevpass@localhost:5432/cinemastream_test
+      EMAIL_USER: test@example.com
+      EMAIL_PASS: test-password
+      JWT_SECRET: test_jwt_secret_not_for_production
+      REFRESH_SECRET: test_refresh_secret_not_for_production
+      PORT: 5001
+      CORS_ORIGIN: http://localhost:3000
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: kmaboe
+          POSTGRES_PASSWORD: localdevpass
+          POSTGRES_DB: cinemastream_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U kmaboe"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: cinemastream/backend/package-lock.json
+
+      - name: Install Backend Dependencies
+        run: npm ci
+        working-directory: cinemastream/backend
+
+      - name: Load database schema
+        run: PGPASSWORD=localdevpass psql -h localhost -U kmaboe -d cinemastream_test -f db/schema.sql
+        working-directory: cinemastream/backend
+
+      - name: Run Linter
+        run: npm run lint --if-present
+        working-directory: cinemastream/backend
+
+      - name: Run Tests
+        run: npm test
+        working-directory: cinemastream/backend

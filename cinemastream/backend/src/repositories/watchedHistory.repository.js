@@ -82,10 +82,28 @@ const getHeatmapData = async () => {
   return rows.map((row) => ({ ...row, count: Number(row.count) }));
 };
 
+// "Rewatches" = total watch events minus distinct (user, title) pairs --
+// i.e. how many of those events were a repeat play of something the same
+// user already had a watched_history row for. COALESCE avoids the row
+// constructor treating two NULLs in the unused id column as distinct.
+const getPlatformOverview = async () => {
+  const { rows } = await pool.query(`
+    SELECT
+      COUNT(*) AS total_watched,
+      COUNT(*) - COUNT(DISTINCT (user_id, COALESCE(movie_id, -1), COALESCE(series_id, -1))) AS rewatches
+    FROM watched_history
+  `);
+  return {
+    totalWatched: Number(rows[0].total_watched),
+    rewatches: Number(rows[0].rewatches),
+  };
+};
+
 module.exports = {
   recordWatch,
   getRecentByUser,
   getTopShows,
   getMonthlyUserGrowth,
   getHeatmapData,
+  getPlatformOverview,
 };
