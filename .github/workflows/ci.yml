@@ -41,8 +41,22 @@ jobs:
     name: Backend Lint & Tests
     runs-on: ubuntu-latest
 
-    # Credentials match backend/.env.test's POSTGRES_URI so the integration
-    # suite (NODE_ENV=test, set automatically by vitest) needs no overrides.
+    # backend/.env.test is gitignored (never checked out here), and
+    # config/env.js throws at import time if these are missing -- so they're
+    # set directly as job env vars instead. dotenv.config() (called from
+    # config/env.js) never overrides a var that's already set, so this is
+    # equivalent to a checked-out .env.test as far as the app is concerned.
+    # Values match backend/.env.test's placeholders (test-only, not secrets).
+    env:
+      NODE_ENV: test
+      POSTGRES_URI: postgres://kmaboe:localdevpass@localhost:5432/cinemastream_test
+      EMAIL_USER: test@example.com
+      EMAIL_PASS: test-password
+      JWT_SECRET: test_jwt_secret_not_for_production
+      REFRESH_SECRET: test_refresh_secret_not_for_production
+      PORT: 5001
+      CORS_ORIGIN: http://localhost:3000
+
     services:
       postgres:
         image: postgres:14
