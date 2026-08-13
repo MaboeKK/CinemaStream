@@ -81,7 +81,8 @@ describe('Watch API', () => {
       .send({ movie_title: 'No id at all' });
 
     expect(res.status).toBe(400);
-    expect(res.body.status).toBe('FAILED');
+    expect(res.body.success).toBe(false);
+    expect(res.body.error.code).toBe('VALIDATION_ERROR');
   });
 
   test('rejects a watch event missing its CSRF token', async () => {

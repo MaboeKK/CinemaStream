@@ -40,15 +40,10 @@ const VerifyOtp = () => {
     setErrorMessage('');
 
     try {
-      const result = await authApi.verifyOtp(email, otp);
-
-      if (result.status === 'SUCCESS') {
-        navigate('/login');
-      } else {
-        setErrorMessage(result.message || 'Verification failed');
-      }
+      await authApi.verifyOtp(email, otp);
+      navigate('/login');
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || 'Verification failed. Please try again.');
+      setErrorMessage(err.message || 'Verification failed. Please try again.');
     }
   };
 
@@ -59,7 +54,7 @@ const VerifyOtp = () => {
       setTimeLeft(180);
       setResendAvailable(false);
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || 'Failed to resend OTP. Please try again.');
+      setErrorMessage(err.message || 'Failed to resend OTP. Please try again.');
     }
   };
 

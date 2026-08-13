@@ -19,29 +19,27 @@ const Login = () => {
     try {
       const result = await login(email, password, rememberMe);
 
-      if (result.status === 'SUCCESS') {
-        if (rememberMe) localStorage.setItem('rememberedEmail', email);
+      if (rememberMe) localStorage.setItem('rememberedEmail', email);
 
-        const role = result.data.role;
+      const role = result.data.role;
 
-        // The awaited login() response is itself the real signal: the
-        // browser has already applied the Set-Cookie headers from that
-        // response before the promise resolved, so there's nothing left
-        // to wait out with a fixed delay.
-        if (role === 'admin') {
-          navigate('/home');
-        } else if (role === 'guest') {
-          navigate('/Homepage');
-        } else {
-          navigate('/'); // fallback
-        }
-      } else if (result.message === 'Please verify your email to login') {
-        navigate('/verify-otp');
+      // The awaited login() response is itself the real signal: the
+      // browser has already applied the Set-Cookie headers from that
+      // response before the promise resolved, so there's nothing left
+      // to wait out with a fixed delay.
+      if (role === 'admin') {
+        navigate('/home');
+      } else if (role === 'guest') {
+        navigate('/Homepage');
       } else {
-        setErrorMessage(result.message || 'Login failed');
+        navigate('/'); // fallback
       }
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || 'Login failed. Please try again.');
+      if (err.code === 'EMAIL_NOT_VERIFIED') {
+        navigate('/verify-otp');
+      } else {
+        setErrorMessage(err.message || 'Login failed. Please try again.');
+      }
     }
   };
 

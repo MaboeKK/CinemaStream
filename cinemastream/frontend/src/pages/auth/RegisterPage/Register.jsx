@@ -35,15 +35,10 @@ const Register = () => {
     }
 
     try {
-      const result = await authApi.register({ first_name, last_name, email, password });
-
-      if (result.status === 'SUCCESS') {
-        navigate('/verify-otp', { state: { email } });
-      } else {
-        setErrorMessage(result.message || 'Registration failed');
-      }
+      await authApi.register({ first_name, last_name, email, password });
+      navigate('/verify-otp', { state: { email } });
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || 'Registration failed: ' + err.message);
+      setErrorMessage(err.message || 'Registration failed. Please try again.');
     }
   };
 

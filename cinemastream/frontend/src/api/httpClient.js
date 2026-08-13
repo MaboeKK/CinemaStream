@@ -34,6 +34,36 @@ httpClient.interceptors.request.use(async (config) => {
   return config;
 });
 
+// Normalizes any rejected request -- a non-2xx response, a request that
+// never got a response (network/CORS failure), or a client-side setup error
+// -- into one shape every caller can rely on: { message, code, status }.
+// Prefers the standardized { error: { code, message } } body; falls back to
+// a plain `message` field for endpoints that haven't been migrated to it.
+const normalizeError = (error) => {
+  if (error.response) {
+    const { status, data } = error.response;
+    return {
+      message: data?.error?.message || data?.message || 'Something went wrong. Please try again.',
+      code: data?.error?.code || 'UNKNOWN_ERROR',
+      status,
+    };
+  }
+
+  if (error.request) {
+    return {
+      message: 'Network error. Please check your connection and try again.',
+      code: 'NETWORK_ERROR',
+      status: null,
+    };
+  }
+
+  return {
+    message: error.message || 'An unexpected error occurred.',
+    code: 'CLIENT_ERROR',
+    status: null,
+  };
+};
+
 httpClient.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -52,11 +82,11 @@ httpClient.interceptors.response.use(
         return httpClient(originalRequest);
       } catch (refreshError) {
         window.dispatchEvent(new Event('auth:session-expired'));
-        return Promise.reject(refreshError);
+        return Promise.reject(normalizeError(refreshError));
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(normalizeError(error));
   }
 );
 

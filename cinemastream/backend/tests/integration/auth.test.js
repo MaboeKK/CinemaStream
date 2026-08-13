@@ -52,8 +52,8 @@ describe('Auth API', () => {
         .set('x-csrf-token', csrfToken)
         .send(newUser);
 
-      expect(res.status).toBe(200);
-      expect(res.body).toMatchObject({ status: 'SUCCESS' });
+      expect(res.status).toBe(201);
+      expect(res.body).toMatchObject({ success: true });
 
       const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [newUser.email]);
       expect(rows).toHaveLength(1);
@@ -70,8 +70,11 @@ describe('Auth API', () => {
         .set('x-csrf-token', csrfToken)
         .send(newUser);
 
-      expect(res.status).toBe(200);
-      expect(res.body).toEqual({ status: 'FAILED', message: 'User already exists' });
+      expect(res.status).toBe(409);
+      expect(res.body).toEqual({
+        success: false,
+        error: { code: 'EMAIL_ALREADY_EXISTS', message: 'User already exists' },
+      });
     });
 
     test('rejects invalid input before hitting the service', async () => {
@@ -84,7 +87,8 @@ describe('Auth API', () => {
         .send({ ...newUser, email: 'not-an-email' });
 
       expect(res.status).toBe(400);
-      expect(res.body.status).toBe('FAILED');
+      expect(res.body.success).toBe(false);
+      expect(res.body.error.code).toBe('VALIDATION_ERROR');
     });
 
     test('rejects a request missing a CSRF token', async () => {
@@ -108,7 +112,7 @@ describe('Auth API', () => {
         .send({ email: newUser.email, password: newUser.password });
 
       expect(res.status).toBe(200);
-      expect(res.body.status).toBe('SUCCESS');
+      expect(res.body.success).toBe(true);
       expect(res.body.data.email).toBe(newUser.email);
 
       const cookies = res.headers['set-cookie'].join(';');
@@ -127,10 +131,10 @@ describe('Auth API', () => {
         .set('x-csrf-token', loginCsrf)
         .send({ email: newUser.email, password: newUser.password });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(401);
       expect(res.body).toEqual({
-        status: 'FAILED',
-        message: 'Please verify your email to login',
+        success: false,
+        error: { code: 'EMAIL_NOT_VERIFIED', message: 'Please verify your email to login' },
       });
     });
 
@@ -144,8 +148,11 @@ describe('Auth API', () => {
         .set('x-csrf-token', csrfToken)
         .send({ email: newUser.email, password: 'wrong-password' });
 
-      expect(res.status).toBe(200);
-      expect(res.body).toEqual({ status: 'FAILED', message: 'Incorrect password' });
+      expect(res.status).toBe(401);
+      expect(res.body).toEqual({
+        success: false,
+        error: { code: 'INVALID_CREDENTIALS', message: 'Incorrect password' },
+      });
     });
   });
 
@@ -182,7 +189,7 @@ describe('Auth API', () => {
         .send({ email: newUser.email, password: 'newPassword456' });
 
       expect(loginRes.status).toBe(200);
-      expect(loginRes.body.status).toBe('SUCCESS');
+      expect(loginRes.body.success).toBe(true);
     });
 
     test('rejects an invalid reset token', async () => {
@@ -196,7 +203,10 @@ describe('Auth API', () => {
         .send({ email: newUser.email, resetToken: 'bogus-token', newPassword: 'newPassword456' });
 
       expect(res.status).toBe(400);
-      expect(res.body.message).toBe('Invalid reset token');
+      expect(res.body).toEqual({
+        success: false,
+        error: { code: 'INVALID_RESET_TOKEN', message: 'Invalid reset token' },
+      });
     });
   });
 

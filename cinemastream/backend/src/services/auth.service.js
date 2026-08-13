@@ -10,10 +10,12 @@ const OTP_TTL_MS = 3 * 60 * 1000;
 
 // Every function here returns a plain result object -- { ok: true, ... } or
 // { ok: false, message } -- rather than throwing, so controllers can map
-// each expected business outcome to the exact response shape callers
-// already depend on (e.g. Login.js branches on the literal message string
-// "Please verify your email to login"). Throwing is reserved for genuinely
-// unexpected failures, which propagate to asyncHandler -> errorHandler.
+// each expected business outcome to a response. Failures from register,
+// login, verifyOtp, forgotPassword and resetPassword also carry a stable
+// `code` (e.g. "EMAIL_NOT_VERIFIED") that auth.controller maps to an HTTP
+// status, so callers branch on that code instead of message text. Throwing
+// is reserved for genuinely unexpected failures, which propagate to
+// asyncHandler -> errorHandler.
 
 const buildOtpEmail = (firstName, otp) => `
   <div style="font-family: Helvetica,Arial,sans-serif;line-height:2">
@@ -27,7 +29,7 @@ const buildOtpEmail = (firstName, otp) => `
 const register = async ({ first_name, last_name, email, password }) => {
   const existingUser = await userRepository.findByEmail(email);
   if (existingUser) {
-    return { ok: false, message: 'User already exists' };
+    return { ok: false, code: 'EMAIL_ALREADY_EXISTS', message: 'User already exists' };
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -55,16 +57,16 @@ const buildSessionTokens = (user, { rememberMe } = {}) => {
 const login = async ({ email, password, rememberMe, ipAddress, userAgent }) => {
   const user = await userRepository.findByEmail(email);
   if (!user) {
-    return { ok: false, message: 'User not found' };
+    return { ok: false, code: 'INVALID_CREDENTIALS', message: 'User not found' };
   }
 
   if (!user.is_verified) {
-    return { ok: false, message: 'Please verify your email to login' };
+    return { ok: false, code: 'EMAIL_NOT_VERIFIED', message: 'Please verify your email to login' };
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return { ok: false, message: 'Incorrect password' };
+    return { ok: false, code: 'INVALID_CREDENTIALS', message: 'Incorrect password' };
   }
 
   await loginHistoryRepository.recordLogin({
@@ -101,16 +103,16 @@ const logout = async (userId) => {
 const verifyOtp = async ({ email, otp }) => {
   const user = await userRepository.findByEmail(email);
   if (!user) {
-    return { ok: false, message: 'User not found' };
+    return { ok: false, code: 'USER_NOT_FOUND', message: 'User not found' };
   }
 
   if (user.is_verified) {
-    return { ok: false, message: 'User already verified' };
+    return { ok: false, code: 'ALREADY_VERIFIED', message: 'User already verified' };
   }
 
   const now = new Date();
   if (user.verification_token !== otp || now > user.otp_expiry) {
-    return { ok: false, message: 'Invalid or expired OTP' };
+    return { ok: false, code: 'INVALID_OTP', message: 'Invalid or expired OTP' };
   }
 
   await userRepository.markAsVerified(user.user_id);
@@ -157,7 +159,7 @@ const resendOtp = async ({ email }) => {
 const forgotPassword = async ({ email }) => {
   const user = await userRepository.findByEmail(email);
   if (!user) {
-    return { ok: false, message: 'User not found' };
+    return { ok: false, code: 'USER_NOT_FOUND', message: 'User not found' };
   }
 
   const resetToken = otpService.generateOtp();
@@ -182,11 +184,11 @@ const forgotPassword = async ({ email }) => {
 const resetPassword = async ({ email, resetToken, newPassword }) => {
   const user = await userRepository.findByEmailAndResetToken(email, resetToken);
   if (!user) {
-    return { ok: false, message: 'Invalid reset token' };
+    return { ok: false, code: 'INVALID_RESET_TOKEN', message: 'Invalid reset token' };
   }
 
   if (new Date() > user.reset_token_expiry) {
-    return { ok: false, message: 'Reset token expired' };
+    return { ok: false, code: 'RESET_TOKEN_EXPIRED', message: 'Reset token expired' };
   }
 
   const hashedPassword = await bcrypt.hash(newPassword, 10);

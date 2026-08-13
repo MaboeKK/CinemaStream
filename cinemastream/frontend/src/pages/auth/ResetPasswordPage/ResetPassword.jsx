@@ -38,7 +38,7 @@ const ResetPassword = () => {
       localStorage.removeItem('resetEmail');
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to reset password');
+      setError(err.message || 'Failed to reset password');
     } finally {
       setLoading(false);
     }

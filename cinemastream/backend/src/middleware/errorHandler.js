@@ -10,8 +10,11 @@ const errorHandler = (err, req, res, next) => {
   console.error(err);
 
   res.status(500).json({
-    status: 'FAILED',
-    message: isProduction ? 'An unexpected error occurred' : err.message || 'An unexpected error occurred',
+    success: false,
+    error: {
+      code: 'INTERNAL_ERROR',
+      message: isProduction ? 'An unexpected error occurred' : err.message || 'An unexpected error occurred',
+    },
   });
 };
 
