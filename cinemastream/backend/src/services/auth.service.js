@@ -17,6 +17,19 @@ const OTP_TTL_MS = 3 * 60 * 1000;
 // is reserved for genuinely unexpected failures, which propagate to
 // asyncHandler -> errorHandler.
 
+// Fires an email send without blocking the caller -- SMTP latency (or a
+// down mail server) must never hold up the HTTP response that triggered it.
+// Deferred via setImmediate so it runs after the current synchronous work
+// finishes; nothing downstream awaits this, so the rejection is caught and
+// logged right here instead of becoming an unhandled rejection.
+const dispatchEmail = (to, subject, html) => {
+  setImmediate(() => {
+    emailService.sendHTMLEmail(to, subject, html).catch((err) => {
+      console.error('Failed to send email', { to, subject, error: err });
+    });
+  });
+};
+
 const buildOtpEmail = (firstName, otp) => `
   <div style="font-family: Helvetica,Arial,sans-serif;line-height:2">
       <p>Hi ${firstName},</p>
@@ -38,11 +51,7 @@ const register = async ({ first_name, last_name, email, password }) => {
 
   await userRepository.createUser(first_name, last_name, email, hashedPassword, otp, otpExpiry);
 
-  await emailService.sendHTMLEmail(
-    email,
-    'Your OTP for Email Verification',
-    buildOtpEmail(first_name, otp)
-  );
+  dispatchEmail(email, 'Your OTP for Email Verification', buildOtpEmail(first_name, otp));
 
   return { ok: true, message: 'Signup successful. OTP sent.' };
 };
@@ -141,7 +150,7 @@ const resendOtp = async ({ email }) => {
 
   await userRepository.updateOtp(user.user_id, otp, expiry);
 
-  await emailService.sendHTMLEmail(
+  dispatchEmail(
     email,
     'Your OTP for Email Verification',
     `
@@ -166,7 +175,7 @@ const forgotPassword = async ({ email }) => {
   const expiry = new Date(Date.now() + OTP_TTL_MS);
   await userRepository.saveResetToken(email, resetToken, expiry);
 
-  await emailService.sendHTMLEmail(
+  dispatchEmail(
     email,
     'Your Password Reset OTP',
     `
