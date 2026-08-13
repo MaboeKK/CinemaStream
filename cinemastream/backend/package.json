@@ -21,7 +21,7 @@
     "express-rate-limit": "^7.5.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^7.0.4",
+    "nodemailer": "^9.0.5",
     "nodemon": "^3.1.10",
     "pg": "^8.16.3"
   },
@@ -32,6 +32,6 @@
     "globals": "^15.14.0",
     "prettier": "^3.4.2",
     "supertest": "^7.0.0",
-    "vitest": "^2.1.8"
+    "vitest": "^4.1.10"
   }
 }
