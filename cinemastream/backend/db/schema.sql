@@ -137,3 +137,11 @@ CREATE TRIGGER set_role_to_guest BEFORE INSERT ON public.users FOR EACH ROW EXEC
 
 ALTER TABLE ONLY public.login_history
     ADD CONSTRAINT login_history_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+
+-- watched_history had no FK on user_id at all -- an orphaned watch-history
+-- row was previously possible for a deleted user. ON DELETE CASCADE (unlike
+-- login_history, which intentionally keeps its audit trail after a user is
+-- gone) because watch history has no standalone value once the account it
+-- belongs to no longer exists.
+ALTER TABLE ONLY public.watched_history
+    ADD CONSTRAINT watched_history_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON DELETE CASCADE;
