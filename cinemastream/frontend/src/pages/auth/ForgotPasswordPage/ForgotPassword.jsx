@@ -22,7 +22,7 @@ const ForgotPassword = () => {
       // no need to also wait out a fixed delay before moving on.
       navigate('/reset-password');
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || 'Request failed. Please try again.');
+      setErrorMessage(err.message || 'Request failed. Please try again.');
     }
   };
 

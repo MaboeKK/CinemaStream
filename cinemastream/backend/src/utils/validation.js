@@ -9,8 +9,11 @@ const validate = (schema) => (req, res, next) => {
 
   if (error) {
     return res.status(400).json({
-      status: 'FAILED',
-      message: error.details.map((d) => d.message).join(', '),
+      success: false,
+      error: {
+        code: 'VALIDATION_ERROR',
+        message: error.details.map((d) => d.message).join(', '),
+      },
     });
   }
 

@@ -67,7 +67,7 @@ describe('AuthContext', () => {
   test('login stores the returned user on success', async () => {
     authApi.checkAuth.mockRejectedValue(new Error('not logged in'));
     authApi.login.mockResolvedValue({
-      status: 'SUCCESS',
+      success: true,
       data: { email: 'test@example.com', role: 'guest' },
     });
 
