@@ -41,7 +41,7 @@ describe('AuthContext', () => {
   });
 
   test('checks the session on mount and exposes the authenticated user', async () => {
-    authApi.checkAuth.mockResolvedValue({ user: { email: 'test@example.com' } });
+    authApi.checkAuth.mockResolvedValue({ data: { email: 'test@example.com' } });
 
     renderWithProvider();
 
@@ -81,7 +81,7 @@ describe('AuthContext', () => {
   });
 
   test('logout clears the user even if the request fails', async () => {
-    authApi.checkAuth.mockResolvedValue({ user: { email: 'test@example.com' } });
+    authApi.checkAuth.mockResolvedValue({ data: { email: 'test@example.com' } });
     authApi.logout.mockRejectedValue(new Error('network error'));
 
     renderWithProvider();
@@ -94,7 +94,7 @@ describe('AuthContext', () => {
   });
 
   test('clears the user when a session-expired event is dispatched', async () => {
-    authApi.checkAuth.mockResolvedValue({ user: { email: 'test@example.com' } });
+    authApi.checkAuth.mockResolvedValue({ data: { email: 'test@example.com' } });
 
     renderWithProvider();
     await waitFor(() => expect(screen.getByTestId('authenticated').textContent).toBe('true'));

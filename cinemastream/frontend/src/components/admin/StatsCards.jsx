@@ -21,10 +21,13 @@ const StatsCards = () => {
   const [topShow, setTopShow] = useState(null);
 
   useEffect(() => {
-    adminApi.getOverview().then(setOverview).catch(console.error);
+    adminApi
+      .getOverview()
+      .then((res) => setOverview(res.data))
+      .catch(console.error);
     adminApi
       .getTopShows()
-      .then((rows) => setTopShow(rows[0] ?? null))
+      .then((res) => setTopShow(res.data[0] ?? null))
       .catch(console.error);
   }, []);
 

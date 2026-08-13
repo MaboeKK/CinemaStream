@@ -31,7 +31,7 @@ const UsersDataTable = () => {
   useEffect(() => {
     adminApi
       .getUsers()
-      .then(setUsers)
+      .then((res) => setUsers(res.data))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);

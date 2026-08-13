@@ -1,10 +1,11 @@
 const tokenService = require('../services/token.service');
+const { sendError } = require('../utils/response');
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
 
   if (!token) {
-    return res.status(401).json({ status: 'FAILED', message: 'Access denied. No token provided.' });
+    return sendError(res, { code: 'UNAUTHORIZED', message: 'Access denied. No token provided.' });
   }
 
   try {
@@ -12,7 +13,7 @@ const verifyToken = (req, res, next) => {
     req.user = decoded; // attach user info to request
     next();
   } catch {
-    return res.status(403).json({ status: 'FAILED', message: 'Invalid or expired token.' });
+    return sendError(res, { code: 'INVALID_TOKEN', message: 'Invalid or expired token.' });
   }
 };
 

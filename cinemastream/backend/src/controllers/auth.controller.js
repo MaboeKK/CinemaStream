@@ -1,40 +1,18 @@
 const asyncHandler = require('../utils/asyncHandler');
 const authService = require('../services/auth.service');
 const { regenerateCsrfToken } = require('../middleware/csrf.middleware');
+const { sendSuccess, sendError } = require('../utils/response');
 const {
   accessTokenCookieOptions,
   refreshTokenCookieOptions,
   baseCookieOptions,
 } = require('../utils/cookies');
 
-// register, login, forgotPassword, resetPassword and verifyOtp follow
-// standard REST semantics: success is { success: true, data, message } with
-// a 2xx status, failure is { success: false, error: { code, message } } with
-// the status the failure actually represents. auth.service maps each
-// business outcome to a `code` (see ERROR_STATUS_BY_CODE below) instead of
-// callers matching on message text.
-//
-// logout/resendOtp/refreshToken/checkAuth are unchanged (out of scope for
-// this pass) and keep their original { status: 'SUCCESS' | 'FAILED' } shape.
-
-const ERROR_STATUS_BY_CODE = {
-  USER_NOT_FOUND: 404,
-  EMAIL_ALREADY_EXISTS: 409,
-  INVALID_CREDENTIALS: 401,
-  EMAIL_NOT_VERIFIED: 401,
-  ALREADY_VERIFIED: 409,
-  INVALID_OTP: 400,
-  INVALID_RESET_TOKEN: 400,
-  RESET_TOKEN_EXPIRED: 400,
-};
-
-const sendError = (res, result) => {
-  const status = ERROR_STATUS_BY_CODE[result.code] || 400;
-  return res.status(status).json({
-    success: false,
-    error: { code: result.code || 'BAD_REQUEST', message: result.message },
-  });
-};
+// Every handler below (except resendOtp, which stays on the legacy
+// { status: 'SUCCESS' | 'FAILED' } shape) follows the same envelope: success
+// is { success: true, data, message } via sendSuccess, failure is
+// { success: false, error: { code, message } } via sendError, with the HTTP
+// status resolved from the failure's `code` (see utils/response.js).
 
 const register = asyncHandler(async (req, res) => {
   const result = await authService.register(req.body);
@@ -42,7 +20,7 @@ const register = asyncHandler(async (req, res) => {
     return sendError(res, result);
   }
   regenerateCsrfToken(req, res);
-  res.status(201).json({ success: true, data: null, message: result.message });
+  sendSuccess(res, { status: 201, message: result.message });
 });
 
 const login = asyncHandler(async (req, res) => {
@@ -63,11 +41,7 @@ const login = asyncHandler(async (req, res) => {
   res.cookie('refresh_token', result.refreshToken, refreshTokenCookieOptions(result.refreshMaxAge));
   regenerateCsrfToken(req, res);
 
-  res.json({
-    success: true,
-    data: result.userData,
-    message: result.message,
-  });
+  sendSuccess(res, { data: result.userData, message: result.message });
 });
 
 const logout = asyncHandler(async (req, res) => {
@@ -77,7 +51,7 @@ const logout = asyncHandler(async (req, res) => {
   res.clearCookie('refresh_token', baseCookieOptions);
   res.clearCookie('csrf_token', baseCookieOptions);
 
-  res.json({ status: 'SUCCESS', message: 'Logged out successfully' });
+  sendSuccess(res, { message: 'Logged out successfully' });
 });
 
 const verifyOtp = asyncHandler(async (req, res) => {
@@ -90,7 +64,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
   res.cookie('refresh_token', result.refreshToken, refreshTokenCookieOptions(result.refreshMaxAge));
   regenerateCsrfToken(req, res);
 
-  res.json({ success: true, data: null, message: result.message });
+  sendSuccess(res, { message: result.message });
 });
 
 const resendOtp = asyncHandler(async (req, res) => {
@@ -107,7 +81,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     return sendError(res, result);
   }
   regenerateCsrfToken(req, res);
-  res.json({ success: true, data: null, message: result.message });
+  sendSuccess(res, { message: result.message });
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
@@ -116,27 +90,26 @@ const resetPassword = asyncHandler(async (req, res) => {
     return sendError(res, result);
   }
   regenerateCsrfToken(req, res);
-  res.json({ success: true, data: null, message: result.message });
+  sendSuccess(res, { message: result.message });
 });
 
 const refreshToken = asyncHandler(async (req, res) => {
   const result = await authService.refreshAccessToken(req.cookies.refresh_token);
   if (!result.ok) {
-    const statusCode = result.message === 'No refresh token' ? 401 : 403;
-    return res.status(statusCode).json({ status: 'FAILED', message: result.message });
+    return sendError(res, result);
   }
 
   res.cookie('access_token', result.accessToken, accessTokenCookieOptions());
-  res.json({ status: 'SUCCESS', message: 'Token refreshed' });
+  sendSuccess(res, { message: 'Token refreshed' });
 });
 
 const checkAuth = asyncHandler(async (req, res) => {
   const user = await authService.checkAuth(req.user.id);
-  res.json({ status: 'SUCCESS', user });
+  sendSuccess(res, { data: user, message: 'Authenticated' });
 });
 
 const csrfToken = (req, res) => {
-  res.json({ csrfToken: res.locals.csrfToken });
+  sendSuccess(res, { data: { csrfToken: res.locals.csrfToken } });
 };
 
 module.exports = {

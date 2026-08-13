@@ -12,9 +12,9 @@ const ActivityHeatmap = () => {
   useEffect(() => {
     adminApi
       .getHeatmap()
-      .then((rows) => {
+      .then((res) => {
         const matrix = PERIODS.map(() => DAYS.map(() => null));
-        rows.forEach(({ day, period, count }) => {
+        res.data.forEach(({ day, period, count }) => {
           const xi = DAYS.indexOf(day);
           const yi = PERIODS.indexOf(period);
           if (xi >= 0 && yi >= 0) matrix[yi][xi] = count;

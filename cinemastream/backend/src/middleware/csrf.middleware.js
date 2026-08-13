@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const { isProduction } = require('../config/env');
+const { sendError } = require('../utils/response');
 
 const CSRF_COOKIE_MAX_AGE = 24 * 60 * 60 * 1000; // 1 day
 
@@ -15,28 +16,19 @@ const csrfProtection = (req, res, next) => {
   const csrfHeader = req.headers['x-csrf-token'];
 
   if (!csrfCookie || !csrfHeader) {
-    return res.status(403).json({
-      status: 'FAILED',
-      message: 'Missing CSRF token',
-    });
+    return sendError(res, { code: 'CSRF_ERROR', message: 'Missing CSRF token' });
   }
 
   const [token, timestamp] = csrfCookie.split('|');
 
   if (token !== csrfHeader) {
-    return res.status(403).json({
-      status: 'FAILED',
-      message: 'CSRF token mismatch',
-    });
+    return sendError(res, { code: 'CSRF_ERROR', message: 'CSRF token mismatch' });
   }
 
   const tokenAge = Date.now() - parseInt(timestamp, 10);
 
   if (isNaN(tokenAge) || tokenAge > CSRF_COOKIE_MAX_AGE) {
-    return res.status(403).json({
-      status: 'FAILED',
-      message: 'CSRF token has expired',
-    });
+    return sendError(res, { code: 'CSRF_ERROR', message: 'CSRF token has expired' });
   }
 
   next();

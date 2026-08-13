@@ -19,7 +19,7 @@ const guestUser = {
 
 const getCsrfToken = async (agent) => {
   const res = await agent.get('/api/auth/csrf-token');
-  return res.body.csrfToken;
+  return res.body.data.csrfToken;
 };
 
 const registerVerifyLogin = async (user, { asAdmin = false } = {}) => {
@@ -72,7 +72,10 @@ describe('Admin API', () => {
     const res = await agent.get('/api/admin/users');
 
     expect(res.status).toBe(403);
-    expect(res.body).toEqual({ status: 'FAILED', message: 'Admins only. Access denied.' });
+    expect(res.body).toEqual({
+      success: false,
+      error: { code: 'FORBIDDEN', message: 'Admins only. Access denied.' },
+    });
   });
 
   test('lists users for an admin', async () => {
@@ -81,8 +84,9 @@ describe('Admin API', () => {
     const res = await agent.get('/api/admin/users');
 
     expect(res.status).toBe(200);
-    expect(res.body).toHaveLength(1);
-    expect(res.body[0]).toMatchObject({ email: adminUser.email, role: 'admin' });
+    expect(res.body.success).toBe(true);
+    expect(res.body.data).toHaveLength(1);
+    expect(res.body.data[0]).toMatchObject({ email: adminUser.email, role: 'admin' });
   });
 
   test('returns platform overview stats for an admin', async () => {
@@ -97,7 +101,8 @@ describe('Admin API', () => {
     const res = await agent.get('/api/admin/stats/overview');
 
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({
+    expect(res.body.success).toBe(true);
+    expect(res.body.data).toEqual({
       totalWatched: 2,
       rewatches: 1,
       activeUsers: 1,
@@ -117,6 +122,7 @@ describe('Admin API', () => {
     const res = await agent.get('/api/admin/stats/top-shows');
 
     expect(res.status).toBe(200);
-    expect(res.body[0]).toMatchObject({ name: 'Only Show', type: 'Movie' });
+    expect(res.body.success).toBe(true);
+    expect(res.body.data[0]).toMatchObject({ name: 'Only Show', type: 'Movie' });
   });
 });

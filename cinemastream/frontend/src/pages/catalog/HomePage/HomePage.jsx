@@ -35,7 +35,7 @@ const pseudoProgress = (id) => Math.floor(15 + (Math.abs(Math.sin(id) * 10000) %
 // Stable module-level reference so MovieRow's effect doesn't refire on every
 // HomePage render. Enriches the user's real watch history with poster art.
 const fetchContinueWatching = async () => {
-  const history = await watchApi.getHistory();
+  const { data: history } = await watchApi.getHistory();
   const enriched = await Promise.all(
     history.map(async (entry) => {
       try {

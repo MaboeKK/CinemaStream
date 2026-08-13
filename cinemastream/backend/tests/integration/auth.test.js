@@ -14,7 +14,7 @@ const newUser = {
 // mutating call needs a fresh token pulled from this endpoint first.
 const getCsrfToken = async (agent) => {
   const res = await agent.get('/api/auth/csrf-token');
-  return res.body.csrfToken;
+  return res.body.data.csrfToken;
 };
 
 const registerAndVerify = async (agent, user = newUser) => {
@@ -224,7 +224,7 @@ describe('Auth API', () => {
       const res = await agent.post('/api/auth/refresh-token');
 
       expect(res.status).toBe(200);
-      expect(res.body).toEqual({ status: 'SUCCESS', message: 'Token refreshed' });
+      expect(res.body).toEqual({ success: true, data: null, message: 'Token refreshed' });
       expect(res.headers['set-cookie'].join(';')).toMatch(/access_token=/);
     });
 
@@ -232,7 +232,10 @@ describe('Auth API', () => {
       const res = await request(app).post('/api/auth/refresh-token');
 
       expect(res.status).toBe(401);
-      expect(res.body).toEqual({ status: 'FAILED', message: 'No refresh token' });
+      expect(res.body).toEqual({
+        success: false,
+        error: { code: 'NO_REFRESH_TOKEN', message: 'No refresh token' },
+      });
     });
   });
 });

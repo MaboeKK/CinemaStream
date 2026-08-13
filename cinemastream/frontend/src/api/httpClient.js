@@ -19,7 +19,7 @@ let cachedCsrfToken = null;
 
 const fetchCsrfToken = async () => {
   const { data } = await httpClient.get('/auth/csrf-token');
-  cachedCsrfToken = data.csrfToken;
+  cachedCsrfToken = data.data.csrfToken;
   return cachedCsrfToken;
 };
 

@@ -209,7 +209,7 @@ const resetPassword = async ({ email, resetToken, newPassword }) => {
 
 const refreshAccessToken = async (refreshToken) => {
   if (!refreshToken) {
-    return { ok: false, message: 'No refresh token' };
+    return { ok: false, code: 'NO_REFRESH_TOKEN', message: 'No refresh token' };
   }
 
   try {
@@ -220,7 +220,7 @@ const refreshAccessToken = async (refreshToken) => {
     });
     return { ok: true, accessToken };
   } catch {
-    return { ok: false, message: 'Invalid refresh token' };
+    return { ok: false, code: 'INVALID_REFRESH_TOKEN', message: 'Invalid refresh token' };
   }
 };
 

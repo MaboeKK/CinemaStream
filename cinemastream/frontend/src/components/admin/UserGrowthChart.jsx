@@ -11,9 +11,9 @@ const UserGrowthChart = () => {
   useEffect(() => {
     adminApi
       .getMonthlyGrowth()
-      .then((rows) => {
+      .then((res) => {
         setData(
-          rows.map((d) => ({
+          res.data.map((d) => ({
             month: new Date(d.date).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }),
             users: Number(d.count),
           }))

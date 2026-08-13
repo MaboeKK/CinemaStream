@@ -12,7 +12,7 @@ const user = {
 
 const getCsrfToken = async (agent) => {
   const res = await agent.get('/api/auth/csrf-token');
-  return res.body.csrfToken;
+  return res.body.data.csrfToken;
 };
 
 const registerVerifyLogin = async () => {
@@ -63,12 +63,13 @@ describe('Watch API', () => {
       .send({ movie_id: 550, movie_title: 'Fight Club' });
 
     expect(res.status).toBe(201);
-    expect(res.body).toEqual({ status: 'SUCCESS', message: 'Watch event saved' });
+    expect(res.body).toEqual({ success: true, data: null, message: 'Watch event saved' });
 
     const historyRes = await agent.get('/api/watch/history');
     expect(historyRes.status).toBe(200);
-    expect(historyRes.body).toHaveLength(1);
-    expect(historyRes.body[0]).toMatchObject({ movie_id: 550, movie_title: 'Fight Club' });
+    expect(historyRes.body.success).toBe(true);
+    expect(historyRes.body.data).toHaveLength(1);
+    expect(historyRes.body.data[0]).toMatchObject({ movie_id: 550, movie_title: 'Fight Club' });
   });
 
   test('rejects a watch event with neither movie_id nor series_id', async () => {

@@ -9,7 +9,7 @@ const TopShowsChart = () => {
   useEffect(() => {
     adminApi
       .getTopShows()
-      .then((rows) => setData([...rows].sort((a, b) => b.total_views - a.total_views)))
+      .then((res) => setData([...res.data].sort((a, b) => b.total_views - a.total_views)))
       .catch(console.error);
   }, []);
 
