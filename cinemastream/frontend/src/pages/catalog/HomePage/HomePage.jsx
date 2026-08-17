@@ -19,52 +19,11 @@ import {
   fetchTitlesByGenre,
 } from '../../../api/tmdb';
 import { fetchYoutubeTrailer } from '../../../api/youtube';
-import watchApi from '../../../api/watchApi';
 import '../MoviesPage/MoviesPage.css';
 import './HomePage.css';
 
 const EMPTY_MODAL_CONTENT = { name: '', overview: '', genres: [], actors: [], rawItem: null };
 const EMPTY_FILTERED = { movies: [], series: [] };
-
-// watchApi has no playback-position field yet (only records that a title was
-// opened, not how far into it) -- this derives a stable-per-id placeholder
-// percentage so Continue Watching cards can show a progress bar today,
-// rather than jumping randomly on every render, until real tracking exists.
-const pseudoProgress = (id) => Math.floor(15 + (Math.abs(Math.sin(id) * 10000) % 78));
-
-// Stable module-level reference so MovieRow's effect doesn't refire on every
-// HomePage render. Enriches the user's real watch history with poster art.
-const fetchContinueWatching = async () => {
-  const history = await watchApi.getHistory();
-  const enriched = await Promise.all(
-    history.map(async (entry) => {
-      try {
-        if (entry.movie_id) {
-          const details = await fetchMovieDetails(entry.movie_id);
-          return {
-            id: entry.movie_id,
-            title: details.name,
-            poster_path: details.poster_path,
-            media_type: 'movie',
-            progress: pseudoProgress(entry.movie_id),
-          };
-        }
-        const details = await fetchSeriesDetails(entry.series_id);
-        return {
-          id: entry.series_id,
-          name: details.name,
-          poster_path: details.poster_path,
-          media_type: 'tv',
-          progress: pseudoProgress(entry.series_id),
-        };
-      } catch {
-        return null;
-      }
-    })
-  );
-  // "Four 16:9 thumbnail stills" per the Continue Watching row spec.
-  return enriched.filter((item) => item?.poster_path).slice(0, 4);
-};
 
 const fetchRecommended = () => discoverMovies();
 
@@ -78,10 +37,9 @@ function HomePage() {
   const [filtered, setFiltered] = useState(EMPTY_FILTERED);
   const [filterLoading, setFilterLoading] = useState(false);
 
-  // Local, non-persisted display toggles -- no existing settings surface to
-  // attach these to, so they're rendered as a small control row above the
+  // Local, non-persisted display toggle -- no existing settings surface to
+  // attach this to, so it's rendered as a small control row above the
   // rails themselves.
-  const [showContinueWatching, setShowContinueWatching] = useState(true);
   const [showRankBadges, setShowRankBadges] = useState(true);
 
   useEffect(() => {
@@ -185,14 +143,6 @@ function HomePage() {
             <label className="catalog-home-toggle">
               <input
                 type="checkbox"
-                checked={showContinueWatching}
-                onChange={(e) => setShowContinueWatching(e.target.checked)}
-              />
-              Continue Watching
-            </label>
-            <label className="catalog-home-toggle">
-              <input
-                type="checkbox"
                 checked={showRankBadges}
                 onChange={(e) => setShowRankBadges(e.target.checked)}
               />
@@ -200,15 +150,6 @@ function HomePage() {
             </label>
           </div>
 
-          {showContinueWatching && (
-            <MovieRow
-              title="Continue Watching"
-              fetchFunction={fetchContinueWatching}
-              onMovieClick={openTrailerModal}
-              variant="still"
-              tray
-            />
-          )}
           <MovieRow
             title="Trending Now"
             fetchFunction={fetchTrending}

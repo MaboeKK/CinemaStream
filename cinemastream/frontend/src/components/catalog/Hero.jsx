@@ -92,11 +92,6 @@ function Hero({ onPlayTrailer }) {
     >
       <div className="hero-scrim" />
       <div className="hero-content">
-        <div className="hero-eyebrow">
-          <span className="hero-eyebrow-rule" />
-          CinemaStream Original
-        </div>
-
         <h1 className="hero-title">{featured.title || featured.name}</h1>
 
         {/* Age rating (e.g. PG-13) and quality tags (e.g. 4K HDR) aren't in

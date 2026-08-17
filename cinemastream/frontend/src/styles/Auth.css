@@ -1,12 +1,21 @@
+/* Same wash formula as the site's body background (index.css) -- violet
+   glow top-right, near-black base -- plus two extra glows pulled from the
+   brand sunset gradient (--gradient-accent) and a faint top-center beam
+   evoking a projector, so the auth page reads as this site rather than a
+   generic stock photo. */
 .auth-page {
   margin: 0;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(rgba(9, 9, 9, 0.6), rgba(9, 9, 9, 0.85)), url('../assets/auth-bg.jpg') no-repeat center center
-    fixed;
-  background-size: cover;
+  background:
+    radial-gradient(ellipse 500px 800px at 50% -15%, rgba(255, 255, 255, 0.06), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 88% -10%, rgba(139, 92, 246, 0.3), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 6% 108%, rgba(244, 83, 166, 0.2), transparent 55%),
+    radial-gradient(ellipse 600px 500px at 92% 100%, rgba(255, 138, 61, 0.14), transparent 55%),
+    linear-gradient(to bottom, var(--color-bg) 0%, #0a0710 100%);
+  background-attachment: fixed;
   font-family: var(--font-family);
 }
 
