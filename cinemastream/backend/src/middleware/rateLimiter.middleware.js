@@ -15,4 +15,20 @@ const authLimiter = rateLimit({
   skip: () => NODE_ENV === 'test',
 });
 
-module.exports = authLimiter;
+// Separate from authLimiter, which is semantically for unauthenticated
+// endpoints (login/register/etc). This gates already-authenticated admin
+// mutation routes -- looser per-window ceiling, same intent (blunt abuse
+// protection, not a real quota system).
+const adminMutationLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 60,
+  message: {
+    success: false,
+    error: { code: 'RATE_LIMITED', message: 'Too many admin actions, please slow down.' },
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: () => NODE_ENV === 'test',
+});
+
+module.exports = { authLimiter, adminMutationLimiter };

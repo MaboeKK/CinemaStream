@@ -78,6 +78,18 @@ const login = async ({ email, password, rememberMe, ipAddress, userAgent }) => {
     return { ok: false, code: 'INVALID_CREDENTIALS', message: 'Incorrect password' };
   }
 
+  if (user.status !== 'active') {
+    const code = user.status === 'banned' ? 'ACCOUNT_BANNED' : 'ACCOUNT_SUSPENDED';
+    return {
+      ok: false,
+      code,
+      message:
+        user.status === 'banned'
+          ? 'This account has been banned.'
+          : 'This account is suspended.' + (user.status_reason ? ` Reason: ${user.status_reason}` : ''),
+    };
+  }
+
   await loginHistoryRepository.recordLogin({
     userId: user.user_id,
     firstName: user.first_name,
@@ -86,6 +98,7 @@ const login = async ({ email, password, rememberMe, ipAddress, userAgent }) => {
     ipAddress,
     userAgent,
   });
+  await userRepository.touchLastLogin(user.user_id);
 
   const { accessToken, refreshToken, refreshMaxAge } = buildSessionTokens(user, { rememberMe });
 
@@ -96,6 +109,7 @@ const login = async ({ email, password, rememberMe, ipAddress, userAgent }) => {
     refreshToken,
     refreshMaxAge,
     userData: {
+      user_id: user.user_id,
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
@@ -214,9 +228,19 @@ const refreshAccessToken = async (refreshToken) => {
 
   try {
     const payload = tokenService.verifyRefreshToken(refreshToken);
+    // Re-read current state rather than trusting the refresh token's own
+    // (possibly stale, up to 7 days old) role/tv claims -- otherwise a
+    // suspended/banned/force-logged-out user could keep minting valid
+    // access tokens off a refresh token issued before that action.
+    const authState = await userRepository.getAuthState(payload.userId);
+    if (!authState || authState.status !== 'active' || authState.token_version !== payload.tv) {
+      return { ok: false, message: 'Invalid refresh token' };
+    }
+
     const accessToken = tokenService.signAccessToken({
       user_id: payload.userId,
-      role: payload.role,
+      role: authState.role,
+      token_version: authState.token_version,
     });
     return { ok: true, accessToken };
   } catch {

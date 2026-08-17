@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import muiTheme from './theme/muiTheme';
 import { AuthProvider } from './context/AuthContext';
@@ -17,7 +19,12 @@ import SeriesPage from './pages/catalog/SeriesPage/SeriesPage';
 import MyListPage from './pages/catalog/MyListPage/MyListPage';
 import DashboardPage from './pages/admin/DashboardPage/DashboardPage';
 import UsersPage from './pages/admin/UsersPage/UsersPage';
+import UserDetailPage from './pages/admin/UserDetailPage/UserDetailPage';
 import StatsPage from './pages/admin/StatsPage/StatsPage';
+import AuditLogPage from './pages/admin/AuditLogPage/AuditLogPage';
+import ContentPage from './pages/admin/ContentPage/ContentPage';
+
+const ADMIN_ROLES = ['admin', 'super_admin'];
 
 function AppRoutes() {
   const location = useLocation();
@@ -65,9 +72,9 @@ function AppRoutes() {
         />
 
         <Route
-          path="/home"
+          path="/admin"
           element={
-            <ProtectedRoute roles={['admin']}>
+            <ProtectedRoute roles={ADMIN_ROLES}>
               <DashboardPage />
             </ProtectedRoute>
           }
@@ -75,16 +82,40 @@ function AppRoutes() {
         <Route
           path="/admin/users"
           element={
-            <ProtectedRoute roles={['admin']}>
+            <ProtectedRoute roles={ADMIN_ROLES}>
               <UsersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users/:id"
+          element={
+            <ProtectedRoute roles={ADMIN_ROLES}>
+              <UserDetailPage />
             </ProtectedRoute>
           }
         />
         <Route
           path="/admin/stats"
           element={
-            <ProtectedRoute roles={['admin']}>
+            <ProtectedRoute roles={ADMIN_ROLES}>
               <StatsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/audit-log"
+          element={
+            <ProtectedRoute roles={ADMIN_ROLES}>
+              <AuditLogPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/content"
+          element={
+            <ProtectedRoute roles={ADMIN_ROLES}>
+              <ContentPage />
             </ProtectedRoute>
           }
         />
@@ -104,6 +135,7 @@ function App() {
           <AppRoutes />
         </Router>
       </AuthProvider>
+      <ToastContainer position="bottom-right" theme="dark" />
     </ThemeProvider>
   );
 }
