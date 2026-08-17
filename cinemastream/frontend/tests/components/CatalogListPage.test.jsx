@@ -31,7 +31,6 @@ const renderPage = (props, entries = ['/movies']) =>
       <AuthProvider>
         <CatalogListPage
           mediaType="movie"
-          title="Movies"
           searchPlaceholder="Search movies by name..."
           emptyIcon={<FaFilm />}
           emptyTitle="No movies found"
@@ -52,7 +51,6 @@ describe('CatalogListPage', () => {
 
     renderPage({ discoverFn });
 
-    expect(screen.getByRole('heading', { name: 'Movies' })).toBeInTheDocument();
     await waitFor(() => expect(screen.getByText('Movie One')).toBeInTheDocument());
     expect(screen.getByText('Movie Two')).toBeInTheDocument();
     expect(discoverFn).toHaveBeenCalledWith('', 1);
