@@ -21,6 +21,16 @@ export async function fetchTrending() {
   return data.results;
 }
 
+export async function fetchTrendingMovies() {
+  const data = await tmdbFetch('/trending/movie/day');
+  return data.results.map((m) => ({ ...m, media_type: 'movie' }));
+}
+
+export async function fetchTrendingSeries() {
+  const data = await tmdbFetch('/trending/tv/day');
+  return data.results.map((s) => ({ ...s, media_type: 'tv' }));
+}
+
 export async function fetchPopularSeries() {
   const data = await tmdbFetch('/tv/popular', { language: 'en-US', page: 1 });
   return data.results;
@@ -98,20 +108,6 @@ export async function discoverSeries(genreId, page = 1) {
     ...(genreId ? { with_genres: genreId } : {}),
   });
   return data.results;
-}
-
-// Combines discover/movie + discover/tv into one tagged result set for the
-// homepage's hybrid genre filter. seriesGenreId omitted (no TV equivalent
-// for the genre) intentionally yields zero series, not an unfiltered list.
-export async function fetchTitlesByGenre({ movieGenreId, seriesGenreId }) {
-  const [movies, series] = await Promise.all([
-    discoverMovies(movieGenreId),
-    seriesGenreId ? discoverSeries(seriesGenreId) : Promise.resolve([]),
-  ]);
-  return {
-    movies: movies.map((m) => ({ ...m, media_type: 'movie' })),
-    series: series.map((s) => ({ ...s, media_type: 'tv' })),
-  };
 }
 
 export async function fetchSimilarMovies(movieId) {

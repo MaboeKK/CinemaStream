@@ -36,26 +36,6 @@
   }
 }
 
-.hero-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: var(--font-size-eyebrow);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-eyebrow);
-  color: var(--color-text-accent);
-  margin-bottom: 14px;
-}
-
-.hero-eyebrow-rule {
-  display: inline-block;
-  width: 24px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--gradient-accent);
-}
-
 .hero-title {
   font-size: clamp(2rem, 4.4vw, var(--font-size-hero-title));
   letter-spacing: var(--letter-spacing-hero-title);
