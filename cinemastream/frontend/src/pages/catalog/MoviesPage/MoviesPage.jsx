@@ -7,7 +7,6 @@ function MoviesPage() {
   return (
     <CatalogListPage
       mediaType="movie"
-      title="Movies"
       searchPlaceholder="Search movies by name..."
       emptyIcon={<FaFilm />}
       emptyTitle="No movies found"

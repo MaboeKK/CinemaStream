@@ -17,7 +17,6 @@ const EMPTY_MODAL_CONTENT = { name: '', overview: '', genres: [], actors: [], ra
 // functions and labels apply to the given media type.
 function CatalogListPage({
   mediaType, // 'movie' | 'tv'
-  title,
   searchPlaceholder,
   emptyIcon,
   emptyTitle,
@@ -69,8 +68,6 @@ function CatalogListPage({
       <CatalogNavbar />
       <div className="catalog-list-content">
         <div className="catalog-filter-bar">
-          <h2 className="catalog-page-title">{title}</h2>
-
           <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} placeholder={searchPlaceholder} />
 
           <GenreFilter

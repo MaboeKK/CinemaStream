@@ -1,8 +1,19 @@
+/* Same wash formula as /login's .auth-page and the body wash /Homepage
+   inherits from index.css -- violet glow top-right, pink/orange glows,
+   faint top-center beam, near-black base -- so every post-auth surface
+   reads as the same product instead of /movies and /series sitting on a
+   flat --color-surface fill. */
 .catalog-list-page {
-  background-color: var(--color-surface);
   min-height: 100vh;
   padding-top: 100px;
   color: var(--color-text);
+  background:
+    radial-gradient(ellipse 500px 800px at 50% -15%, rgba(255, 255, 255, 0.06), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 88% -10%, rgba(139, 92, 246, 0.3), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 6% 108%, rgba(244, 83, 166, 0.2), transparent 55%),
+    radial-gradient(ellipse 600px 500px at 92% 100%, rgba(255, 138, 61, 0.14), transparent 55%),
+    linear-gradient(to bottom, var(--color-bg) 0%, #0a0710 100%);
+  background-attachment: fixed;
 }
 
 .catalog-list-content {

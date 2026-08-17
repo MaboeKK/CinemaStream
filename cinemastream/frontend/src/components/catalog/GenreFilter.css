@@ -1,22 +1,59 @@
+/* Glass pill filter -- same recipe as the site's other filter/search
+   controls (--glass-bg/--glass-border/--glass-blur, full pill radius,
+   gradient-accent fill when a genre is selected). */
 .catalog-genre-filter {
+  position: relative;
   display: flex;
   align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.catalog-genre-filter label {
-  margin-right: var(--space-2);
-  font-weight: 700;
-  color: var(--color-text);
-  font-size: var(--font-size-body);
+.catalog-genre-filter:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.catalog-genre-filter.active {
+  background: var(--gradient-accent);
+  border-color: transparent;
+}
+
+.catalog-genre-filter-icon,
+.catalog-genre-filter-chevron {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.catalog-genre-filter.active .catalog-genre-filter-icon,
+.catalog-genre-filter.active .catalog-genre-filter-chevron,
+.catalog-genre-filter.active select {
+  color: var(--color-on-accent);
 }
 
 .catalog-genre-filter select {
-  padding: var(--space-2) var(--space-3);
-  border-radius: 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  max-width: 170px;
   font-size: var(--font-size-body);
   font-family: var(--font-family);
-  background-color: var(--color-surface-raised);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
   outline: none;
+  cursor: pointer;
+}
+
+.catalog-genre-filter select option {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
 }
