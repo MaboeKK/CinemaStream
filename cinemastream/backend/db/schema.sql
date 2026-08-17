@@ -145,3 +145,81 @@ ALTER TABLE ONLY public.login_history
 -- belongs to no longer exists.
 ALTER TABLE ONLY public.watched_history
     ADD CONSTRAINT watched_history_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON DELETE CASCADE;
+
+-- Admin portal expansion --------------------------------------------------
+-- status/status_reason/status_changed_at back suspend/ban; token_version
+-- backs force-logout. Auth was previously stateless JWT with zero
+-- server-side session state (auth.middleware.js only did jwt.verify), so
+-- neither was enforceable at all before these columns existed.
+ALTER TABLE public.users
+    ADD COLUMN status character varying(20) NOT NULL DEFAULT 'active',
+    ADD COLUMN status_reason text,
+    ADD COLUMN status_changed_at timestamp with time zone,
+    ADD COLUMN token_version integer NOT NULL DEFAULT 0,
+    ADD COLUMN last_login_at timestamp with time zone;
+
+CREATE TABLE public.admin_audit_log (
+    id integer NOT NULL,
+    actor_user_id integer,
+    actor_email character varying(70),
+    action character varying(50) NOT NULL,
+    target_user_id integer,
+    target_email character varying(70),
+    metadata jsonb,
+    created_at timestamp with time zone DEFAULT now()
+);
+
+CREATE SEQUENCE public.admin_audit_log_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE public.admin_audit_log_id_seq OWNED BY public.admin_audit_log.id;
+ALTER TABLE ONLY public.admin_audit_log ALTER COLUMN id SET DEFAULT nextval('public.admin_audit_log_id_seq'::regclass);
+
+ALTER TABLE ONLY public.admin_audit_log
+    ADD CONSTRAINT admin_audit_log_pkey PRIMARY KEY (id);
+
+-- No ON DELETE CASCADE on either FK, matching login_history's convention:
+-- the audit trail must survive the actor or target account being deleted.
+ALTER TABLE ONLY public.admin_audit_log
+    ADD CONSTRAINT admin_audit_log_actor_user_id_fkey FOREIGN KEY (actor_user_id) REFERENCES public.users(user_id);
+ALTER TABLE ONLY public.admin_audit_log
+    ADD CONSTRAINT admin_audit_log_target_user_id_fkey FOREIGN KEY (target_user_id) REFERENCES public.users(user_id);
+
+CREATE INDEX idx_admin_audit_log_created_at ON public.admin_audit_log USING btree (created_at DESC);
+
+-- Thin content-curation layer: the catalog itself stays TMDB-client-side
+-- (deliberate -- see the note at the top of this file about the dropped
+-- movies/series/genres tables), this just lets admins pin a title into a
+-- Featured row or hide one platform-wide by TMDB id.
+CREATE TABLE public.content_overrides (
+    id integer NOT NULL,
+    tmdb_id integer NOT NULL,
+    media_type character varying(10) NOT NULL,
+    title text NOT NULL,
+    status character varying(20) NOT NULL DEFAULT 'featured',
+    created_by integer,
+    created_at timestamp with time zone DEFAULT now()
+);
+
+CREATE SEQUENCE public.content_overrides_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE public.content_overrides_id_seq OWNED BY public.content_overrides.id;
+ALTER TABLE ONLY public.content_overrides ALTER COLUMN id SET DEFAULT nextval('public.content_overrides_id_seq'::regclass);
+
+ALTER TABLE ONLY public.content_overrides
+    ADD CONSTRAINT content_overrides_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.content_overrides
+    ADD CONSTRAINT content_overrides_tmdb_id_media_type_key UNIQUE (tmdb_id, media_type);
+ALTER TABLE ONLY public.content_overrides
+    ADD CONSTRAINT content_overrides_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(user_id);

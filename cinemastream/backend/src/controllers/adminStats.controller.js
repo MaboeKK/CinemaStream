@@ -21,4 +21,19 @@ const overview = asyncHandler(async (req, res) => {
   res.json(data);
 });
 
-module.exports = { topShows, monthlyGrowth, heatmap, overview };
+const funnel = asyncHandler(async (req, res) => {
+  const data = await adminStatsService.getSignupFunnel();
+  res.json(data);
+});
+
+const retention = asyncHandler(async (req, res) => {
+  const data = await adminStatsService.getRetentionCohorts();
+  res.json(data);
+});
+
+const sessionLength = asyncHandler(async (req, res) => {
+  const data = await adminStatsService.getSessionLength();
+  res.json(data);
+});
+
+module.exports = { topShows, monthlyGrowth, heatmap, overview, funnel, retention, sessionLength };

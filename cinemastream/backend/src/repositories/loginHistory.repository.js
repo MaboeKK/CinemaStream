@@ -33,4 +33,41 @@ const getActiveUserCount = async () => {
   return Number(rows[0].count);
 };
 
-module.exports = { recordLogin, recordLogout, getActiveUserCount };
+// Most-recent-first, for the admin user-detail view.
+const getRecentByUser = async (userId, limit = 10) => {
+  const { rows } = await pool.query(
+    `SELECT login_time, logout_time, ip_address, user_agent, was_successful
+     FROM login_history WHERE user_id = $1 ORDER BY login_time DESC LIMIT $2`,
+    [userId, limit]
+  );
+  return rows;
+};
+
+// Daily average session length over the last 30 days, for closed sessions
+// only (logout_time IS NULL means still-open or never-properly-closed).
+const getAvgSessionLengthByDay = async () => {
+  const { rows } = await pool.query(`
+    SELECT
+      DATE_TRUNC('day', login_time)::date AS day,
+      AVG(EXTRACT(EPOCH FROM (logout_time - login_time))) AS avg_seconds,
+      COUNT(*) AS session_count
+    FROM login_history
+    WHERE logout_time IS NOT NULL
+      AND login_time >= NOW() - INTERVAL '30 days'
+    GROUP BY DATE_TRUNC('day', login_time)
+    ORDER BY day
+  `);
+  return rows.map((row) => ({
+    date: row.day.toISOString().split('T')[0],
+    avgSeconds: Math.round(Number(row.avg_seconds)),
+    sessionCount: Number(row.session_count),
+  }));
+};
+
+module.exports = {
+  recordLogin,
+  recordLogout,
+  getActiveUserCount,
+  getRecentByUser,
+  getAvgSessionLengthByDay,
+};

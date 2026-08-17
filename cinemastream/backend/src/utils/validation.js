@@ -95,6 +95,28 @@ const schemas = {
   })
     .or('movie_id', 'series_id')
     .messages({ 'object.missing': 'movie_id or series_id is required' }),
+
+  changeRole: Joi.object({
+    role: Joi.string()
+      .valid('guest', 'admin', 'super_admin')
+      .required()
+      .messages({ 'any.only': 'Role must be guest, admin, or super_admin' }),
+  }),
+
+  changeStatus: Joi.object({
+    status: Joi.string()
+      .valid('active', 'suspended', 'banned')
+      .required()
+      .messages({ 'any.only': 'Status must be active, suspended, or banned' }),
+    reason: Joi.string().trim().max(500).allow('').optional(),
+  }),
+
+  contentOverride: Joi.object({
+    tmdbId: Joi.number().integer().required(),
+    mediaType: Joi.string().valid('movie', 'tv').required(),
+    title: Joi.string().trim().required(),
+    status: Joi.string().valid('featured', 'blocked').required(),
+  }),
 };
 
 module.exports = { validate, schemas };
