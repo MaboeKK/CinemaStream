@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import YouTube from 'react-youtube';
 import { FaPlay } from 'react-icons/fa';
 import { fetchMovieDetails, fetchSeriesDetails, fetchSimilarMovies, fetchSimilarSeries } from '../../api/tmdb';
@@ -114,7 +115,7 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
     }
   };
 
-  return (
+  return createPortal(
     <div className={`modal-overlay${closing ? ' closing' : ''}`} onClick={handleClose}>
       <div className="modal-content" ref={contentRef} onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={handleClose}>
@@ -203,7 +204,8 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

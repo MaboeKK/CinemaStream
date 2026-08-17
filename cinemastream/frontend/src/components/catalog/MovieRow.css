@@ -39,6 +39,20 @@
   padding-left: 48px;
 }
 
+.row-title.accent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row-title.accent::before {
+  content: '';
+  width: 4px;
+  height: 1.1em;
+  border-radius: 2px;
+  background: var(--gradient-accent);
+}
+
 .row-wrapper {
   position: relative;
 }

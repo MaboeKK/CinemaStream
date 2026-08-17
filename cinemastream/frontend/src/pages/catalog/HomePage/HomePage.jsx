@@ -37,11 +37,6 @@ function HomePage() {
   const [filtered, setFiltered] = useState(EMPTY_FILTERED);
   const [filterLoading, setFilterLoading] = useState(false);
 
-  // Local, non-persisted display toggle -- no existing settings surface to
-  // attach this to, so it's rendered as a small control row above the
-  // rails themselves.
-  const [showRankBadges, setShowRankBadges] = useState(true);
-
   useEffect(() => {
     if (!selectedGenre) {
       setFiltered(EMPTY_FILTERED);
@@ -139,22 +134,11 @@ function HomePage() {
         </div>
       ) : (
         <div className="catalog-home-rows">
-          <div className="catalog-home-row-toggles">
-            <label className="catalog-home-toggle">
-              <input
-                type="checkbox"
-                checked={showRankBadges}
-                onChange={(e) => setShowRankBadges(e.target.checked)}
-              />
-              Rank badges
-            </label>
-          </div>
-
           <MovieRow
             title="Trending Now"
             fetchFunction={fetchTrending}
             onMovieClick={openTrailerModal}
-            showRank={showRankBadges}
+            accent
           />
           <MovieRow title="Top Rated" fetchFunction={fetchTopRatedMovies} onMovieClick={openTrailerModal} />
           <MovieRow title="New Releases" fetchFunction={fetchNewReleaseMovies} onMovieClick={openTrailerModal} />
