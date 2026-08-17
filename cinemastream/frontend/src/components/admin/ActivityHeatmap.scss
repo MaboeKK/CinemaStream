@@ -13,8 +13,52 @@
     color: var(--color-accent);
   }
 
-  .plotly-graph-div {
-    width: 100% !important;
-    height: 300px !important;
+  .chart-status {
+    padding: 60px 0;
+    text-align: center;
+    color: var(--color-text-muted);
+
+    &.error {
+      color: var(--color-danger);
+    }
+  }
+
+  .heatmap-grid {
+    display: grid;
+    gap: 4px;
+  }
+
+  .heatmap-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  .heatmap-corner {
+    background: none;
+  }
+
+  .heatmap-day-label,
+  .heatmap-period-label {
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .heatmap-period-label {
+    justify-content: flex-start;
+    padding-left: 4px;
+  }
+
+  .heatmap-value {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: scale(1.06);
+    }
   }
 }

@@ -21,35 +21,57 @@ const getRecentByUser = async (userId, limit = 10) => {
   return rows;
 };
 
+// Grouped by (content id, type) rather than the title string -- grouping by
+// name alone would silently merge two different titles that happen to
+// share a title (remakes exist on TMDB), and gave the frontend nothing
+// stable to key rows on. MAX(...) for the display name is safe since a
+// given (movie_id, type) pair's title is effectively constant.
 const getTopShows = async () => {
   const { rows } = await pool.query(`
     SELECT
-      COALESCE(movie_title, series_name) AS name,
+      COALESCE(movie_id, series_id) AS content_id,
       CASE WHEN movie_id IS NOT NULL THEN 'Movie' ELSE 'Series' END AS type,
+      MAX(COALESCE(movie_title, series_name)) AS name,
       COUNT(*) AS total_views
     FROM watched_history
-    GROUP BY COALESCE(movie_title, series_name), CASE WHEN movie_id IS NOT NULL THEN 'Movie' ELSE 'Series' END
+    GROUP BY COALESCE(movie_id, series_id), CASE WHEN movie_id IS NOT NULL THEN 'Movie' ELSE 'Series' END
     ORDER BY total_views DESC
     LIMIT 10
   `);
-  return rows;
+  return rows.map((row) => ({ ...row, total_views: Number(row.total_views) }));
 };
 
+// Returns both the new-signups-that-month count and a running cumulative
+// total (seeded with however many users already existed before the
+// 12-month window) -- a single "count" was previously mislabeled on the
+// frontend as "Registered Users" when it was really new signups, which
+// reads as a running total but isn't one.
 const getMonthlyUserGrowth = async () => {
   const { rows } = await pool.query(`
     WITH month_series AS (
       SELECT DATE_TRUNC('month', NOW() - INTERVAL '1 month' * (n - 1)) AS month
       FROM generate_series(1, 12) AS n
+    ),
+    monthly_new AS (
+      SELECT ms.month, COUNT(u.user_id) AS new_signups
+      FROM month_series ms
+      LEFT JOIN users u ON DATE_TRUNC('month', u.created_at) = ms.month
+      GROUP BY ms.month
+    ),
+    base AS (
+      SELECT COUNT(*) AS base_count FROM users WHERE created_at < (SELECT MIN(month) FROM month_series)
     )
-    SELECT ms.month, COALESCE(COUNT(u.created_at), 0) AS count
-    FROM month_series ms
-    LEFT JOIN users u ON DATE_TRUNC('month', u.created_at) = ms.month
-    GROUP BY ms.month
-    ORDER BY ms.month
+    SELECT
+      monthly_new.month,
+      monthly_new.new_signups,
+      base.base_count + SUM(monthly_new.new_signups) OVER (ORDER BY monthly_new.month) AS cumulative_total
+    FROM monthly_new, base
+    ORDER BY monthly_new.month
   `);
   return rows.map((row) => ({
     date: row.month.toISOString().split('T')[0],
-    count: Number(row.count),
+    newSignups: Number(row.new_signups),
+    cumulativeTotal: Number(row.cumulative_total),
   }));
 };
 
