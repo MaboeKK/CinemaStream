@@ -25,14 +25,12 @@
   border-color: transparent;
 }
 
-.catalog-genre-filter-icon,
 .catalog-genre-filter-chevron {
   flex-shrink: 0;
   font-size: 0.85rem;
   color: var(--color-text-muted);
 }
 
-.catalog-genre-filter.active .catalog-genre-filter-icon,
 .catalog-genre-filter.active .catalog-genre-filter-chevron,
 .catalog-genre-filter.active select {
   color: var(--color-on-accent);
