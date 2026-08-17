@@ -136,7 +136,13 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
             videoId && (
               <YouTube
                 videoId={videoId}
-                opts={{ width: '100%', height: '400', playerVars: { autoplay: 1 } }}
+                className="modal-hero-player"
+                iframeClassName="modal-hero-player-iframe"
+                // No width/height here -- the YouTube IFrame API only accepts pixel
+                // numbers for those, so '100%' silently fell back to the player's
+                // own default size (~640x390) instead of filling .modal-hero.
+                // Sized via CSS on the iframe itself instead (see TrailerModal.css).
+                opts={{ playerVars: { autoplay: 1 } }}
                 onStateChange={onPlayerStateChange}
               />
             )
