@@ -27,8 +27,8 @@ const Login = () => {
       // browser has already applied the Set-Cookie headers from that
       // response before the promise resolved, so there's nothing left
       // to wait out with a fixed delay.
-      if (role === 'admin') {
-        navigate('/home');
+      if (role === 'admin' || role === 'super_admin') {
+        navigate('/admin');
       } else if (role === 'guest') {
         navigate('/Homepage');
       } else {

@@ -9,6 +9,7 @@ import {
   fetchTrendingSeries,
   fetchTopRatedMovies,
   fetchNewReleaseMovies,
+  fetchFeaturedTitles,
   discoverMovies,
   fetchMovieDetails,
   fetchSeriesDetails,
@@ -57,6 +58,7 @@ function HomePage() {
       <Hero onPlayTrailer={openTrailerModal} />
 
       <div className="catalog-home-rows">
+        <MovieRow title="Featured" fetchFunction={fetchFeaturedTitles} onMovieClick={openTrailerModal} accent />
         <MovieRow title="Trending Now" tabs={trendingTabs} onMovieClick={openTrailerModal} accent />
         <MovieRow title="Top Rated" fetchFunction={fetchTopRatedMovies} onMovieClick={openTrailerModal} />
         <MovieRow title="New Releases" fetchFunction={fetchNewReleaseMovies} onMovieClick={openTrailerModal} />

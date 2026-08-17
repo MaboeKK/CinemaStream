@@ -81,8 +81,8 @@ describe('Admin API', () => {
     const res = await agent.get('/api/admin/users');
 
     expect(res.status).toBe(200);
-    expect(res.body).toHaveLength(1);
-    expect(res.body[0]).toMatchObject({ email: adminUser.email, role: 'admin' });
+    expect(res.body.data.rows).toHaveLength(1);
+    expect(res.body.data.rows[0]).toMatchObject({ email: adminUser.email, role: 'admin' });
   });
 
   test('returns platform overview stats for an admin', async () => {

@@ -1,0 +1,88 @@
+.admin-userDetail {
+  display: flex;
+  width: 100%;
+  background-color: var(--color-bg);
+
+  .admin-userDetailContainer {
+    margin-left: 220px;
+    padding: 20px;
+    padding-top: 60px;
+    flex: 1;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .profile-card {
+      background-color: var(--color-surface-raised);
+      border-radius: 12px;
+      padding: 24px 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .profile-fields {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px 40px;
+    }
+
+    .profile-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      label {
+        font-size: 12px;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      span {
+        font-size: 15px;
+      }
+    }
+
+    .profile-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .history-section {
+      background-color: var(--color-surface-raised);
+      border-radius: 12px;
+      padding: 20px 30px;
+
+      h3 {
+        margin: 0 0 12px;
+      }
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .history-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}

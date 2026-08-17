@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import HistoryIcon from '@mui/icons-material/History';
+import MovieFilterOutlinedIcon from '@mui/icons-material/MovieFilterOutlined';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useAuth } from '../../context/AuthContext';
 import './AdminSidebar.scss';
@@ -24,7 +26,7 @@ const AdminSidebar = () => {
       <hr />
       <div className="dashboard-sidebar-center">
         <ul>
-          <Link to="/home" className="link">
+          <Link to="/admin" className="link">
             <li>
               <DashboardIcon className="icon" />
               <span>Dashboard</span>
@@ -40,6 +42,18 @@ const AdminSidebar = () => {
             <li>
               <QueryStatsIcon className="icon" />
               <span>Stats</span>
+            </li>
+          </Link>
+          <Link to="/admin/audit-log" className="link">
+            <li>
+              <HistoryIcon className="icon" />
+              <span>Audit Log</span>
+            </li>
+          </Link>
+          <Link to="/admin/content" className="link">
+            <li>
+              <MovieFilterOutlinedIcon className="icon" />
+              <span>Content</span>
             </li>
           </Link>
           <button className="link" onClick={handleLogout}>

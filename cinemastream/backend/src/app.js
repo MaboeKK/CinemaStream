@@ -6,6 +6,7 @@ const { CORS_ORIGIN } = require('./config/env');
 const authRoutes = require('./routes/auth.routes');
 const watchRoutes = require('./routes/watch.routes');
 const adminRoutes = require('./routes/admin.routes');
+const contentRoutes = require('./routes/content.routes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -25,6 +26,7 @@ app.set('trust proxy', 1);
 app.use('/api/auth', authRoutes);
 app.use('/api/watch', watchRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/content', contentRoutes);
 
 app.get('/health', (_, res) => res.send('OK'));
 
