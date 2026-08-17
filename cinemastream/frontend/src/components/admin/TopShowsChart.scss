@@ -20,4 +20,14 @@
   .recharts-legend-item-text {
     fill: var(--color-text-muted) !important;
   }
+
+  .chart-status {
+    padding: 60px 0;
+    text-align: center;
+    color: var(--color-text-muted);
+
+    &.error {
+      color: var(--color-danger);
+    }
+  }
 }

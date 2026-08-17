@@ -29,4 +29,14 @@
     min-height: 250px;
     width: 100%;
   }
+
+  .chart-status {
+    padding: 60px 0;
+    text-align: center;
+    color: var(--color-text-muted);
+
+    &.error {
+      color: var(--color-danger);
+    }
+  }
 }
