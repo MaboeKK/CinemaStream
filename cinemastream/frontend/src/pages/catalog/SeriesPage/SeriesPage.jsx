@@ -7,7 +7,6 @@ function SeriesPage() {
   return (
     <CatalogListPage
       mediaType="tv"
-      title="Series"
       searchPlaceholder="Search series by name..."
       emptyIcon={<FaTv />}
       emptyTitle="No series found"
