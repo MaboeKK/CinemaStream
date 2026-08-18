@@ -32,11 +32,16 @@ function HomePage() {
 
   const openTrailerModal = async (item) => {
     try {
-      const url = await fetchYoutubeTrailer(item.title || item.name);
       const isMovie = item.media_type === 'movie' || Boolean(item.title);
-      const details = isMovie ? await fetchMovieDetails(item.id) : await fetchSeriesDetails(item.id);
+      const [url, details] = await Promise.all([
+        fetchYoutubeTrailer(item.title || item.name),
+        isMovie ? fetchMovieDetails(item.id) : fetchSeriesDetails(item.id),
+      ]);
 
-      if (url && details) {
+      // Open on details alone -- movies can still offer "Watch Content" via
+      // vidking even when no YouTube trailer match was found, so a missing
+      // trailer shouldn't block the modal from opening at all.
+      if (details) {
         setTrailerUrl(url);
         setModalContent({ ...details, rawItem: item });
         setModalOpen(true);

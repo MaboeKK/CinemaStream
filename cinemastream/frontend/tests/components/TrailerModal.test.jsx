@@ -48,9 +48,26 @@ describe('TrailerModal', () => {
 
     expect(screen.queryByTestId('youtube-player')).not.toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: /Play Trailer/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Watch Trailer/i }));
 
     expect(screen.getByTestId('youtube-player')).toBeInTheDocument();
+  });
+
+  test('offers Watch Content for a movie and embeds vidking on click', async () => {
+    render(
+      <TrailerModal
+        isOpen
+        trailerUrl="https://www.youtube.com/embed/abc12345678"
+        modalContent={modalContent}
+        onClose={() => {}}
+      />
+    );
+
+    const watchContentBtn = screen.getByRole('button', { name: /Watch Content/i });
+    await userEvent.click(watchContentBtn);
+
+    const iframe = document.querySelector('.modal-hero-player-iframe');
+    expect(iframe).toHaveAttribute('src', 'https://www.vidking.net/embed/movie/42?color=f453a6&autoPlay=true');
   });
 
   test('renders nothing when closed and never opened', () => {
