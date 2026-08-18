@@ -66,18 +66,31 @@
   color: var(--color-text);
 }
 
-/* Hero -- a real backdrop (the top popular title) behind the pitch and
-   CTA, instead of copy floating on an empty background. Falls back to
-   the page's own gradient wash (no backgroundImage set) while the
-   popular-movies fetch is still in flight. */
+/* Hero -- rotates through the same popular titles' backdrops the way the
+   logged-in Hero (components/catalog/Hero.jsx) rotates its carousel, via
+   stacked, crossfading .landing-hero-bg layers instead of one static
+   background-image. Falls back to the page's own gradient wash (no bg
+   layers yet) while the popular-movies fetch is still in flight. */
 .landing-hero {
   position: relative;
   min-height: 560px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+.landing-hero-bg {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center top;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.landing-hero-bg.active {
+  opacity: 1;
 }
 
 .landing-hero-scrim {
@@ -113,41 +126,50 @@
   margin-top: var(--space-4);
 }
 
-/* Main */
-.main-content {
+.landing-hero-dots {
+  position: absolute;
+  z-index: 1;
+  right: 48px;
+  bottom: 24px;
+  display: flex;
+  gap: 10px;
+}
+
+.landing-hero-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.landing-hero-dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.landing-hero-dot.active {
+  background: var(--gradient-accent);
+  transform: scale(1.3);
+}
+
+/* Main -- no horizontal padding of its own; MovieRow supplies its own
+   48px gutter, same as .catalog-home-rows on the logged-in Homepage. */
+.landing-main {
   position: relative;
   z-index: 1;
-  padding: var(--space-5);
+  padding-top: var(--space-4);
 }
 
-.main-content h2 {
-  font-size: var(--font-size-h2);
-  margin-bottom: var(--space-4);
-}
-
-.loading-text {
-  text-align: center;
-  color: var(--color-text-muted);
-}
-
-/* Movie/series rows -- shared catalog-card sizing (MovieCard.css), so
-   these read exactly like every row past the sign-up wall. */
-.landing-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
-}
-
-.landing-card-skeleton {
-  width: 184px;
-  aspect-ratio: 2 / 3;
-  border-radius: 11px;
+.landing-rows {
+  padding-bottom: var(--space-4);
 }
 
 .landing-secondary-cta {
   text-align: center;
-  padding: var(--space-6) 0 var(--space-5);
+  padding: var(--space-6) var(--space-5) var(--space-5);
 }
 
 .landing-secondary-cta h2 {
