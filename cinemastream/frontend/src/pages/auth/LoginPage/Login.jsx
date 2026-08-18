@@ -30,7 +30,7 @@ const Login = () => {
       if (role === 'admin' || role === 'super_admin') {
         navigate('/admin');
       } else if (role === 'guest') {
-        navigate('/Homepage');
+        navigate('/home');
       } else {
         navigate('/'); // fallback
       }

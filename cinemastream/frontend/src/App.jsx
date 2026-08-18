@@ -39,7 +39,7 @@ function AppRoutes() {
         <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route
-          path="/Homepage"
+          path="/home"
           element={
             <ProtectedRoute>
               <HomePage />
