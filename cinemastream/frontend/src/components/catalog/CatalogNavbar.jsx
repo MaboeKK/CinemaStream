@@ -19,7 +19,7 @@ function CatalogNavbar({ showSearch = true }) {
       </div>
 
       <div className="catalog-navbar-items">
-        <NavLink to="/Homepage" className={navItemClass}>
+        <NavLink to="/home" className={navItemClass}>
           Home
         </NavLink>
         <NavLink to="/movies" className={navItemClass}>
