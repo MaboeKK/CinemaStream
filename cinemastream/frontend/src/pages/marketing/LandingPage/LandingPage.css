@@ -8,19 +8,29 @@
   margin: 0;
 }
 
-/* Container */
+/* Same wash formula as /login, /movies, /series, /Homepage -- violet glow
+   top-right, pink/orange glows, faint top-center beam, near-black base --
+   so this is the first surface a visitor sees reads as the same product
+   as everything past the sign-up wall, not a flat placeholder screen. */
 .landing-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);
+  background:
+    radial-gradient(ellipse 500px 800px at 50% -15%, rgba(255, 255, 255, 0.06), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 88% -10%, rgba(139, 92, 246, 0.3), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 6% 108%, rgba(244, 83, 166, 0.2), transparent 55%),
+    radial-gradient(ellipse 600px 500px at 92% 100%, rgba(255, 138, 61, 0.14), transparent 55%),
+    linear-gradient(to bottom, var(--color-bg) 0%, #0a0710 100%);
+  background-attachment: fixed;
 }
 
 /* Navbar */
 .navbar {
-  background-color: var(--color-surface);
+  position: relative;
+  z-index: 1;
   padding: var(--space-3) var(--space-5);
   display: flex;
   justify-content: space-between;
@@ -56,19 +66,58 @@
   color: var(--color-text);
 }
 
-/* Main */
-.main-content {
-  padding: var(--space-5);
-}
-
-.main-content .getting-started {
-  flex: 1;
-  flex-direction: column;
+/* Hero -- a real backdrop (the top popular title) behind the pitch and
+   CTA, instead of copy floating on an empty background. Falls back to
+   the page's own gradient wash (no backgroundImage set) while the
+   popular-movies fetch is still in flight. */
+.landing-hero {
+  position: relative;
+  min-height: 560px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  background-size: cover;
+  background-position: center top;
+}
+
+.landing-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--color-bg) 0%, rgba(9, 9, 9, 0.7) 35%, rgba(9, 9, 9, 0.35) 100%),
+    linear-gradient(to bottom, rgba(9, 9, 9, 0.55) 0%, transparent 40%);
+}
+
+.landing-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
   text-align: center;
-  color: var(--color-text);
-  padding: var(--space-6) 0;
+  padding: var(--space-6) var(--space-5);
+}
+
+.landing-hero-content h1 {
+  font-size: clamp(2rem, 4.4vw, var(--font-size-hero-title, 3.2rem));
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 var(--space-4);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.landing-hero-content p {
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-2);
+}
+
+.landing-hero-cta {
+  margin-top: var(--space-4);
+}
+
+/* Main */
+.main-content {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-5);
 }
 
 .main-content h2 {
@@ -76,98 +125,42 @@
   margin-bottom: var(--space-4);
 }
 
-.main-link {
-  display: flex;
-  justify-content: center;
-  margin-top: var(--space-4);
-}
-
 .loading-text {
   text-align: center;
   color: var(--color-text-muted);
 }
 
-/* Movie Grid */
-.movie-grid {
-  display: grid;
-  gap: var(--space-3);
-  grid-template-columns: repeat(auto-fit, minmax(180px, 0.5fr));
-  justify-content: center;
-}
-
-.movie-card,
-.movie-card-skeleton {
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-  width: 220px;
-  height: 340px;
-}
-
-.movie-card {
-  background-color: var(--color-surface-raised);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  cursor: pointer;
-}
-
-.movie-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
-}
-
-.movie-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Movie Info Hover Overlay */
-.movie-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(9, 9, 9, 0.9);
-  color: var(--color-text);
-  padding: var(--space-2);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* Movie/series rows -- shared catalog-card sizing (MovieCard.css), so
+   these read exactly like every row past the sign-up wall. */
+.landing-grid {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
-.movie-card:hover .movie-info {
-  opacity: 1;
+.landing-card-skeleton {
+  width: 184px;
+  aspect-ratio: 2 / 3;
+  border-radius: 11px;
 }
 
-.movie-info h3 {
-  margin: 0 0 var(--space-2);
-  font-size: var(--font-size-h3);
+.landing-secondary-cta {
+  text-align: center;
+  padding: var(--space-6) 0 var(--space-5);
 }
 
-.movie-info p {
-  font-size: var(--font-size-caption);
-  color: var(--color-text-muted);
-  max-height: 200px;
-  overflow-y: auto;
-  line-height: 1.4;
-  padding: var(--space-2);
-}
-
-/* Hide Scrollbar */
-.movie-info p::-webkit-scrollbar {
-  display: none;
+.landing-secondary-cta h2 {
+  margin-bottom: var(--space-4);
 }
 
 /* Footer */
 .footer {
+  position: relative;
+  z-index: 1;
   text-align: center;
   padding: var(--space-4) 0;
   font-size: var(--font-size-caption);
-  background-color: var(--color-surface);
   color: var(--color-text-muted);
   margin-top: auto;
 }

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import MovieCard from '../../../components/catalog/MovieCard';
 import { fetchPopularSeries, fetchPopularMovies } from '../../../api/tmdb';
 import './LandingPage.css';
 
 function MovieGridSkeleton() {
   return (
-    <div className="movie-grid">
+    <div className="landing-grid">
       {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="skeleton movie-card-skeleton" />
+        <div key={i} className="skeleton landing-card-skeleton" />
       ))}
     </div>
   );
 }
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   const [popularMovies, setPopularMovies] = useState([]);
   const [popularSeries, setPopularSeries] = useState([]);
   const [moviesLoading, setMoviesLoading] = useState(true);
@@ -35,6 +37,12 @@ export default function LandingPage() {
       .finally(() => setSeriesLoading(false));
   }, []);
 
+  // There's nothing to actually watch without an account, so every card
+  // on this page leads to registration rather than a trailer.
+  const goToRegister = () => navigate('/register');
+
+  const backdropMovie = popularMovies.find((movie) => movie.backdrop_path);
+
   return (
     <div className="landing-page">
       {/* Navigation */}
@@ -54,35 +62,35 @@ export default function LandingPage() {
         </ul>
       </nav>
 
-      {/* Getting-started Content */}
-      <main className="main-content">
-        <div className="getting-started">
-          <h2>Get access to the best movies and TV shows</h2>
+      {/* Hero */}
+      <header
+        className="landing-hero"
+        style={
+          backdropMovie
+            ? { backgroundImage: `url(https://image.tmdb.org/t/p/original${backdropMovie.backdrop_path})` }
+            : undefined
+        }
+      >
+        <div className="landing-hero-scrim" />
+        <div className="landing-hero-content">
+          <h1>Get access to the best movies and TV shows</h1>
           <p>Stream your favourite shows to your heart&apos;s content.</p>
           <p>Ready to enjoy? Click register and join us now.</p>
-          <ul className="main-link">
-            <li>
-              <Link to="/register" className="btn-primary">
-                GET STARTED
-              </Link>
-            </li>
-          </ul>
+          <Link to="/register" className="btn-primary landing-hero-cta">
+            GET STARTED
+          </Link>
         </div>
+      </header>
 
+      <main className="main-content">
         {/* Popular Movies */}
         <h2>Popular Movies</h2>
         {moviesLoading ? (
           <MovieGridSkeleton />
         ) : (
-          <div className="movie-grid">
+          <div className="landing-grid">
             {popularMovies.map((movie) => (
-              <div className="movie-card" key={movie.id}>
-                <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-                <div className="movie-info">
-                  <h3>{movie.title}</h3>
-                  <p>{movie.overview}</p>
-                </div>
-              </div>
+              <MovieCard key={movie.id} movie={{ ...movie, media_type: 'movie' }} onClick={goToRegister} />
             ))}
           </div>
         )}
@@ -92,21 +100,19 @@ export default function LandingPage() {
         {seriesLoading ? (
           <MovieGridSkeleton />
         ) : (
-          <div className="movie-grid">
+          <div className="landing-grid">
             {popularSeries.map((series) => (
-              <div className="movie-card" key={series.id}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${series.poster_path}`}
-                  alt={series.name || series.title}
-                />
-                <div className="movie-info">
-                  <h3>{series.name || series.title}</h3>
-                  <p>{series.overview}</p>
-                </div>
-              </div>
+              <MovieCard key={series.id} movie={{ ...series, media_type: 'tv' }} onClick={goToRegister} />
             ))}
           </div>
         )}
+
+        <div className="landing-secondary-cta">
+          <h2>Ready to start watching?</h2>
+          <Link to="/register" className="btn-primary">
+            GET STARTED
+          </Link>
+        </div>
       </main>
 
       {/* Footer */}
