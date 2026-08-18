@@ -1,39 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import MovieRow from '../../../components/catalog/MovieRow';
 import { fetchPopularSeries, fetchPopularMovies } from '../../../api/tmdb';
 import './LandingPage.css';
 
-function MovieGridSkeleton() {
-  return (
-    <div className="movie-grid">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="skeleton movie-card-skeleton" />
-      ))}
-    </div>
-  );
-}
+const HERO_ROTATE_MS = 7000;
+const MAX_HERO_BACKDROPS = 5;
 
 export default function LandingPage() {
-  const [popularMovies, setPopularMovies] = useState([]);
-  const [popularSeries, setPopularSeries] = useState([]);
-  const [moviesLoading, setMoviesLoading] = useState(true);
-  const [seriesLoading, setSeriesLoading] = useState(true);
+  const navigate = useNavigate();
+  const [heroMovies, setHeroMovies] = useState([]);
+  const [heroIndex, setHeroIndex] = useState(0);
 
-  // Fetch popular movies
+  // Only the hero's rotating backdrop needs this data in LandingPage itself
+  // -- the "Popular Movies" row below fetches its own copy, same as every
+  // row on the logged-in Homepage fetches independently rather than
+  // sharing a cache.
   useEffect(() => {
     fetchPopularMovies()
-      .then((movieData) => setPopularMovies(movieData.slice(0, 5)))
-      .catch((error) => console.error('Error fetching popular movies:', error))
-      .finally(() => setMoviesLoading(false));
+      .then((movieData) => setHeroMovies(movieData.slice(0, MAX_HERO_BACKDROPS)))
+      .catch((error) => console.error('Error fetching popular movies:', error));
   }, []);
 
-  // Fetch popular series
+  const backdropMovies = useMemo(() => heroMovies.filter((movie) => movie.backdrop_path), [heroMovies]);
+
+  // Same rotation pattern as the logged-in Hero (components/catalog/Hero.jsx).
   useEffect(() => {
-    fetchPopularSeries()
-      .then((seriesData) => setPopularSeries(seriesData.slice(0, 5)))
-      .catch((error) => console.error('Error fetching popular series:', error))
-      .finally(() => setSeriesLoading(false));
-  }, []);
+    if (backdropMovies.length < 2) return undefined;
+    const interval = setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % backdropMovies.length);
+    }, HERO_ROTATE_MS);
+    return () => clearInterval(interval);
+  }, [backdropMovies]);
+
+  // There's nothing to actually watch without an account, so every card
+  // on this page leads to registration rather than a trailer.
+  const goToRegister = () => navigate('/register');
 
   return (
     <div className="landing-page">
@@ -54,59 +56,54 @@ export default function LandingPage() {
         </ul>
       </nav>
 
-      {/* Getting-started Content */}
-      <main className="main-content">
-        <div className="getting-started">
-          <h2>Get access to the best movies and TV shows</h2>
+      {/* Hero */}
+      <header className="landing-hero">
+        {backdropMovies.map((movie, i) => (
+          <div
+            key={movie.id}
+            className={`landing-hero-bg${i === heroIndex ? ' active' : ''}`}
+            style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` }}
+          />
+        ))}
+        <div className="landing-hero-scrim" />
+        <div className="landing-hero-content">
+          <h1>Get access to the best movies and TV shows</h1>
           <p>Stream your favourite shows to your heart&apos;s content.</p>
           <p>Ready to enjoy? Click register and join us now.</p>
-          <ul className="main-link">
-            <li>
-              <Link to="/register" className="btn-primary">
-                GET STARTED
-              </Link>
-            </li>
-          </ul>
+          <Link to="/register" className="btn-primary landing-hero-cta">
+            GET STARTED
+          </Link>
         </div>
 
-        {/* Popular Movies */}
-        <h2>Popular Movies</h2>
-        {moviesLoading ? (
-          <MovieGridSkeleton />
-        ) : (
-          <div className="movie-grid">
-            {popularMovies.map((movie) => (
-              <div className="movie-card" key={movie.id}>
-                <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-                <div className="movie-info">
-                  <h3>{movie.title}</h3>
-                  <p>{movie.overview}</p>
-                </div>
-              </div>
+        {backdropMovies.length > 1 && (
+          <div className="landing-hero-dots">
+            {backdropMovies.map((movie, i) => (
+              <button
+                key={movie.id}
+                className={`landing-hero-dot${i === heroIndex ? ' active' : ''}`}
+                aria-label={`Show background ${i + 1}`}
+                onClick={() => setHeroIndex(i)}
+              />
             ))}
           </div>
         )}
+      </header>
 
-        {/* Popular Series */}
-        <h2>Popular Series</h2>
-        {seriesLoading ? (
-          <MovieGridSkeleton />
-        ) : (
-          <div className="movie-grid">
-            {popularSeries.map((series) => (
-              <div className="movie-card" key={series.id}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${series.poster_path}`}
-                  alt={series.name || series.title}
-                />
-                <div className="movie-info">
-                  <h3>{series.name || series.title}</h3>
-                  <p>{series.overview}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+      <main className="landing-main">
+        {/* Popular rows -- same MovieRow component the logged-in Homepage
+            uses, so browsing here looks and scrolls exactly like it does
+            past the sign-up wall instead of a bespoke wrapping grid. */}
+        <div className="landing-rows">
+          <MovieRow title="Popular Movies" fetchFunction={fetchPopularMovies} onMovieClick={goToRegister} accent />
+          <MovieRow title="Popular Series" fetchFunction={fetchPopularSeries} onMovieClick={goToRegister} />
+        </div>
+
+        <div className="landing-secondary-cta">
+          <h2>Ready to start watching?</h2>
+          <Link to="/register" className="btn-primary">
+            GET STARTED
+          </Link>
+        </div>
       </main>
 
       {/* Footer */}
