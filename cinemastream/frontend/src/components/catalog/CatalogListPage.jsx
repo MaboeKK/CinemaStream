@@ -65,7 +65,7 @@ function CatalogListPage({
 
   return (
     <div className="catalog-list-page">
-      <CatalogNavbar />
+      <CatalogNavbar showSearch={false} />
       <div className="catalog-list-content">
         <div className="catalog-filter-bar">
           <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} placeholder={searchPlaceholder} />

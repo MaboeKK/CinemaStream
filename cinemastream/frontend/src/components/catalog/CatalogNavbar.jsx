@@ -7,7 +7,11 @@ import './CatalogNavbar.css';
 
 const navItemClass = ({ isActive }) => `catalog-navbar-item${isActive ? ' active' : ''}`;
 
-function CatalogNavbar() {
+// showSearch: false on /movies and /series, which already have their own
+// page-level search bar tied to the genre filter and results grid --
+// showing this nav search there too meant two independent, differently-
+// behaved ways to search the same content on one page.
+function CatalogNavbar({ showSearch = true }) {
   return (
     <nav className="catalog-navbar">
       <div className="catalog-navbar-logo">
@@ -30,7 +34,7 @@ function CatalogNavbar() {
       </div>
 
       <div className="catalog-navbar-actions">
-        <SearchInput />
+        {showSearch && <SearchInput />}
         <NotificationsBell />
         <ProfileMenu />
       </div>
