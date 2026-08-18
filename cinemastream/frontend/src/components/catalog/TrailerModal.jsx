@@ -8,6 +8,10 @@ import watchApi from '../../api/watchApi';
 import './TrailerModal.css';
 
 const CLOSE_ANIMATION_MS = 200;
+// Matches --color-accent in index.css -- vidking's embed only exposes a
+// single flat "color" param (no gradient support), so this is the closest
+// on-brand match to the site's sunset gradient.
+const VIDKING_ACCENT_COLOR = 'f453a6';
 
 function getVideoId(url) {
   const match = url?.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
@@ -26,14 +30,17 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
   const [closing, setClosing] = useState(false);
   const [activeContent, setActiveContent] = useState(modalContent);
   const [activeTrailerUrl, setActiveTrailerUrl] = useState(trailerUrl);
-  const [playingTrailer, setPlayingTrailer] = useState(false);
+  // null (choice screen) | 'trailer' (YouTube) | 'content' (vidking)
+  const [playbackMode, setPlaybackMode] = useState(null);
+  const [contentLoading, setContentLoading] = useState(false);
   const [similar, setSimilar] = useState([]);
 
   useEffect(() => {
     if (!isOpen) return;
     setActiveContent(modalContent);
     setActiveTrailerUrl(trailerUrl);
-    setPlayingTrailer(false);
+    setPlaybackMode(null);
+    setContentLoading(false);
     hasTrackedRef.current = false;
     setClosing(false);
     setShouldRender(true);
@@ -65,13 +72,20 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
 
   const { name = 'Details', overview = '', genres = [], actors = [], rawItem = null } = activeContent || {};
   const videoId = getVideoId(activeTrailerUrl);
+  const isMovie = isMovieItem(rawItem);
+  // Full-content playback via vidking.net, alongside the existing YouTube
+  // trailer -- movies only for now (no season/episode picker exists yet
+  // for a TV content embed).
+  const vidkingUrl = isMovie && rawItem?.id
+    ? `https://www.vidking.net/embed/movie/${rawItem.id}?color=${VIDKING_ACCENT_COLOR}&autoPlay=true`
+    : null;
   const backdropUrl = rawItem?.backdrop_path
     ? `https://image.tmdb.org/t/p/original${rawItem.backdrop_path}`
     : rawItem?.poster_path
       ? `https://image.tmdb.org/t/p/w780${rawItem.poster_path}`
       : null;
 
-  const trackTrailerPlay = () => {
+  const trackWatch = () => {
     if (!rawItem || hasTrackedRef.current) return;
     hasTrackedRef.current = true;
 
@@ -96,7 +110,13 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
   };
 
   const onPlayerStateChange = (event) => {
-    if (event.data === 1) trackTrailerPlay(); // 1 = playing
+    if (event.data === 1) trackWatch(); // 1 = playing
+  };
+
+  const handleWatchContent = () => {
+    trackWatch();
+    setContentLoading(true);
+    setPlaybackMode('content');
   };
 
   const handleSelectSimilar = async (item) => {
@@ -107,7 +127,8 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
 
       setActiveContent({ ...details, rawItem: { ...item, media_type: isMovie ? 'movie' : 'tv' } });
       setActiveTrailerUrl(url);
-      setPlayingTrailer(false);
+      setPlaybackMode(null);
+      setContentLoading(false);
       hasTrackedRef.current = false;
       contentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
@@ -123,29 +144,54 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
         </button>
 
         <div className="modal-hero" style={backdropUrl ? { backgroundImage: `url(${backdropUrl})` } : undefined}>
-          {!playingTrailer ? (
+          {playbackMode === null && (
             <>
               <div className="modal-hero-scrim" />
-              {videoId && (
-                <button className="modal-play-trailer btn-primary" onClick={() => setPlayingTrailer(true)}>
-                  <FaPlay /> Play Trailer
-                </button>
-              )}
+              <div className="modal-play-actions">
+                {videoId && (
+                  <button className="modal-play-trailer btn-secondary" onClick={() => setPlaybackMode('trailer')}>
+                    <FaPlay /> Watch Trailer
+                  </button>
+                )}
+                {vidkingUrl && (
+                  <button className="modal-play-trailer btn-primary" onClick={handleWatchContent}>
+                    <FaPlay /> Watch Content
+                  </button>
+                )}
+              </div>
             </>
-          ) : (
-            videoId && (
-              <YouTube
-                videoId={videoId}
-                className="modal-hero-player"
-                iframeClassName="modal-hero-player-iframe"
-                // No width/height here -- the YouTube IFrame API only accepts pixel
-                // numbers for those, so '100%' silently fell back to the player's
-                // own default size (~640x390) instead of filling .modal-hero.
-                // Sized via CSS on the iframe itself instead (see TrailerModal.css).
-                opts={{ playerVars: { autoplay: 1 } }}
-                onStateChange={onPlayerStateChange}
+          )}
+
+          {playbackMode === 'content' && vidkingUrl && (
+            <>
+              {contentLoading && (
+                <div className="modal-hero-loading skeleton">
+                  <span>Loading{name && name !== 'Details' ? ` ${name}` : ''}&hellip;</span>
+                </div>
+              )}
+              <iframe
+                className="modal-hero-player modal-hero-player-iframe"
+                src={vidkingUrl}
+                allow="autoplay; fullscreen"
+                allowFullScreen
+                title={name}
+                onLoad={() => setContentLoading(false)}
               />
-            )
+            </>
+          )}
+
+          {playbackMode === 'trailer' && videoId && (
+            <YouTube
+              videoId={videoId}
+              className="modal-hero-player"
+              iframeClassName="modal-hero-player-iframe"
+              // No width/height here -- the YouTube IFrame API only accepts pixel
+              // numbers for those, so '100%' silently fell back to the player's
+              // own default size (~640x390) instead of filling .modal-hero.
+              // Sized via CSS on the iframe itself instead (see TrailerModal.css).
+              opts={{ playerVars: { autoplay: 1 } }}
+              onStateChange={onPlayerStateChange}
+            />
           )}
         </div>
 
