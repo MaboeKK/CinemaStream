@@ -7,6 +7,12 @@ vi.mock('react-youtube', () => ({
   default: () => <div data-testid="youtube-player" />,
 }));
 
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal();
+  return { ...actual, useNavigate: () => mockNavigate };
+});
+
 vi.mock('../../src/api/tmdb', () => ({
   fetchMovieDetails: vi.fn(),
   fetchSeriesDetails: vi.fn(),
@@ -53,7 +59,7 @@ describe('TrailerModal', () => {
     expect(screen.getByTestId('youtube-player')).toBeInTheDocument();
   });
 
-  test('offers Watch Content for a movie and embeds vidking on click', async () => {
+  test('offers Watch Content for a movie and navigates to the full-page watch route', async () => {
     render(
       <TrailerModal
         isOpen
@@ -66,8 +72,7 @@ describe('TrailerModal', () => {
     const watchContentBtn = screen.getByRole('button', { name: /Watch Content/i });
     await userEvent.click(watchContentBtn);
 
-    const iframe = document.querySelector('.modal-hero-player-iframe');
-    expect(iframe).toHaveAttribute('src', 'https://www.vidking.net/embed/movie/42?color=f453a6&autoPlay=true');
+    expect(mockNavigate).toHaveBeenCalledWith('/watch/movie/42');
   });
 
   test('renders nothing when closed and never opened', () => {

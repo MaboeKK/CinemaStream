@@ -17,6 +17,7 @@ import HomePage from './pages/catalog/HomePage/HomePage';
 import MoviesPage from './pages/catalog/MoviesPage/MoviesPage';
 import SeriesPage from './pages/catalog/SeriesPage/SeriesPage';
 import MyListPage from './pages/catalog/MyListPage/MyListPage';
+import WatchPage from './pages/catalog/WatchPage/WatchPage';
 import DashboardPage from './pages/admin/DashboardPage/DashboardPage';
 import UsersPage from './pages/admin/UsersPage/UsersPage';
 import UserDetailPage from './pages/admin/UserDetailPage/UserDetailPage';
@@ -67,6 +68,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <MyListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/watch/movie/:id"
+          element={
+            <ProtectedRoute>
+              <WatchPage />
             </ProtectedRoute>
           }
         />
