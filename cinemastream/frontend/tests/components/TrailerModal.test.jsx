@@ -75,6 +75,25 @@ describe('TrailerModal', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/watch/movie/42');
   });
 
+  test('offers Watch Content for a series too, defaulting to season 1 episode 1', async () => {
+    const seriesContent = {
+      ...modalContent,
+      rawItem: { id: 99, name: 'Test Series', media_type: 'tv' },
+    };
+    render(
+      <TrailerModal
+        isOpen
+        trailerUrl="https://www.youtube.com/embed/abc12345678"
+        modalContent={seriesContent}
+        onClose={() => {}}
+      />
+    );
+
+    await userEvent.click(screen.getByRole('button', { name: /Watch Content/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/watch/tv/99/1/1');
+  });
+
   test('renders nothing when closed and never opened', () => {
     const { container } = render(
       <TrailerModal isOpen={false} trailerUrl={null} modalContent={{}} onClose={() => {}} />
