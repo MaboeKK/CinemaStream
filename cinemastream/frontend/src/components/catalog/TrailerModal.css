@@ -122,29 +122,6 @@
   border: 0;
 }
 
-/* Sits over the vidking iframe until it fires onLoad -- the embed itself
-   is a plain black rect while its own player chrome boots, which reads as
-   broken rather than loading without this. Reuses the app's shared
-   .skeleton shimmer (src/styles/skeleton.css) instead of a one-off spinner. */
-.modal-hero-loading {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0;
-}
-
-.modal-hero-loading span {
-  font-weight: 600;
-  font-size: var(--font-size-body);
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
 .modal-details {
   padding: 20px 30px 30px;
 }
