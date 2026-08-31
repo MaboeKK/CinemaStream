@@ -79,6 +79,14 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/watch/tv/:id/:season/:episode"
+          element={
+            <ProtectedRoute>
+              <WatchPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/admin"

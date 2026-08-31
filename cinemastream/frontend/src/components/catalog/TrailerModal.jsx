@@ -68,11 +68,10 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
   const { name = 'Details', overview = '', genres = [], actors = [], rawItem = null } = activeContent || {};
   const videoId = getVideoId(activeTrailerUrl);
   const isMovie = isMovieItem(rawItem);
-  // Full content playback happens on its own full-page route (/watch/movie/:id,
-  // matching how sites built on the same vidking embed present it) rather than
-  // inline here -- movies only for now, no season/episode picker exists yet
-  // for a TV watch route.
-  const canWatchContent = isMovie && Boolean(rawItem?.id);
+  // Full content playback happens on its own full-page route (/watch/..,
+  // matching how sites built on the same vidking embed present it) rather
+  // than inline here.
+  const canWatchContent = Boolean(rawItem?.id);
   const backdropUrl = rawItem?.backdrop_path
     ? `https://image.tmdb.org/t/p/original${rawItem.backdrop_path}`
     : rawItem?.poster_path
@@ -108,8 +107,11 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
   };
 
   // No trackWatch() here -- WatchPage records the watch event itself once
-  // it mounts, so this doesn't double-count.
-  const handleWatchContent = () => navigate(`/watch/movie/${rawItem.id}`);
+  // it mounts, so this doesn't double-count. TV always starts at S1E1 --
+  // there's no season/episode picker in this app, vidking's own in-player
+  // controls (episodeSelector/nextEpisode) take it from there.
+  const handleWatchContent = () =>
+    navigate(isMovie ? `/watch/movie/${rawItem.id}` : `/watch/tv/${rawItem.id}/1/1`);
 
   const handleSelectSimilar = async (item) => {
     try {
