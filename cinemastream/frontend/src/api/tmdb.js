@@ -170,7 +170,16 @@ export async function fetchSeriesDetails(seriesId) {
     genres: data.genres,
     actors: (data.credits?.cast || []).slice(0, 5),
     poster_path: data.poster_path,
+    backdrop_path: data.backdrop_path,
     vote_average: data.vote_average,
     release_date: data.first_air_date,
+    // Real seasons only -- season_number 0 is TMDB's "Specials" bucket,
+    // which usually has no vidking source and would be a confusing default.
+    seasons: (data.seasons || []).filter((s) => s.season_number > 0),
   };
+}
+
+export async function fetchSeasonEpisodes(seriesId, seasonNumber) {
+  const data = await tmdbFetch(`/tv/${seriesId}/season/${seasonNumber}`);
+  return data.episodes || [];
 }
