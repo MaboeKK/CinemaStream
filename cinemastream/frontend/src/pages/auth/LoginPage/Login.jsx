@@ -46,7 +46,8 @@ const Login = () => {
   return (
     <AuthLayout>
       <form onSubmit={handleLogin}>
-        <h1>Login</h1>
+        <h1>Welcome back</h1>
+        <p className="auth-subtitle">Sign in to continue to your account.</p>
 
         <div className="input-box">
           <input
