@@ -18,6 +18,7 @@ import MoviesPage from './pages/catalog/MoviesPage/MoviesPage';
 import SeriesPage from './pages/catalog/SeriesPage/SeriesPage';
 import MyListPage from './pages/catalog/MyListPage/MyListPage';
 import WatchPage from './pages/catalog/WatchPage/WatchPage';
+import SeriesDetailPage from './pages/catalog/SeriesDetailPage/SeriesDetailPage';
 import DashboardPage from './pages/admin/DashboardPage/DashboardPage';
 import UsersPage from './pages/admin/UsersPage/UsersPage';
 import UserDetailPage from './pages/admin/UserDetailPage/UserDetailPage';
@@ -76,6 +77,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <WatchPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/watch/tv/:id"
+          element={
+            <ProtectedRoute>
+              <SeriesDetailPage />
             </ProtectedRoute>
           }
         />

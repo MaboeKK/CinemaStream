@@ -107,11 +107,12 @@ function TrailerModal({ isOpen, trailerUrl, modalContent = {}, onClose }) {
   };
 
   // No trackWatch() here -- WatchPage records the watch event itself once
-  // it mounts, so this doesn't double-count. TV always starts at S1E1 --
-  // there's no season/episode picker in this app, vidking's own in-player
-  // controls (episodeSelector/nextEpisode) take it from there.
+  // it mounts, so this doesn't double-count. Series land on the season/
+  // episode picker first (SeriesDetailPage) instead of jumping straight
+  // into playback, since there's no other way in this app to choose an
+  // episode.
   const handleWatchContent = () =>
-    navigate(isMovie ? `/watch/movie/${rawItem.id}` : `/watch/tv/${rawItem.id}/1/1`);
+    navigate(isMovie ? `/watch/movie/${rawItem.id}` : `/watch/tv/${rawItem.id}`);
 
   const handleSelectSimilar = async (item) => {
     try {
