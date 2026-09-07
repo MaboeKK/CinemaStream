@@ -4,6 +4,7 @@
    evoking a projector, so the auth page reads as this site rather than a
    generic stock photo. */
 .auth-page {
+  position: relative;
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -19,19 +20,78 @@
   font-family: var(--font-family);
 }
 
-/* Login and register wrapper */
-.auth-page .wrapper {
+/* Thin decorative rings + dots between the ambient glow and the glass card
+   (AuthLayout.jsx) -- inert and very low-opacity so they read as ambiance,
+   never competing with the form itself. */
+.auth-decor {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  max-width: 500px;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.auth-decor-arc {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: 0.1;
+}
+
+.auth-decor-dot {
+  fill: #fff;
+  opacity: 0.22;
+}
+
+/* Login and register wrapper -- a frosted glass panel, not a flat card
+   with opacity turned down: the backdrop-filter blur is what actually
+   samples and softens whatever sits behind it (the ambient glows + decor
+   rings above), which a plain translucent background-color can't fake. */
+.auth-page .wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 30px;
-  border-radius: 10px;
-  background-color: rgba(31, 31, 31, 0.7);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  padding: 30px 30px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    /* Inset top-edge catch-light -- the one detail that reliably reads as
+       "glass" at a glance rather than "dark card": real glass/acrylic
+       panels show a bright sliver along the edge facing the light. */
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 25px 70px rgba(0, 0, 0, 0.55),
+    0 2px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+}
+
+/* Simulated glass reflection -- a faint diagonal sheen, brighter in the
+   top-left corner and fading out, like light catching an angled pane.
+   z-index: -1 (the wrapper is its own stacking context via position +
+   z-index above) puts it behind the in-flow form content but still above
+   the wrapper's own glass fill -- without it, an absolutely-positioned
+   ::before with the default auto z-index paints *above* static in-flow
+   content, covering the form instead of sitting behind it. */
+.auth-page .wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.03) 35%,
+    rgba(255, 255, 255, 0) 55%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
 }
 
 /* Form style*/
@@ -44,8 +104,18 @@ form {
 form h1 {
   font-size: 32px;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: var(--color-text);
+}
+
+/* Sits directly under the h1 -- the 6px margin above keeps it tight to the
+   heading, and form's own flex gap (15px) handles the space down to the
+   first input, so it doesn't need its own margin-bottom. */
+.auth-subtitle {
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
 }
 
 .input-box {
@@ -54,16 +124,30 @@ form h1 {
   align-items: center;
 }
 
+/* A second, darker glass layer nested inside the panel -- its own blur
+   (lighter than the panel's, since it's a much smaller surface) plus a
+   near-invisible border so it reads as recessed into the glass rather
+   than as an opaque control sitting on top of it. */
 .input-box input {
   width: 100%;
   height: 45px;
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 30px;
   padding: 0 45px 0 15px;
   font-size: 15px;
   color: var(--color-text);
   outline: none;
-  background-color: var(--color-surface);
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.input-box input:focus {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .input-box input::placeholder {
