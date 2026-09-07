@@ -4,6 +4,7 @@ const loginHistoryRepository = require('../repositories/loginHistory.repository'
 const tokenService = require('./token.service');
 const otpService = require('./otp.service');
 const emailService = require('./email.service');
+const { buildOtpEmailHtml, escapeHtml } = require('./emailTemplates');
 const { REFRESH_TOKEN_MAX_AGE, REFRESH_TOKEN_MAX_AGE_SHORT } = require('../utils/cookies');
 
 const OTP_TTL_MS = 3 * 60 * 1000;
@@ -30,15 +31,6 @@ const dispatchEmail = (to, subject, html) => {
   });
 };
 
-const buildOtpEmail = (firstName, otp) => `
-  <div style="font-family: Helvetica,Arial,sans-serif;line-height:2">
-      <p>Hi ${firstName},</p>
-      <p>Thank you for choosing Cinema-Stream. Use the following OTP to complete your Sign Up procedures.</p>
-      <h2 style="background:rgb(106, 0, 0);width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
-      <p>OTP is valid for 3 minutes</p>
-      <p>Regards,<br/>Cinema-Stream</p>
-  </div>`;
-
 const register = async ({ first_name, last_name, email, password }) => {
   const existingUser = await userRepository.findByEmail(email);
   if (existingUser) {
@@ -51,7 +43,16 @@ const register = async ({ first_name, last_name, email, password }) => {
 
   await userRepository.createUser(first_name, last_name, email, hashedPassword, otp, otpExpiry);
 
-  dispatchEmail(email, 'Your OTP for Email Verification', buildOtpEmail(first_name, otp));
+  dispatchEmail(
+    email,
+    'Verify your CinemaStream email',
+    buildOtpEmailHtml({
+      preheader: `Your verification code is ${otp}`,
+      heading: 'Verify your email',
+      introHtml: `Hi ${escapeHtml(first_name)}, thanks for joining CinemaStream. Use the code below to finish signing up.`,
+      code: otp,
+    })
+  );
 
   return { ok: true, message: 'Signup successful. OTP sent.' };
 };
@@ -166,14 +167,13 @@ const resendOtp = async ({ email }) => {
 
   dispatchEmail(
     email,
-    'Your OTP for Email Verification',
-    `
-      <div style="font-family: Helvetica,Arial,sans-serif;line-height:2">
-        <p>Here is your new OTP for Cinema-Stream:</p>
-        <h2 style="background:rgb(106, 0, 0);width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
-        <p>OTP is valid for 3 minutes</p>
-        <p>Regards,<br/>Cinema-Stream</p>
-      </div>`
+    'Your new CinemaStream verification code',
+    buildOtpEmailHtml({
+      preheader: `Your verification code is ${otp}`,
+      heading: 'Your new verification code',
+      introHtml: `Hi ${escapeHtml(user.first_name)}, here's your new code to verify your email.`,
+      code: otp,
+    })
   );
 
   return { ok: true, message: 'OTP resent successfully' };
@@ -191,14 +191,13 @@ const forgotPassword = async ({ email }) => {
 
   dispatchEmail(
     email,
-    'Your Password Reset OTP',
-    `
-      <div style="font-family: Helvetica,Arial,sans-serif;line-height:2">
-        <p>Your password reset OTP is: </p>
-        <h2 style="background:rgb(106, 0, 0);width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${resetToken}</h2>
-        <p>OTP is valid for 3 minutes</p>
-        <p>Regards,<br/>Cinema-Stream</p>
-      </div>`
+    'Reset your CinemaStream password',
+    buildOtpEmailHtml({
+      preheader: `Your password reset code is ${resetToken}`,
+      heading: 'Reset your password',
+      introHtml: `Hi ${escapeHtml(user.first_name)}, use the code below to reset your CinemaStream password.`,
+      code: resetToken,
+    })
   );
 
   return { ok: true, message: 'Reset OTP sent to your email.' };
