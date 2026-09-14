@@ -1,5 +1,6 @@
-import { describe, test, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, waitFor, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import WatchPage from '../../src/pages/catalog/WatchPage/WatchPage';
 
@@ -55,5 +56,93 @@ describe('WatchPage', () => {
     await waitFor(() =>
       expect(watchApi.recordWatch).toHaveBeenCalledWith({ seriesId: 99, seriesName: 'Test Series' })
     );
+  });
+
+  test('the source toggle button switches the iframe to vidnest and back', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter initialEntries={['/watch/movie/238']}>
+        <Routes>
+          <Route path="/watch/movie/:id" element={<WatchPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(document.querySelector('.watch-page-player')).toHaveAttribute(
+      'src',
+      'https://www.vidking.net/embed/movie/238?color=f453a6&autoPlay=true'
+    );
+
+    await user.click(screen.getByRole('button', { name: /switch to player 2/i }));
+    expect(document.querySelector('.watch-page-player')).toHaveAttribute(
+      'src',
+      'https://vidnest.fun/movie/238'
+    );
+
+    await user.click(screen.getByRole('button', { name: /switch to player 1/i }));
+    expect(document.querySelector('.watch-page-player')).toHaveAttribute(
+      'src',
+      'https://www.vidking.net/embed/movie/238?color=f453a6&autoPlay=true'
+    );
+  });
+
+  describe('auto-fallback on load timeout', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    test('falls back to vidnest if vidking never fires onLoad', async () => {
+      render(
+        <MemoryRouter initialEntries={['/watch/movie/238']}>
+          <Routes>
+            <Route path="/watch/movie/:id" element={<WatchPage />} />
+          </Routes>
+        </MemoryRouter>
+      );
+
+      expect(document.querySelector('.watch-page-player')).toHaveAttribute(
+        'src',
+        'https://www.vidking.net/embed/movie/238?color=f453a6&autoPlay=true'
+      );
+
+      // Deliberately never fire the iframe's onLoad -- simulates vidking
+      // being unreachable rather than just slow.
+      await act(async () => {
+        vi.advanceTimersByTime(8000);
+      });
+
+      expect(document.querySelector('.watch-page-player')).toHaveAttribute(
+        'src',
+        'https://vidnest.fun/movie/238'
+      );
+    });
+
+    test('does not auto-fallback once vidking has already loaded', async () => {
+      render(
+        <MemoryRouter initialEntries={['/watch/movie/238']}>
+          <Routes>
+            <Route path="/watch/movie/:id" element={<WatchPage />} />
+          </Routes>
+        </MemoryRouter>
+      );
+
+      const iframe = document.querySelector('.watch-page-player');
+      await act(async () => {
+        iframe.dispatchEvent(new Event('load'));
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(8000);
+      });
+
+      expect(document.querySelector('.watch-page-player')).toHaveAttribute(
+        'src',
+        'https://www.vidking.net/embed/movie/238?color=f453a6&autoPlay=true'
+      );
+    });
   });
 });
