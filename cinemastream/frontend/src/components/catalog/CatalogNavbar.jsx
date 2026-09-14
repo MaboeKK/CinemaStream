@@ -28,9 +28,6 @@ function CatalogNavbar({ showSearch = true }) {
         <NavLink to="/series" className={navItemClass}>
           Series
         </NavLink>
-        <NavLink to="/my-list" className={navItemClass}>
-          My List
-        </NavLink>
       </div>
 
       <div className="catalog-navbar-actions">

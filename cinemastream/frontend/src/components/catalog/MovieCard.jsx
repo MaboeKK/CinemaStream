@@ -1,25 +1,17 @@
 import React from 'react';
-import { FaPlay, FaPlus, FaCheck, FaRegHeart, FaHeart, FaStar } from 'react-icons/fa';
-import { useMyList } from '../../hooks/useMyList';
+import { FaPlay, FaRegHeart, FaHeart, FaStar } from 'react-icons/fa';
 import { useLikedTitles } from '../../hooks/useLikedTitles';
 import './MovieCard.css';
 
 // variant: 'poster' (default, 2:3 -- most rows) | 'still' (16:9 -- Continue
 // Watching, which tracks progress rather than genre/rating metadata).
 function MovieCard({ movie, onClick, progress, variant = 'poster', rank }) {
-  const { isSaved, toggle } = useMyList();
   const { isLiked, toggle: toggleLiked } = useLikedTitles();
   const mediaType = movie.media_type || (movie.title ? 'movie' : 'tv');
-  const saved = isSaved(movie.id);
   const liked = isLiked(movie.id);
   const isStill = variant === 'still';
 
   const year = (movie.release_date || movie.first_air_date)?.slice(0, 4);
-
-  const handleToggleMyList = (e) => {
-    e.stopPropagation();
-    toggle({ ...movie, media_type: mediaType });
-  };
 
   const handleToggleLiked = (e) => {
     e.stopPropagation();
@@ -44,13 +36,6 @@ function MovieCard({ movie, onClick, progress, variant = 'poster', rank }) {
           <div className="catalog-card-actions">
             <button className="catalog-card-action-btn play" onClick={onClick} aria-label="Play">
               <FaPlay size={12} />
-            </button>
-            <button
-              className={`catalog-card-action-btn${saved ? ' saved' : ''}`}
-              onClick={handleToggleMyList}
-              aria-label={saved ? 'Remove from My List' : 'Add to My List'}
-            >
-              {saved ? <FaCheck size={12} /> : <FaPlus size={12} />}
             </button>
             <button
               className={`catalog-card-action-btn${liked ? ' liked' : ''}`}
