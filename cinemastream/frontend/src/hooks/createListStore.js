@@ -1,13 +1,14 @@
-// Shared implementation behind useMyList/useLikedTitles: both are a
-// localStorage-backed list of { id, media_type, title, name, poster_path }
-// entries, toggled on/off by id, and mirrored across tabs. Built as a
-// module-level singleton store (subscribe/getSnapshot, for React's
-// useSyncExternalStore) rather than per-hook-instance state so that:
+// Shared implementation behind useLikedTitles (and any future hook of the
+// same shape): a localStorage-backed list of
+// { id, media_type, title, name, poster_path } entries, toggled on/off by
+// id, and mirrored across tabs. Built as a module-level singleton store
+// (subscribe/getSnapshot, for React's useSyncExternalStore) rather than
+// per-hook-instance state so that:
 //   - localStorage is parsed once per change, not once per mounted
 //     MovieCard (a grid can mount dozens of cards, each previously ran its
 //     own read + JSON.parse + event listener for the same underlying list).
-//   - membership checks (isSaved/isLiked) are an id Set lookup -- O(1) --
-//     instead of each card doing its own Array.some() scan over the list.
+//   - membership checks (isLiked) are an id Set lookup -- O(1) -- instead
+//     of each card doing its own Array.some() scan over the list.
 export function createListStore(storageKey, eventName) {
   const readList = () => {
     try {

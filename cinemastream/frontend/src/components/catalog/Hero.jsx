@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FaPlay, FaPlus, FaCheck } from 'react-icons/fa';
+import { FaPlay, FaCheck } from 'react-icons/fa';
 import { fetchDiscoverMovie, fetchGenres, fetchMovieDetails } from '../../api/tmdb';
-import { useMyList } from '../../hooks/useMyList';
 import './Hero.css';
 
 const MAX_CAROUSEL_DOTS = 5;
@@ -18,7 +17,6 @@ function Hero({ onPlayTrailer }) {
   const [genreMap, setGenreMap] = useState({});
   const [runtimeCache, setRuntimeCache] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { isSaved, toggle } = useMyList();
 
   useEffect(() => {
     // Capped to MAX_CAROUSEL_DOTS so the rotation index and the dot count
@@ -81,7 +79,6 @@ function Hero({ onPlayTrailer }) {
   }
 
   const year = featured.release_date?.slice(0, 4);
-  const saved = isSaved(featured.id);
   const matchPercent = featured.vote_average > 0 ? Math.round(featured.vote_average * 10) : null;
   const runtimeLabel = formatRuntime(runtimeCache[featured.id]);
 
@@ -130,12 +127,6 @@ function Hero({ onPlayTrailer }) {
         <div className="hero-actions">
           <button className="hero-btn btn-primary" onClick={() => onPlayTrailer?.(featured)}>
             <FaPlay /> Watch Now
-          </button>
-          <button
-            className={`hero-btn btn-secondary${saved ? ' active' : ''}`}
-            onClick={() => toggle({ ...featured, media_type: 'movie' })}
-          >
-            {saved ? <FaCheck /> : <FaPlus />} My List
           </button>
         </div>
       </div>

@@ -138,12 +138,6 @@
   border-color: transparent;
 }
 
-.catalog-card-action-btn.saved {
-  background: var(--color-text);
-  color: var(--color-bg);
-  border-color: var(--color-text);
-}
-
 .catalog-card-action-btn.liked {
   background: var(--gradient-accent);
   color: var(--color-on-accent);

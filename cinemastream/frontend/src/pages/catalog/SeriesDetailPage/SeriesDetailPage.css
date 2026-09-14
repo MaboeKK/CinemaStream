@@ -63,13 +63,6 @@
   background: rgba(0, 0, 0, 0.65);
 }
 
-.series-detail-icon-btn.round.active {
-  color: transparent;
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
 .series-detail-hero-content {
   position: relative;
   z-index: 1;

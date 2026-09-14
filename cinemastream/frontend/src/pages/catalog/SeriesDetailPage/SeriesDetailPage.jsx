@@ -6,8 +6,6 @@ import {
   FaChromecast,
   FaSearch,
   FaPlay,
-  FaPlus,
-  FaCheck,
   FaListUl,
   FaChevronDown,
   FaSortAmountDown,
@@ -18,7 +16,6 @@ import {
 } from 'react-icons/fa';
 import { fetchSeriesDetails, fetchSeasonEpisodes, fetchSimilarSeries } from '../../../api/tmdb';
 import { fetchYoutubeTrailer } from '../../../api/youtube';
-import { useMyList } from '../../../hooks/useMyList';
 import './SeriesDetailPage.css';
 
 const TABS = [
@@ -40,7 +37,6 @@ function getVideoId(url) {
 function SeriesDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isSaved, toggle } = useMyList();
 
   const [series, setSeries] = useState(null);
   const [activeTab, setActiveTab] = useState('episodes');
@@ -112,12 +108,10 @@ function SeriesDetailPage() {
 
   const year = series.release_date?.slice(0, 4);
   const seasonCount = series.seasons.length;
-  const saved = isSaved(series.id);
   const videoId = getVideoId(trailerUrl);
 
   const handlePlay = () => navigate(`/watch/tv/${id}/${selectedSeason ?? 1}/1`);
   const handlePlayEpisode = (episode) => navigate(`/watch/tv/${id}/${selectedSeason}/${episode.episode_number}`);
-  const handleToggleMyList = () => toggle({ ...series, media_type: 'tv' });
 
   const handleShowTrailers = async () => {
     setActiveTab('trailers');
@@ -178,13 +172,6 @@ function SeriesDetailPage() {
           <div className="series-detail-actions">
             <button className="series-detail-play-btn" onClick={handlePlay}>
               <FaPlay /> Play
-            </button>
-            <button
-              className={`series-detail-icon-btn round${saved ? ' active' : ''}`}
-              onClick={handleToggleMyList}
-              aria-label={saved ? 'Remove from My List' : 'Add to My List'}
-            >
-              {saved ? <FaCheck /> : <FaPlus />}
             </button>
             <button className="series-detail-pill-btn" onClick={() => setActiveTab('episodes')}>
               <FaListUl /> Episodes
