@@ -9,12 +9,28 @@
   align-items: flex-end;
 }
 
+/* Was blending toward rgba(9,9,9,...) -- the old red/black theme's
+   --color-bg (#090909), from before the rebrand to the current gradient
+   theme (--color-bg: #0f1620). That mismatch was the main reason this
+   never fully resolved to solid the way TrailerModal's hero scrim does:
+   it was fading toward a color that didn't match the page background
+   sitting right below it, so the seam never fully disappeared. Also
+   widens the fully-opaque band from a thin sliver at the very bottom
+   edge (0%) to 0-30%, so .hero-content's text actually sits on solid
+   ground instead of a still-partly-transparent gradient. */
 .hero-scrim {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, var(--color-bg) 0%, rgba(9, 9, 9, 0.55) 45%, rgba(9, 9, 9, 0.15) 75%),
-    linear-gradient(to right, rgba(9, 9, 9, 0.85) 0%, rgba(9, 9, 9, 0.15) 55%, transparent 100%);
+    linear-gradient(
+      to top,
+      var(--color-bg) 0%,
+      var(--color-bg) 30%,
+      rgba(15, 22, 32, 0.72) 55%,
+      rgba(15, 22, 32, 0.28) 80%,
+      transparent 100%
+    ),
+    linear-gradient(to right, rgba(15, 22, 32, 0.85) 0%, rgba(15, 22, 32, 0.15) 55%, transparent 100%);
 }
 
 .hero-content {
