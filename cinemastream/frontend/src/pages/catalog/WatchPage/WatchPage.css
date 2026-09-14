@@ -34,6 +34,34 @@
   background: rgba(0, 0, 0, 0.7);
 }
 
+/* Manual escape hatch alongside the auto-fallback in WatchPage.jsx -- a
+   cross-origin iframe can't tell us the embedded provider's own internal
+   source resolution failed (only a total connection failure is visible to
+   us), so per-title failures need a way out the viewer can trigger. */
+.watch-page-source-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.watch-page-source-toggle:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
 /* Sits over the vidking iframe until it fires onLoad -- the embed itself
    is a plain black rect while its own player chrome boots, which reads as
    broken rather than loading without this. Reuses the app's shared
